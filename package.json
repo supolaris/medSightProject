@@ -17,6 +17,7 @@
     "lottie-react-native": "^7.1.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-element-dropdown": "^2.12.2",
     "react-native-permissions": "^4.1.5",
     "react-native-translator": "^1.1.6",
     "react-native-tts": "^4.1.0",

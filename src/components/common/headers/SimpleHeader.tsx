@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import React from 'react';
 import { AppColors } from '../../../constants/AppColors';
 import CustomText from '../texts/CustomText';
@@ -20,12 +20,12 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
         <TouchableOpacity
           style={styles.leftIcon}
           onPress={props.onHeaderBackPressed}>
-          {props.showBackIcon && (
-            // <Ionicons name="arrow-back" size={20} color={AppColors.white} />
-            <></>
-          )}
+          <Image
+            style={styles.backArrow}
+            source={require('../../../assets/images/backArrow.png')}
+          />
         </TouchableOpacity>
-        <CustomText
+        {/* <CustomText
           preset={{
             text: `${props.title}`,
             color: AppColors.black,
@@ -35,14 +35,35 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
           style={{
             textAlign: 'center',
           }}
+        /> */}
+
+        <Image
+          style={styles.HeaderImage}
+          source={require('../../../assets/images/HeaderImage.png')}
         />
         <TouchableOpacity
           style={styles.rightIcon}
           onPress={props.onHeaderSettingsPressed}>
-          {props.showSettingsIcon && (
-            // <Feather name="settings" size={20} color={AppColors.white} />
-            <></>
-          )}
+          <View style={{ flexDirection: 'row' }}>
+            <View>
+              <Image
+                style={styles.dp}
+                source={require('../../../assets/images/profImage.png')}
+              />
+            </View>
+            <View style={{ marginLeft: 3 }}>
+              <Text style={{ color: '#12AAC2', fontSize: 8 }}>John Doe</Text>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 8,
+                  alignSelf: 'center',
+                  fontWeight: 'bold',
+                }}>
+                Logout{' '}
+              </Text>
+            </View>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -56,6 +77,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: AppColors.white,
     justifyContent: 'center',
+    marginBottom: 10,
   },
   innerContainer: {
     width: '90%',
@@ -66,9 +88,25 @@ const styles = StyleSheet.create({
     // width: '10%',
     position: 'absolute',
     left: 0,
+    top: 18,
   },
   rightIcon: {
     position: 'absolute',
     right: 0,
+    top: 12,
+  },
+  HeaderImage: {
+    width: 51,
+    height: 43,
+  },
+  backArrow: {
+    width: 22,
+    height: 18,
+    alignSelf: 'center',
+  },
+  dp: {
+    width: 29,
+    height: 29,
+    alignSelf: 'center',
   },
 });

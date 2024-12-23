@@ -26,7 +26,7 @@ export const VoiceLottie = (props: IProps) => {
 
 const styles = StyleSheet.create({
   lottie: {
-    width: 250,
-    height: 250,
+    width: 100,
+    height: 100,
   },
 });
