@@ -26,10 +26,11 @@ interface IProps {
 const VoiceToText = (props: IProps) => {
   return (
     <ImageBackground
+      resizeMode="stretch"
       style={{
         flex: 1,
       }}
-      source={require('../assets/images/appBackground.webp')}>
+      source={require('../assets/images/common/appBackground.webp')}>
       <View style={styles.container}>
         <SimpleHeader
           showBackIcon={false}

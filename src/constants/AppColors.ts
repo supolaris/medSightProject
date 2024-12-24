@@ -3,5 +3,6 @@ export const AppColors = {
   white: '#ffffff',
   appBackground: '#',
   primaryColor: '#3681C3',
+  secondaryTextColor: '#5E99CF',
   borderColor: '#',
 };

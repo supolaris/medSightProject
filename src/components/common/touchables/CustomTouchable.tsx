@@ -6,7 +6,7 @@ import {
   DimensionValue,
 } from 'react-native';
 
-import { borderRadius } from '../../../utils/CommonFunctions';
+import { activeOpacity, borderRadius } from '../../../utils/CommonFunctions';
 import { AppColors } from '../../../constants/AppColors';
 import CustomText from '../texts/CustomText';
 
@@ -26,6 +26,7 @@ interface IProps extends TouchableOpacityProps {
 const CustomTouchable: React.FC<IProps> = ({ preset, style, ...props }) => {
   return (
     <TouchableOpacity
+      activeOpacity={activeOpacity}
       style={[
         styles.container,
         {
