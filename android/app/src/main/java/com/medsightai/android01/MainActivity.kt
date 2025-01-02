@@ -1,4 +1,4 @@
-package com.medsight
+package com.medsightai.android01
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

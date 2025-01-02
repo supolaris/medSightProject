@@ -14,4 +14,6 @@ declare module '*.jpeg' {
   const value: any;
   export default value;
 }
-declare var token: string;
+declare module globalThis {
+  var token: string;
+}

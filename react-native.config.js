@@ -1,9 +1,9 @@
 module.exports = {
   project: {
     ios: {},
-    android: {}, // grouped into "project"
+    android: {},
   },
-  assets: ['./assets/fonts/'], // stays the same
+  assets: ['./assets/fonts/'],
   dependencies: {
     'react-native-vector-icons': {
       platforms: {

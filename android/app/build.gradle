@@ -75,14 +75,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.medsight"
+    namespace "com.medsightai.android01"
     defaultConfig {
-        applicationId "com.medsight"
+        applicationId "com.medsightai.android01"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 4
         versionName "2.0.1"
-        manifestPlaceholders = [appAuthRedirectScheme: "com.medsight"]
+        manifestPlaceholders = [appAuthRedirectScheme: "com.medsightai.android01"]
     }
     signingConfigs {
         debug {

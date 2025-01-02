@@ -5,6 +5,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, { RefObject } from 'react';
 import SimpleHeader from './common/headers/SimpleHeader';
@@ -25,134 +26,139 @@ interface IProps {
 
 const VoiceToText = (props: IProps) => {
   return (
-    <ImageBackground
-      resizeMode="stretch"
+    <SafeAreaView
       style={{
         flex: 1,
-      }}
-      source={require('../assets/images/common/appBackground.webp')}>
-      <View style={styles.container}>
-        <SimpleHeader
-          showBackIcon={false}
-          showSettingsIcon={false}
-          title="Voice"
-        />
+      }}>
+      <ImageBackground
+        resizeMode="stretch"
+        style={{
+          flex: 1,
+        }}
+        source={require('../assets/images/common/appBackground.webp')}>
+        <View style={styles.container}>
+          <SimpleHeader
+            showBackIcon={false}
+            showSettingsIcon={false}
+            title="Voice"
+          />
 
-        <View style={styles.innerContainer}>
-          <View style={styles.patientInfo}>
-            <Image
-              style={styles.patientImage}
-              source={require('../assets/images/patientImage.png')}
-            />
-            <View style={styles.patientDetails}>
-              <Text style={styles.patientName}>Name: Roberts John</Text>
-              <Text style={styles.patientDetailsText}>
-                DOB: 01/01/1980 | AGE: 44 | GENDER: MALE
-              </Text>
-              <Text style={styles.patientDetailsText}>
-                PHONE: NOT AVAILABLE | ADDRESS: 123 MAIN ST
-              </Text>
-            </View>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={styles.firstbutton}>
-              <Text style={styles.firstbuttonText}>NEW INTAKE</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.secondbutton}>
-              <Text style={styles.secondbuttonText}>START CONSULTATION</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.thirdbutton}>
-              <Text style={styles.thirdbuttonText}>CO-PILOT</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.imageView}>
-            <Image
-              style={styles.Image}
-              source={require('../assets/images/headingImage.png')}
-            />
-            <Text
-              style={{
-                color: '#FFFFFF',
-                marginLeft: 10,
-                fontSize: 11,
-                alignSelf: 'center',
-              }}>
-              PATIENT INTAKE
-            </Text>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              alignSelf: 'center',
-              flexDirection: 'row',
-            }}>
-            <View style={styles.secondView}>
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  style={{ width: 12.5, height: 13.75, marginTop: 2 }}
-                  source={require('../assets/images/recordingIcon.png')}
-                />
-                <Text
-                  style={{
-                    color: '#000000',
-                    marginLeft: 1,
-                    fontSize: 11,
-                    fontWeight: 'bold',
-                  }}>
-                  Recording
+          <View style={styles.innerContainer}>
+            <View style={styles.patientInfo}>
+              <Image
+                style={styles.patientImage}
+                source={require('../assets/images/patientImage.png')}
+              />
+              <View style={styles.patientDetails}>
+                <Text style={styles.patientName}>Name: Roberts John</Text>
+                <Text style={styles.patientDetailsText}>
+                  DOB: 01/01/1980 | AGE: 44 | GENDER: MALE
+                </Text>
+                <Text style={styles.patientDetailsText}>
+                  PHONE: NOT AVAILABLE | ADDRESS: 123 MAIN ST
                 </Text>
               </View>
-              <View>
-                <Text
-                  style={{
-                    width: 69,
-                    height: 1,
-                    backgroundColor: '#12AAC2',
-                    marginTop: 3,
-                  }}></Text>
-              </View>
             </View>
-            <View style={{ justifyContent: 'center' }}>
-              <TouchableOpacity
-                onPress={props.onClearText}
-                style={styles.clearButton}>
-                <Text style={styles.clearText}>Clear Text</Text>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={styles.firstbutton}>
+                <Text style={styles.firstbuttonText}>NEW INTAKE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.secondbutton}>
+                <Text style={styles.secondbuttonText}>START CONSULTATION</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.thirdbutton}>
+                <Text style={styles.thirdbuttonText}>CO-PILOT</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              {props.speechToText || 'Start speaking...'}
-            </Text>
-          </View>
-          <View style={styles.lottieView}>
-            <View style={styles.languageSelector}>
-              <Text style={styles.label}>Select Language</Text>
-              <Dropdown
-                style={styles.dropdown}
-                data={props.languageOptions}
-                labelField="label"
-                valueField="value"
-                placeholder="Select Language"
-                value={props.selectedLanguage}
-                onChange={(item) => props.onLanguageChange(item.value)}
+            <View style={styles.imageView}>
+              <Image
+                style={styles.Image}
+                source={require('../assets/images/headingImage.png')}
               />
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  marginLeft: 10,
+                  fontSize: 11,
+                  alignSelf: 'center',
+                }}>
+                PATIENT INTAKE
+              </Text>
             </View>
             <View
               style={{
-                // backgroundColor: 'red',
-                // width: '40%',
-                alignItems: 'flex-end',
+                width: '100%',
+                alignSelf: 'center',
+                flexDirection: 'row',
               }}>
-              <VoiceLottie
-                lottieRef={props.lottieRef}
-                onVoiceRecordPressed={props.onVoiceRecordPressed}
-              />
+              <View style={styles.secondView}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    style={{ width: 12.5, height: 13.75, marginTop: 2 }}
+                    source={require('../assets/images/recordingIcon.png')}
+                  />
+                  <Text
+                    style={{
+                      color: '#000000',
+                      marginLeft: 1,
+                      fontSize: 11,
+                      fontWeight: 'bold',
+                    }}>
+                    Recording
+                  </Text>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      width: 69,
+                      height: 1,
+                      backgroundColor: '#12AAC2',
+                      marginTop: 3,
+                    }}></Text>
+                </View>
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <TouchableOpacity
+                  onPress={props.onClearText}
+                  style={styles.clearButton}>
+                  <Text style={styles.clearText}>Clear Text</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>
+                {props.speechToText || 'Start speaking...'}
+              </Text>
+            </View>
+            <View style={styles.lottieView}>
+              <View style={styles.languageSelector}>
+                <Text style={styles.label}>Select Language</Text>
+                <Dropdown
+                  style={styles.dropdown}
+                  data={props.languageOptions}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select Language"
+                  value={props.selectedLanguage}
+                  onChange={(item) => props.onLanguageChange(item.value)}
+                />
+              </View>
+              <View
+                style={{
+                  // backgroundColor: 'red',
+                  // width: '40%',
+                  alignItems: 'flex-end',
+                }}>
+                <VoiceLottie
+                  lottieRef={props.lottieRef}
+                  onVoiceRecordPressed={props.onVoiceRecordPressed}
+                />
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 

@@ -1,4 +1,4 @@
-package com.medsight
+package com.medsightai.android01
 
 import android.app.Application
 import com.facebook.react.PackageList

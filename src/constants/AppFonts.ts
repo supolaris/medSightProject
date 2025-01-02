@@ -1,6 +1,7 @@
 export const FontFamily = {
-  regular: 'Montserrat-Regular',
-  medium: 'Montserrat-Medium',
-  semiBold: 'Montserrat-SemiBold',
-  bold: 'Montserrat-Bold',
+  italic: 'Roboto-Italic',
+  thin: 'Roboto-Thin',
+  regular: 'Roboto-Regular',
+  medium: 'Roboto-Medium',
+  bold: 'Roboto-Bold',
 };

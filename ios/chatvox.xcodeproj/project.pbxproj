@@ -493,7 +493,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.medsight.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medsightai.android01.app;
 				PRODUCT_NAME = medsight;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -522,7 +522,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.medsight.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medsightai.android01.app;
 				PRODUCT_NAME = medsight;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

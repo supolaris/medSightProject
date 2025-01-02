@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import OnBoarding from '../components/OnBoarding';
 import { onBoardingData } from '../constants/StaticData';
-import { MicrosoftConfiguration } from '../utils/Config';
 import { authorize } from 'react-native-app-auth';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { MicrosoftConfiguration } from '../utils/CommonFunctions';
 
 let currentIndex = 0;
 const OnBoardingScreen = ({
@@ -51,6 +51,7 @@ const OnBoardingScreen = ({
         connectionTimeoutSeconds: 5,
         iosPrefersEphemeralSession: true,
       });
+      global.token = authResponse?.accessToken;
       if (authResponse.accessToken) {
         navigation.replace('VoiceToText');
       }
