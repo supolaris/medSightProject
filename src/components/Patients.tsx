@@ -12,9 +12,15 @@ import {
 } from 'react-native';
 import SimpleHeader from './common/headers/SimpleHeader';
 
-const Patients = ({ searchQuery, onSearch, patientsData }) => {
-  const renderPatientCard = ({ item }) => (
-    <View
+const Patients = ({
+  searchQuery,
+  onSearch,
+  patientsData,
+  onPatientPressed,
+}) => {
+  const renderPatientCard = ({ item }: { item: any }) => (
+    <TouchableOpacity
+      onPress={onPatientPressed}
       style={[
         styles.patientCard,
         item.status === 'Active' && styles.activeCard,
@@ -29,7 +35,7 @@ const Patients = ({ searchQuery, onSearch, patientsData }) => {
           <Text style={styles.statusText}>{item.status}</Text>
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 
   return (

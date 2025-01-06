@@ -2,11 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import Voice from '@react-native-community/voice';
 import LottieView from 'lottie-react-native';
 import VoiceToText from '../components/VoiceToText';
+import { getMyPatientsService } from '../utils/MyPatientServices';
+import { getErrorData } from '../utils/CommonFunctions';
+import axios from 'axios';
+import { ApiNames } from '../constants/ApiNames';
 
 const VoiceToTextScreen = () => {
   const [speechToText, setSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const lottieRef = useRef<LottieView>(null);
 
   const languageOptions = [
@@ -17,6 +22,24 @@ const VoiceToTextScreen = () => {
     { label: 'German (Germany)', value: 'de-DE' },
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
   ];
+
+  useEffect(() => {
+    // getMyPatients();
+  }, []);
+
+  const getMyPatients = async () => {
+    try {
+      setIsLoading(true);
+      let tempPageSize = 10;
+      const response = await getMyPatientsService(tempPageSize);
+      console.log('response of patients=>>>>>>>>>>>>>>>', response);
+    } catch (error) {
+      getErrorData(error);
+      console.log('error in getting my patients', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!isRecording) {
@@ -73,6 +96,7 @@ const VoiceToTextScreen = () => {
 
   return (
     <VoiceToText
+      isLoading={false}
       lottieRef={lottieRef}
       isRecording={isRecording}
       speechToText={speechToText}

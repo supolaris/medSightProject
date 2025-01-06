@@ -1,6 +1,8 @@
-import { Dimensions, PixelRatio, Platform } from 'react-native';
+import { Dimensions, Linking, PixelRatio, Platform } from 'react-native';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
 import { CLIENT_ID, TENANT_ID } from './Config';
+import { AxiosError } from 'axios';
+import { revoke } from 'react-native-app-auth';
 
 export const borderRadius = 10;
 export const activeOpacity = 0.5;
@@ -30,6 +32,15 @@ export const normalizeHeight = (size: number) => {
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 1;
   }
+};
+
+export const getErrorData = (e: unknown) => {
+  try {
+    if (e instanceof AxiosError && e?.response?.data?.result) {
+      console.log(e?.response?.data?.result?.toLowerCase());
+      return e?.response?.data?.result?.toLowerCase();
+    }
+  } catch (e) {}
 };
 
 export const MicrosoftConfiguration: any = {

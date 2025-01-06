@@ -12,8 +12,10 @@ import SimpleHeader from './common/headers/SimpleHeader';
 import { VoiceLottie } from './common/lotties/VoiceLottie';
 import LottieView from 'lottie-react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import LoadingPopup from './common/popups/LoadingPopup';
 
 interface IProps {
+  isLoading: boolean;
   lottieRef: RefObject<LottieView>;
   speechToText: string;
   isRecording: boolean;
@@ -30,6 +32,7 @@ const VoiceToText = (props: IProps) => {
       style={{
         flex: 1,
       }}>
+      <LoadingPopup isVisible={props.isLoading} />
       <ImageBackground
         resizeMode="stretch"
         style={{

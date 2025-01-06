@@ -1,4 +1,4 @@
-export const baseUrl = '';
+export const baseUrl = 'https://mduaenapi01.azurewebsites.net';
 export const requestTimeout = 60 * 1000;
 
 export const microsoftBaseUrl = 'https://graph.microsoft.com/v1.0/me';

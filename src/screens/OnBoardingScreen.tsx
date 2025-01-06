@@ -143,6 +143,7 @@ const OnBoardingScreen = ({
         connectionTimeoutSeconds: 5,
         iosPrefersEphemeralSession: true,
       });
+      console.log('token', authResponse.accessToken);
       if (authResponse.accessToken) {
         navigation.replace('Patients');
       }

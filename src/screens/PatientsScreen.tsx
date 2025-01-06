@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Patients from '../components/Patients';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
 
-const PatientsScreen = () => {
+const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPatients, setFilteredPatients] = useState([]);
 
@@ -35,7 +36,9 @@ const PatientsScreen = () => {
       image: require('../assets/images/patientImages/sarahImage.png'),
     },
   ];
-
+  useEffect(() => {
+    setFilteredPatients(patientsData);
+  }, []);
   // Filter patients based on the search query
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -49,16 +52,16 @@ const PatientsScreen = () => {
     }
   };
 
-  // Initialize the filteredPatients state with all patients
-  React.useEffect(() => {
-    setFilteredPatients(patientsData);
-  }, []);
+  const onPatientPressed = () => {
+    navigation.navigate('VoiceToText');
+  };
 
   return (
     <Patients
       searchQuery={searchQuery}
-      onSearch={handleSearch}
       patientsData={filteredPatients}
+      onPatientPressed={onPatientPressed}
+      onSearch={handleSearch}
     />
   );
 };
