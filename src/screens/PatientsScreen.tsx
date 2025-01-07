@@ -52,8 +52,8 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
     }
   };
 
-  const onPatientPressed = () => {
-    navigation.navigate('VoiceToText');
+  const onPatientPressed = (item: any) => {
+    navigation.navigate('PatientDetails', { patients: item });
   };
 
   return (

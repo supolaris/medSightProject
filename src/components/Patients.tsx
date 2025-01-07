@@ -20,7 +20,7 @@ const Patients = ({
 }) => {
   const renderPatientCard = ({ item }: { item: any }) => (
     <TouchableOpacity
-      onPress={onPatientPressed}
+      onPress={() => onPatientPressed(item)}
       style={[
         styles.patientCard,
         item.status === 'Active' && styles.activeCard,
@@ -46,11 +46,7 @@ const Patients = ({
           flex: 1,
         }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader
-          showBackIcon={false}
-          showSettingsIcon={false}
-          title="Voice"
-        />
+        <SimpleHeader showSettingsIcon={false} title="Voice" />
         <View style={styles.header}>
           <Text style={styles.welcomeText}>WELCOME JOHN DOE</Text>
           <TouchableOpacity>

@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: AppColors.white,
     justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
   },
   innerContainer: {
     width: '90%',

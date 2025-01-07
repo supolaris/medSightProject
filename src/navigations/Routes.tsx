@@ -6,6 +6,7 @@ import VoiceToTextScreen from '../screens/VoiceToTextScreen';
 import { RootStackParamList } from '../@types/NavigationTypes';
 import OnBoardingScreen from '../screens/OnBoardingScreen';
 import PatientsScreen from '../screens/PatientsScreen';
+import PatientDetailsScreen from '../screens/PatientDetailsScreen';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export function Routes() {
@@ -20,6 +21,7 @@ export function Routes() {
         <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
         <Stack.Screen name="VoiceToText" component={VoiceToTextScreen} />
         <Stack.Screen name="Patients" component={PatientsScreen} />
+        <Stack.Screen name="PatientDetails" component={PatientDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

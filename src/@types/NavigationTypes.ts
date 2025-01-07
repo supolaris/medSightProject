@@ -6,6 +6,9 @@ export type RootStackParamList = {
   Login: undefined;
   VoiceToText: undefined;
   Patients: undefined;
+  PatientDetails: {
+    patients: any;
+  };
 };
 
 export type MainStackScreenProps<T extends keyof RootStackParamList> =
