@@ -10,120 +10,21 @@ import {
   ImageBackground,
 } from 'react-native';
 import SimpleHeader from './common/headers/SimpleHeader';
+import { IMyPatientItems } from '../@types/CommonTypes';
+import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
+import RenderPatientInsightTab from './common/renderComponents/RenderPatientInsightTab';
+import RenderEncountersTab from './common/renderComponents/RenderEncountersTab';
 
 interface IProps {
-  patient: {
-    name: string;
-    dob: string;
-    age?: number;
-    gender?: string;
-    phone?: string;
-    address?: string;
-    image: any;
-  };
+  patient: IMyPatientItems;
+  activeTab: string;
   onNewIntakePress: () => void;
   onStartConsultationPress: () => void;
   onCoPilotPress: () => void;
+  onChangeTab: (val: string) => void;
 }
 
 const PatientDetails = (props: IProps) => {
-  const [activeTab, setActiveTab] = useState<'PatientInsight' | 'Encounters'>(
-    'PatientInsight',
-  );
-
-  const renderContent = () => {
-    if (activeTab === 'PatientInsight') {
-      return (
-        <View>
-          <View style={styles.insightContainer}>
-            <Text style={styles.insightText}>
-              The patient, {props.patient?.name}, has had multiple general
-              examination encounters with Dr. Austin18 Test18 from May to June
-              2024.
-            </Text>
-            <Text style={styles.insightTitle}>RECENT NOTES</Text>
-            <Text style={styles.insightText}>
-              Indicate treatment for fever and sore throat with a variety of
-              medications, potential malaria screening, and elevated CRP
-              suggesting an underlying infection or inflammation. Records show
-              blood pressure issues, stomach pain managed with Pepto-Bismol, and
-              continued monitoring of symptoms with appropriate follow-ups and
-              instructions for hydration and rest.
-            </Text>
-          </View>
-          <View style={styles.medicalHistoryContainer}>
-            <View style={styles.medicalHistoryContainer1}>
-              <Text style={styles.medicalHistoryTitle}>Medical History</Text>
-              <Text style={styles.medicationText}>Conditions: </Text>
-              <Text style={styles.medicationText}>
-                Potential Malaria Viral Pharyngitis Indigestion
-              </Text>
-            </View>
-            <View style={styles.medicalHistoryContainer2}>
-              <Text style={styles.medicalHistorySubTitle}>Medications:</Text>
-              <Text style={styles.medicationText}>
-                - Medicine A 500 mg twice a day for 5 days
-              </Text>
-              <Text style={styles.medicationText}>
-                - Medicine B 250 mg twice a day for 5 days
-              </Text>
-              <Text style={styles.medicationText}>
-                - Medicine C 50 mg three times a day for 5 days
-              </Text>
-              <Text style={styles.medicationText}>
-                - Cough Syrup 10 ml twice a day for 5 days
-              </Text>
-              <Text style={styles.medicationText}>
-                - Panadol as needed for fever
-              </Text>
-              <Text style={styles.medicationText}>
-                - Pepto-Bismol four times a day for five days
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
-    } else if (activeTab === 'Encounters') {
-      return (
-        <View>
-          <View style={styles.encounterContainer}>
-            <Text style={styles.encounterDate}>SEPTEMBER 16, 2024 (01:53)</Text>
-            <View style={styles.encounterCard}>
-              <Text style={styles.encounterSectionTitle}>Medications</Text>
-              <Text style={styles.encounterSectionText}>Medication: 1</Text>
-              <Text style={styles.encounterSectionText}>
-                Name: Pepto-Bismol
-              </Text>
-              <Text style={styles.encounterSectionText}>
-                Dosage: Not specified
-              </Text>
-              <Text style={styles.encounterSectionText}>
-                Frequency: Four times a day
-              </Text>
-              <Text style={styles.encounterSectionText}>
-                Duration: Five days
-              </Text>
-            </View>
-            <View style={styles.encounterCard}>
-              <Text style={styles.encounterSectionTitle}>Subjective</Text>
-              <Text style={styles.encounterSectionText}>
-                Chief Complaint: Stomach pain since last night.
-              </Text>
-              <Text style={styles.encounterSectionText}>
-                History of Present Illness: The patient reports experiencing
-                stomach pain that began the previous night. This pain is also
-                interfering with sleep.
-              </Text>
-              <Text style={styles.encounterSectionText}>
-                Relevant Personal or Family Medical History: None mentioned.
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
-    }
-  };
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F7FBFF' }}>
       <ImageBackground
@@ -131,21 +32,45 @@ const PatientDetails = (props: IProps) => {
         style={{ flex: 1 }}
         source={require('../assets/images/common/appBackground.webp')}>
         <SimpleHeader showSettingsIcon={false} title="Voice" />
-        <ScrollView contentContainerStyle={styles.container}>
-          {/* Patient Info */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.container}>
           <View style={styles.patientCard}>
-            <Image source={props.patient?.image} style={styles.patientImage} />
-            <Text style={styles.patientName}>Name: {props.patient?.name}</Text>
+            <Image
+              source={require('../assets/images/dummyUser.png')}
+              style={styles.patientImage}
+            />
+            <Text style={styles.patientName}>
+              Name: {props.patient?.name[0]?.family}
+            </Text>
           </View>
           <View style={styles.insightView}>
             <View style={{ width: '70%' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                {props.patient?.birthDate && (
+                  <Text style={styles.patientDetails}>
+                    DOB: {formatDateOfBirth(props.patient?.birthDate) + ' | '}
+                  </Text>
+                )}
+                {props.patient?.birthDate && (
+                  <Text style={styles.patientDetails}>
+                    AGE: {calculateAge(props.patient?.birthDate) + ' | '}
+                  </Text>
+                )}
+                <Text style={styles.patientDetails}>
+                  GENDER: {props.patient?.gender}
+                </Text>
+              </View>
               <Text style={styles.patientDetails}>
-                DOB: {props.patient?.dob} | AGE: {props.patient?.age} | GENDER:{' '}
-                {props.patient?.gender}
+                PHONE: {props.patient?.telecom?.[0]?.value ?? 'NOT AVAILABLE'}
               </Text>
               <Text style={styles.patientDetails}>
-                PHONE: {props.patient?.phone || 'NOT AVAILABLE'} | ADDRESS:{' '}
-                {props.patient?.address || 'NOT AVAILABLE'}
+                ADDRESS:{' '}
+                {props.patient?.address?.[0]?.country ?? 'NOT AVAILABLE'}
               </Text>
             </View>
             <View>
@@ -191,13 +116,13 @@ const PatientDetails = (props: IProps) => {
             <TouchableOpacity
               style={[
                 styles.tabButton,
-                activeTab === 'PatientInsight' && styles.activeTab,
+                props.activeTab === 'PatientInsight' && styles.activeTab,
               ]}
-              onPress={() => setActiveTab('PatientInsight')}>
+              onPress={() => props.onChangeTab('PatientInsight')}>
               <Text
                 style={[
                   styles.tabText,
-                  activeTab === 'PatientInsight' && styles.activeTabText,
+                  props.activeTab === 'PatientInsight' && styles.activeTabText,
                 ]}>
                 PATIENT INSIGHT
               </Text>
@@ -205,21 +130,26 @@ const PatientDetails = (props: IProps) => {
             <TouchableOpacity
               style={[
                 styles.tabButton,
-                activeTab === 'Encounters' && styles.activeTab,
+                props.activeTab === 'Encounters' && styles.activeTab,
               ]}
-              onPress={() => setActiveTab('Encounters')}>
+              onPress={() => props.onChangeTab('Encounters')}>
               <Text
                 style={[
                   styles.tabText,
-                  activeTab === 'Encounters' && styles.activeTabText,
+                  props.activeTab === 'Encounters' && styles.activeTabText,
                 ]}>
                 ENCOUNTERS
               </Text>
             </TouchableOpacity>
           </View>
 
-          {/* Tab Content */}
-          {renderContent()}
+          {props.activeTab === 'PatientInsight' ? (
+            <RenderPatientInsightTab
+              patientName={props.patient?.name[0]?.family}
+            />
+          ) : props.activeTab === 'Encounters' ? (
+            <RenderEncountersTab />
+          ) : null}
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>

@@ -39,10 +39,10 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
           <View style={styles.profileContainer}>
             <Image
               style={styles.profileImage}
-              source={require('../../../assets/images/profImage.png')}
+              source={require('../../../assets/images/dummyUser.png')}
             />
             <View style={styles.profileTextContainer}>
-              <Text style={styles.profileName}>JOHN DOE</Text>
+              {/* <Text style={styles.profileName}>JOHN DOE</Text> */}
               <Text style={styles.logoutText}>Logout</Text>
             </View>
           </View>

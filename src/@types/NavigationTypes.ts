@@ -1,13 +1,16 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import { IMyPatientItems } from './CommonTypes';
 
 export type RootStackParamList = {
   Splash: undefined;
   OnBoarding: undefined;
   Login: undefined;
-  VoiceToText: undefined;
+  VoiceToText: {
+    patient: IMyPatientItems;
+  };
   Patients: undefined;
   PatientDetails: {
-    patients: any;
+    patient: IMyPatientItems;
   };
 };
 

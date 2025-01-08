@@ -412,8 +412,24 @@ import SimpleHeader from './common/headers/SimpleHeader';
 import { Dropdown } from 'react-native-element-dropdown';
 import LoadingPopup from './common/popups/LoadingPopup';
 import { VoiceLottie } from './common/lotties/VoiceLottie';
+import { IMyPatientItems } from '../@types/CommonTypes';
+import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 
-const VoiceToText = (props) => {
+interface IProps {
+  isLoading: boolean;
+  patient: IMyPatientItems;
+  lottieRef: React.RefObject<LottieView>;
+  isRecording: boolean;
+  speechToText: string;
+  languageOptions: { label: string; value: string }[];
+  selectedLanguage: string;
+  onClearText: () => void;
+  setSelectedLanguage: () => void;
+  onVoiceRecordPressed: () => void;
+  onLanguageChange: (value: string) => void;
+}
+
+const VoiceToText = (props: IProps) => {
   const [activeTab, setActiveTab] = useState('Recording');
   const [transcriptText, setTranscriptText] = useState('');
   const [intakeNotesText, setIntakeNotesText] = useState('');
@@ -427,7 +443,7 @@ const VoiceToText = (props) => {
     setSelectedButton(button);
   };
 
-  const handleTabPress = (tab) => {
+  const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
 
@@ -442,18 +458,46 @@ const VoiceToText = (props) => {
         <ScrollView contentContainerStyle={styles.container}>
           {/* Patient Info */}
           <View style={styles.patientInfo}>
-            <Image source={props.patient?.image} style={styles.patientImage} />
+            <Image
+              source={require('../assets/images/dummyUser.png')}
+              style={styles.patientImage}
+            />
             <View style={styles.patientDetails}>
-              <Text style={styles.patientName}>
-                Name: {props.patient?.name}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                {props.patient?.birthDate && (
+                  <Text style={styles.patientDetailsText}>
+                    DOB: {formatDateOfBirth(props.patient?.birthDate) + ' | '}
+                  </Text>
+                )}
+                {props.patient?.birthDate && (
+                  <Text style={styles.patientDetailsText}>
+                    AGE: {calculateAge(props.patient?.birthDate) + ' | '}
+                  </Text>
+                )}
+                <Text style={styles.patientDetailsText}>
+                  GENDER: {props.patient?.gender}
+                </Text>
+              </View>
+              {/* <Text style={styles.patientName}>
+                Name: {props.patient?.name[0]?.family}
               </Text>
               <Text style={styles.patientDetailsText}>
-                DOB: {props.patient?.dob} | AGE: {props.patient?.age} | GENDER:{' '}
-                {props.patient?.gender}
+                DOB:{' '}
+                {formatDateOfBirth(
+                  props.patient?.birthDate ? props.patient?.birthDate : '',
+                )}{' '}
+                | AGE: {'age here'} | GENDER: {props.patient?.gender}
+              </Text> */}
+              <Text style={styles.patientDetailsText}>
+                PHONE: {props.patient?.telecom?.[0]?.value ?? 'NOT AVAILABLE'}
               </Text>
               <Text style={styles.patientDetailsText}>
-                PHONE: {props.patient?.phone || 'NOT AVAILABLE'} | ADDRESS:{' '}
-                {props.patient?.address || 'NOT AVAILABLE'}
+                ADDRESS:{' '}
+                {props.patient?.address?.[0]?.country ?? 'NOT AVAILABLE'}
               </Text>
             </View>
           </View>

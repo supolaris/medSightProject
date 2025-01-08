@@ -11,31 +11,22 @@ import {
   ImageBackground,
 } from 'react-native';
 import SimpleHeader from './common/headers/SimpleHeader';
+import { IMyPatientItems } from '../@types/CommonTypes';
+import RenderPatientListCard from './common/renderComponents/RenderPatientListCard';
 
-const Patients = ({
-  searchQuery,
-  onSearch,
-  patientsData,
-  onPatientPressed,
-}) => {
-  const renderPatientCard = ({ item }: { item: any }) => (
-    <TouchableOpacity
-      onPress={() => onPatientPressed(item)}
-      style={[
-        styles.patientCard,
-        item.status === 'Active' && styles.activeCard,
-      ]}>
-      <Image source={item.image} style={styles.patientImage} />
-      <View style={styles.patientInfo}>
-        <Text style={styles.patientName}>Name: {item.name}</Text>
-        <Text style={styles.patientDetails}>DOB: {item.dob}</Text>
-      </View>
-      {item.status === 'Active' && (
-        <View style={styles.statusBadge}>
-          <Text style={styles.statusText}>{item.status}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
+interface IProps {
+  myPatientsData: IMyPatientItems[];
+  searchVal: string;
+  onHandleSearch: (val: string) => void;
+  onPatientPressed: (item: any) => void;
+}
+
+const Patients = (props: IProps) => {
+  const renderPatientCard = ({ item }: { item: IMyPatientItems }) => (
+    <RenderPatientListCard
+      item={item}
+      onPatientPressed={props.onPatientPressed}
+    />
   );
 
   return (
@@ -61,8 +52,8 @@ const Patients = ({
               style={styles.searchInput}
               placeholder="Search Patient"
               placeholderTextColor="#9E9E9E"
-              value={searchQuery}
-              onChangeText={onSearch}
+              value={props.searchVal}
+              onChangeText={(val: string) => props.onHandleSearch(val)}
             />
             <TouchableOpacity
               style={{
@@ -79,7 +70,6 @@ const Patients = ({
           </View>
         </View>
 
-        {/* My Patients Title and Filter Icon */}
         <View
           style={{
             flexDirection: 'row',
@@ -110,9 +100,9 @@ const Patients = ({
 
         {/* Patient List */}
         <FlatList
-          data={patientsData}
-          renderItem={renderPatientCard}
+          data={props.myPatientsData}
           keyExtractor={(item) => item.id}
+          renderItem={renderPatientCard}
           contentContainerStyle={styles.listContainer}
         />
 
@@ -192,49 +182,7 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingHorizontal: 20,
   },
-  patientCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F8F8F8',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    elevation: 1,
-  },
-  activeCard: {
-    borderColor: '#0397A8',
-    borderWidth: 1,
-  },
-  patientImage: {
-    width: 42,
-    height: 42,
-    borderRadius: 25,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: '#06A2B4',
-  },
-  patientInfo: {
-    flex: 1,
-  },
-  patientName: {
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  patientDetails: {
-    fontSize: 12,
-    color: '#555',
-  },
-  statusBadge: {
-    backgroundColor: '#0397A8',
-    borderRadius: 5,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  statusText: {
-    color: '#fff',
-    fontSize: 12,
-  },
+
   addButton: {
     position: 'absolute',
     bottom: 20,

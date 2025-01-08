@@ -8,86 +8,81 @@ export interface IonBoardingData {
 
 export interface IMyPatientItems {
   resourceType: string;
+  status?: string;
   id: string;
   meta: {
     versionId: string;
     lastUpdated: string;
-    profile: string[];
+    profile: Array<string>;
   };
   text: {
     status: string;
     div: string;
   };
-  extension: [
-    {
-      url: string;
-      valueCodeableConcept: {
-        coding: [
-          {
-            system: string;
-            code: string;
-            display: string;
-          },
-        ];
-        text: string;
-      };
-      valueCode: string;
-    },
-  ];
-  identifier: [
-    {
-      use: string;
-      type: {
-        coding: [
-          {
-            system: string;
-            code: string;
-            display: string;
-          },
-        ];
-        text: string;
-      };
-      system: string;
-      value: string;
-      period: {
-        start: string;
-      };
-      assigner: {
+  extension: Array<{
+    url: string;
+    valueCodeableConcept?: {
+      coding: Array<{
+        system: string;
+        code: string;
         display: string;
-      };
-    },
-  ];
-  name: [
-    {
-      use: string;
+      }>;
       text: string;
-      family: string;
-      given: string[];
-      prefix: string[];
-      suffix: string[];
-    },
-  ];
-  telecom: [
-    {
-      system: string;
-      value: string;
-      use: string;
-      rank: number;
-    },
-  ];
-  gender: string;
-  birthDate: string;
-  address: [
-    {
-      use: string;
-      type: string;
+    };
+    valueCode?: string;
+  }>;
+  identifier: Array<{
+    use: string;
+    type: {
+      coding: Array<{
+        system: string;
+        code: string;
+        display: string;
+      }>;
       text: string;
-      line: string[];
-      city: string;
-      district: string;
-      state: string;
-      postalCode: string;
-      country: string;
-    },
-  ];
+    };
+    system: string;
+    value: string;
+    period?: {
+      start: string;
+    };
+    assigner?: {
+      display: string;
+    };
+  }>;
+  name: Array<{
+    use: string;
+    text: string;
+    family: string;
+    given: Array<string>;
+    prefix?: Array<string>;
+    suffix?: Array<string>;
+  }>;
+  telecom?: Array<{
+    system: string;
+    value: string;
+    use: string;
+    rank?: number;
+  }>;
+  gender?: string;
+  birthDate?: string;
+  address?: Array<{
+    use: string;
+    type: string;
+    text: string;
+    line?: Array<string>;
+    city?: string;
+    district?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+  }>;
+}
+
+export interface IMyPatientsResponse {
+  items: IMyPatientItems[];
+  nextPageToken?: string;
+  previousPageToken?: string;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
 }

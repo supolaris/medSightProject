@@ -1,7 +1,9 @@
-import { Dimensions, Linking, PixelRatio, Platform } from 'react-native';
+import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
 import { CLIENT_ID, TENANT_ID } from './Config';
 import { AxiosError } from 'axios';
+import moment from 'moment';
+
 import { revoke } from 'react-native-app-auth';
 
 export const borderRadius = 10;
@@ -63,4 +65,14 @@ export const MicrosoftConfiguration: any = {
     scopes: ['openid', 'profile', 'email', 'phone', 'address', 'User.Read'],
     revocationEndpoint: `https://logout.microsoftonline.com/${TENANT_ID}/oauth2/v2.0`,
   },
+};
+
+export const formatDateOfBirth = (inputDate: string) => {
+  return moment(inputDate).format('DD/MM/YYYY');
+};
+
+export const calculateAge = (dob: string) => {
+  const birthYear = moment(dob).year();
+  const currentYear = moment().year();
+  return currentYear - birthYear;
 };

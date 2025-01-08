@@ -183,6 +183,7 @@ const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
   return (
     <VoiceToText
       isLoading={false}
+      patient={patient}
       lottieRef={lottieRef}
       isRecording={isRecording}
       speechToText={speechToText}
@@ -191,7 +192,6 @@ const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
       onClearText={onClearText}
       onLanguageChange={setSelectedLanguage}
       onVoiceRecordPressed={onVoiceRecordPressed}
-      patient={patient} // Pass patient data to the VoiceToText component
     />
   );
 };

@@ -1,5 +1,4 @@
-import React from 'react';
-import { SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
 import PatientDetails from '../components/PatientDetails';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 
@@ -7,12 +6,11 @@ const PatientDetailScreen = ({
   route,
   navigation,
 }: MainStackScreenProps<'PatientDetails'>) => {
-  const { patients } = route.params;
+  const { patient } = route.params;
+  const [activeTab, setActiveTab] = useState<string>('PatientInsight');
 
-  console.log('first,', patients);
   const handleNewIntake = () => {
-    // navigation.navigate('VoiceToText');
-    navigation.navigate('VoiceToText', { patient: patients });
+    navigation.navigate('VoiceToText', { patient: patient });
   };
 
   const handleStartConsultation = () => {
@@ -23,12 +21,18 @@ const PatientDetailScreen = ({
     console.log('Co-Pilot pressed');
   };
 
+  const onChangeTab = (val: string) => {
+    setActiveTab(val);
+  };
+
   return (
     <PatientDetails
-      patient={patients}
+      patient={patient}
+      activeTab={activeTab}
       onNewIntakePress={handleNewIntake}
       onStartConsultationPress={handleStartConsultation}
       onCoPilotPress={handleCoPilot}
+      onChangeTab={onChangeTab}
     />
   );
 };
