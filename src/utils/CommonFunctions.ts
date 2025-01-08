@@ -1,11 +1,10 @@
+import moment from 'moment';
+import { AxiosError } from 'axios';
+import { revoke } from 'react-native-app-auth';
+import Toast from 'react-native-toast-message';
+import { CLIENT_ID, TENANT_ID } from './Config';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
-import { CLIENT_ID, TENANT_ID } from './Config';
-import { AxiosError } from 'axios';
-import moment from 'moment';
-import Toast from 'react-native-toast-message';
-
-import { revoke } from 'react-native-app-auth';
 
 export const borderRadius = 10;
 export const activeOpacity = 0.5;

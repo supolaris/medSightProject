@@ -13,10 +13,14 @@ import {
 import SimpleHeader from './common/headers/SimpleHeader';
 import { IMyPatientItems } from '../@types/CommonTypes';
 import RenderPatientListCard from './common/renderComponents/RenderPatientListCard';
+import LoadingPopup from './common/popups/LoadingPopup';
+import RenderNoDataView from './common/renderComponents/RenderNoDataView';
 
 interface IProps {
+  isLoading: boolean;
   myPatientsData: IMyPatientItems[];
   searchVal: string;
+  onSearchPressed: () => void;
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
   onPatientAddPressed: () => void;
@@ -32,6 +36,7 @@ const Patients = (props: IProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <LoadingPopup isVisible={props.isLoading} />
       <ImageBackground
         resizeMode="stretch"
         style={{
@@ -41,12 +46,8 @@ const Patients = (props: IProps) => {
         <SimpleHeader showSettingsIcon={false} title="Voice" />
         <View style={styles.header}>
           <Text style={styles.welcomeText}>WELCOME JOHN DOE</Text>
-          <TouchableOpacity>
-            {/* Add profile image here if needed */}
-          </TouchableOpacity>
+          <TouchableOpacity></TouchableOpacity>
         </View>
-
-        {/* Search Bar */}
         <View style={styles.searchContainer}>
           <View style={styles.searchInputContainer}>
             <TextInput
@@ -62,7 +63,8 @@ const Patients = (props: IProps) => {
                 paddingVertical: 7,
                 paddingHorizontal: 7,
                 borderRadius: 100,
-              }}>
+              }}
+              onPress={props.onSearchPressed}>
               <Image
                 source={require('../assets/images/searchImage.png')}
                 style={styles.searchIcon}
@@ -98,19 +100,21 @@ const Patients = (props: IProps) => {
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* Patient List */}
-        <FlatList
-          data={props.myPatientsData}
-          keyExtractor={(item) => item.id}
-          renderItem={renderPatientCard}
-          contentContainerStyle={styles.listContainer}
-        />
-
-        {/* Add Patient Button */}
+        <View style={styles.flatlistView}>
+          {props.myPatientsData?.length > 0 ? (
+            <FlatList
+              data={props.myPatientsData}
+              renderItem={renderPatientCard}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContainer}
+            />
+          ) : (
+            <RenderNoDataView />
+          )}
+        </View>
         <TouchableOpacity
-          onPress={props.onPatientAddPressed}
-          style={styles.addButton}>
+          style={styles.addButton}
+          onPress={props.onPatientAddPressed}>
           <Image
             source={require('../assets/images/addPatient.png')}
             style={styles.addIcon}
@@ -207,5 +211,8 @@ const styles = StyleSheet.create({
     color: '#363636',
     fontSize: 9,
     fontWeight: 'bold',
+  },
+  flatlistView: {
+    flex: 1,
   },
 });

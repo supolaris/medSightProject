@@ -1,13 +1,14 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from '../screens/SplashScreen';
-import VoiceToTextScreen from '../screens/VoiceToTextScreen';
-import { RootStackParamList } from '../@types/NavigationTypes';
-import OnBoardingScreen from '../screens/OnBoardingScreen';
 import PatientsScreen from '../screens/PatientsScreen';
+import OnBoardingScreen from '../screens/OnBoardingScreen';
+import VoiceToTextScreen from '../screens/VoiceToTextScreen';
 import PatientDetailsScreen from '../screens/PatientDetailsScreen';
 import AddNewPatientScreen from '../screens/AddNewPatientScreen';
+import { RootStackParamList } from '../@types/NavigationTypes';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
 const Stack = createStackNavigator<RootStackParamList>();
 
 export function Routes() {

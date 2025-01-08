@@ -9,3 +9,11 @@ export const getMyPatientsService = async (pageSize: number) => {
   );
   return response;
 };
+
+export const getSearchPatientsService = async (searchedPatient: string) => {
+  let completeEndPoint = `${ApiNames.getPatients}?searchTerm=${searchedPatient}`;
+  let { data: response }: { data: IGetMyPatientsResponse } = await getRequest(
+    completeEndPoint,
+  );
+  return response;
+};

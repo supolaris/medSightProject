@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Alert } from 'react-native';
+import React, { useState } from 'react';
 import AddNewPatient from '../components/AddNewPatient';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 
@@ -46,11 +46,11 @@ const AddNewPatientScreen = ({
   return (
     <AddNewPatient
       form={form}
-      setForm={setForm}
       showDatePicker={showDatePicker}
+      setForm={setForm}
+      handleSave={handleSave}
       setShowDatePicker={setShowDatePicker}
       handleDateChange={handleDateChange}
-      handleSave={handleSave}
       onBackButtonPressed={onBackButtonPressed}
     />
   );

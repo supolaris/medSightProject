@@ -11,7 +11,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'; // Install this package
+import DateTimePicker from '@react-native-community/datetimepicker';
 import SimpleHeader from './common/headers/SimpleHeader';
 interface AddNewPatientProps {
   form: {

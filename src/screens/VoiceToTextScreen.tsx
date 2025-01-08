@@ -5,7 +5,7 @@ import VoiceToText from '../components/VoiceToText';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 
 const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
-  const { patient } = route.params; // Retrieve patient data from navigation params
+  const { patient } = route.params;
   const [speechToText, setSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');

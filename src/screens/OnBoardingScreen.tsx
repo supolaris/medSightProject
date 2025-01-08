@@ -34,23 +34,12 @@ const OnBoardingScreen = ({
     setRenderedScreen(currentIndex);
   };
 
-  // const onSkipPressed = () => {
-  //   if (currentIndex < 2) {
-  //     currentIndex++;
-  //     scrollRef.current?.scrollToIndex({
-  //       index: currentIndex,
-  //       animated: true,
-  //     });
-  //   }
-  // };
   const onSkipPressed = () => {
-    // Scroll to the last item, which is the "Let's Get Started" screen
     const lastIndex = onBoardingData.length - 1;
     scrollRef.current?.scrollToIndex({
       index: lastIndex,
       animated: true,
     });
-    // Update the current index to the last screen
     currentIndex = lastIndex;
     setRenderedScreen(currentIndex);
   };
@@ -65,8 +54,8 @@ const OnBoardingScreen = ({
         connectionTimeoutSeconds: 5,
         iosPrefersEphemeralSession: true,
       });
-      console.log('token', authResponse.accessToken);
-      if (authResponse.accessToken) {
+      if (authResponse?.idToken) {
+        global.token = authResponse?.accessToken;
         navigation.replace('Patients');
       } else {
         showToast(AppMessages.wentWrong);
