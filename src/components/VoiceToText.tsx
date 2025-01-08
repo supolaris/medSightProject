@@ -497,7 +497,16 @@ const VoiceToText = (props: IProps) => {
               </Text>
               <Text style={styles.patientDetailsText}>
                 ADDRESS:{' '}
-                {props.patient?.address?.[0]?.country ?? 'NOT AVAILABLE'}
+                {props.patient?.address && props.patient.address[0]
+                  ? `${
+                      props.patient.address[0].line?.join(', ') ||
+                      'NOT AVAILABLE'
+                    }, ${props.patient.address[0].city || 'NOT AVAILABLE'}, ${
+                      props.patient.address[0].state || 'NOT AVAILABLE'
+                    }, ${
+                      props.patient.address[0].postalCode || 'NOT AVAILABLE'
+                    }, ${props.patient.address[0].country || 'NOT AVAILABLE'}`
+                  : 'NOT AVAILABLE'}
               </Text>
             </View>
           </View>
@@ -576,24 +585,43 @@ const VoiceToText = (props: IProps) => {
           {/* Tabs */}
           <View style={styles.tabsContainer}>
             {[
-              'Recording',
-              'Smart Transcript',
-              'Intake Notes',
-              'Previous Notes',
+              {
+                label: 'Recording',
+                icon: require('../assets/images/recordingIcon.png'),
+              },
+              {
+                label: 'Smart Transcript',
+                icon: require('../assets/images/smartIcon.png'),
+              },
+              {
+                label: 'Intake Notes',
+                icon: require('../assets/images/intakeIcon.png'),
+              },
+              {
+                label: 'Previous Notes',
+                icon: require('../assets/images/previousIcon.png'),
+              },
             ].map((tab) => (
               <TouchableOpacity
-                key={tab}
+                key={tab.label}
                 style={[
                   styles.tabButton,
-                  activeTab === tab && styles.activeTab,
+                  activeTab === tab.label && styles.activeTab,
                 ]}
-                onPress={() => handleTabPress(tab)}>
+                onPress={() => handleTabPress(tab.label)}>
+                <Image
+                  source={tab.icon}
+                  style={[
+                    styles.tabIcon,
+                    activeTab === tab.label && styles.activeTabIcon,
+                  ]}
+                />
                 <Text
                   style={[
                     styles.tabText,
-                    activeTab === tab && styles.activeTabText,
+                    activeTab === tab.label && styles.activeTabText,
                   ]}>
-                  {tab}
+                  {tab.label}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -646,7 +674,21 @@ const VoiceToText = (props: IProps) => {
 
           {activeTab === 'Smart Transcript' && (
             <View>
-              <Text style={styles.smartTranscriptHeader}>Smart Transcript</Text>
+              <View style={styles.recordingContainer}>
+                <View style={styles.recordingHeader}>
+                  <Image
+                    style={{
+                      width: 12.5,
+                      height: 13.75,
+                      marginTop: 2,
+                      tintColor: '#0397A8',
+                    }}
+                    source={require('../assets/images/smartIcon.png')}
+                  />
+                  <Text style={styles.recordingText}>Smart Transcript</Text>
+                </View>
+              </View>
+
               <TextInput
                 style={styles.smartTranscriptInput}
                 placeholder="Enter Text"
@@ -663,14 +705,20 @@ const VoiceToText = (props: IProps) => {
 
           {activeTab === 'Intake Notes' && (
             <View>
-              <Text
-                style={{
-                  color: '#12AAC2',
-                  fontWeight: 'bold',
-                  marginVertical: 7,
-                }}>
-                Intake Notes
-              </Text>
+              <View style={styles.recordingContainer}>
+                <View style={styles.recordingHeader}>
+                  <Image
+                    style={{
+                      width: 12.5,
+                      height: 13.75,
+                      marginTop: 2,
+                      tintColor: '#0397A8',
+                    }}
+                    source={require('../assets/images/intakeIcon.png')}
+                  />
+                  <Text style={styles.recordingText}>Intake Notes</Text>
+                </View>
+              </View>
               <TextInput
                 style={styles.smartTranscriptInput}
                 placeholder="Enter Notes"
@@ -687,8 +735,21 @@ const VoiceToText = (props: IProps) => {
 
           {activeTab === 'Previous Notes' && (
             <View>
-              <Text style={styles.previousNotesHeader}>Previous Notes</Text>
-              <View>
+              <View style={styles.recordingContainer}>
+                <View style={styles.recordingHeader}>
+                  <Image
+                    style={{
+                      width: 25,
+                      height: 25,
+                      marginTop: 2,
+                      tintColor: '#0397A8',
+                    }}
+                    source={require('../assets/images/previousIcon.png')}
+                  />
+                  <Text style={styles.recordingText}>Previous Notes</Text>
+                </View>
+              </View>
+              <View style={styles.previousNotesMainView}>
                 <Text style={styles.previousNotesDate}>
                   SEPTEMBER 16, 2024 (01:53)
                 </Text>
@@ -769,20 +830,30 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
   },
   tabButton: {
-    flex: 1,
     alignItems: 'center',
+    flexDirection: 'row',
   },
   activeTab: {
     borderBottomWidth: 1,
     borderColor: '#12AAC2',
   },
   tabText: {
-    fontSize: 12,
+    fontSize: 10.5,
     color: '#555',
+    marginRight: 6,
   },
   activeTabText: {
     color: '#12AAC2',
     fontWeight: 'bold',
+  },
+  tabIcon: {
+    width: 12,
+    height: 12,
+    tintColor: '#555',
+    marginRight: 2,
+  },
+  activeTabIcon: {
+    tintColor: '#3781C3', // Active (selected) color
   },
   recordingContainer: {
     padding: 10,
@@ -918,9 +989,16 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
+  previousNotesMainView: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#0397A8',
+    borderRadius: 7,
+  },
   previousNotesDate: {
     color: '#000',
     fontWeight: 'bold',
-    marginVertical: 5,
+    marginBottom: 15,
+    marginTop: 5,
   },
 });

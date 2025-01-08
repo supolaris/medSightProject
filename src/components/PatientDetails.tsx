@@ -70,7 +70,16 @@ const PatientDetails = (props: IProps) => {
               </Text>
               <Text style={styles.patientDetails}>
                 ADDRESS:{' '}
-                {props.patient?.address?.[0]?.country ?? 'NOT AVAILABLE'}
+                {props.patient?.address && props.patient.address[0]
+                  ? `${
+                      props.patient.address[0].line?.join(', ') ||
+                      'NOT AVAILABLE'
+                    }, ${props.patient.address[0].city || 'NOT AVAILABLE'}, ${
+                      props.patient.address[0].state || 'NOT AVAILABLE'
+                    }, ${
+                      props.patient.address[0].postalCode || 'NOT AVAILABLE'
+                    }, ${props.patient.address[0].country || 'NOT AVAILABLE'}`
+                  : 'NOT AVAILABLE'}
               </Text>
             </View>
             <View>
