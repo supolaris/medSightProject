@@ -11,7 +11,8 @@ const PatientDetailScreen = ({
 
   console.log('first,', patients);
   const handleNewIntake = () => {
-    console.log('New Intake pressed');
+    // navigation.navigate('VoiceToText');
+    navigation.navigate('VoiceToText', { patient: patients });
   };
 
   const handleStartConsultation = () => {

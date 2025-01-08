@@ -100,6 +100,7 @@ const OnBoardingScreen = ({
   const scrollRef = useRef<FlatList>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [renderedScreen, setRenderedScreen] = useState<number>(0);
+  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
     currentIndex = 0;
