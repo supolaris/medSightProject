@@ -91,7 +91,8 @@ import { onBoardingData } from '../constants/StaticData';
 
 import { authorize } from 'react-native-app-auth';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { MicrosoftConfiguration } from '../utils/CommonFunctions';
+import { MicrosoftConfiguration, showToast } from '../utils/CommonFunctions';
+import { AppMessages } from '../constants/AppMessages';
 
 let currentIndex = 0;
 const OnBoardingScreen = ({
@@ -147,9 +148,12 @@ const OnBoardingScreen = ({
       console.log('token', authResponse.accessToken);
       if (authResponse.accessToken) {
         navigation.replace('Patients');
+      } else {
+        showToast(AppMessages.wentWrong);
       }
     } catch (error) {
       console.log('error in microsoft login ', error);
+      showToast(AppMessages.wentWrong);
     } finally {
       setIsLoading(false);
     }

@@ -3,6 +3,7 @@ import { initialWindowMetrics } from 'react-native-safe-area-context';
 import { CLIENT_ID, TENANT_ID } from './Config';
 import { AxiosError } from 'axios';
 import moment from 'moment';
+import Toast from 'react-native-toast-message';
 
 import { revoke } from 'react-native-app-auth';
 
@@ -75,4 +76,12 @@ export const calculateAge = (dob: string) => {
   const birthYear = moment(dob).year();
   const currentYear = moment().year();
   return currentYear - birthYear;
+};
+
+export const showToast = (message: string) => {
+  Toast.show({
+    type: 'info',
+    text1: message,
+    position: 'bottom',
+  });
 };

@@ -13,7 +13,7 @@ export function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Patients"
+        initialRouteName="Splash"
         screenOptions={{
           headerShown: false,
         }}>
