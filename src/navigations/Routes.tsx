@@ -8,6 +8,9 @@ import AddNewPatientScreen from '../screens/AddNewPatientScreen';
 import { RootStackParamList } from '../@types/NavigationTypes';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SideMenuScreen from '../screens/SideMenuScreen';
+import ConfigurationScreen from '../screens/ConfigurationScreen';
+import LegalScreen from '../screens/LegalScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -25,6 +28,9 @@ export function Routes() {
         <Stack.Screen name="Patients" component={PatientsScreen} />
         <Stack.Screen name="PatientDetails" component={PatientDetailsScreen} />
         <Stack.Screen name="AddNewPatient" component={AddNewPatientScreen} />
+        <Stack.Screen name="SideMenu" component={SideMenuScreen} />
+        <Stack.Screen name="Configuration" component={ConfigurationScreen} />
+        <Stack.Screen name="Legal" component={LegalScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

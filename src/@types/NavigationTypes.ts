@@ -16,4 +16,7 @@ export type RootStackParamList = {
     patient: IMyPatientItems;
   };
   AddNewPatient: undefined;
+  SideMenu: undefined;
+  Configuration: undefined;
+  Legal: undefined;
 };

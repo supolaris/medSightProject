@@ -24,6 +24,7 @@ interface IProps {
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
   onPatientAddPressed: () => void;
+  onMenuPressed: () => void;
 }
 
 const Patients = (props: IProps) => {
@@ -43,7 +44,11 @@ const Patients = (props: IProps) => {
           flex: 1,
         }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader showSettingsIcon={false} title="Voice" />
+        <SimpleHeader
+          showSettingsIcon={false}
+          title="Voice"
+          onMenuPressed={props.onMenuPressed}
+        />
         <View style={styles.header}>
           <Text style={styles.welcomeText}>WELCOME JOHN DOE</Text>
           <TouchableOpacity></TouchableOpacity>

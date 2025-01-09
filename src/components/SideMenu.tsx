@@ -1,0 +1,170 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+const { width } = Dimensions.get('window');
+
+interface IProps {
+  onPressClose: () => void;
+  onLegalPressed: () => void;
+  onConfigurationPressed: () => void;
+  onShareAppPressed: () => void;
+}
+
+const SideMenu = (props: IProps) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.profileContainer}>
+        <Image
+          source={require('../assets/images/dummyUser.png')}
+          style={styles.profileImage}
+        />
+        <Text style={styles.profileName}>John Doe</Text>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={props.onPressClose}>
+          <Text style={styles.closeText}>X</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* <FlatList
+        data={options}
+        renderItem={renderOption}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.optionsList}
+      /> */}
+
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: 15,
+        }}>
+        <TouchableOpacity
+          style={styles.optionContainer}
+          onPress={props.onLegalPressed}>
+          <Image
+            source={require('../assets/images/appLogo.webp')}
+            style={styles.optionIcon}
+          />
+          <Text style={styles.optionText}>Legal</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.optionContainer}
+          onPress={props.onConfigurationPressed}>
+          <Image
+            source={require('../assets/images/appLogo.webp')}
+            style={styles.optionIcon}
+          />
+          <Text style={styles.optionText}>Configuration</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.optionContainer}
+          onPress={props.onShareAppPressed}>
+          <Image
+            source={require('../assets/images/appLogo.webp')}
+            style={styles.optionIcon}
+          />
+          <Text style={styles.optionText}>Share app</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.logoutButton}>
+        <Text style={styles.logoutText}>LOGOUT</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default SideMenu;
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f7f9ff',
+    justifyContent: 'space-between',
+  },
+  profileContainer: {
+    backgroundColor: '#1e88e5',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignItems: 'center',
+    position: 'relative',
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#fff',
+    resizeMode: 'cover',
+    backgroundColor: '#FFFFFF',
+  },
+  profileName: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 10,
+  },
+  closeButton: {
+    position: 'absolute',
+    right: 20,
+    top: 20,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  optionsList: {
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  optionIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+    marginRight: 15,
+  },
+  optionText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+  },
+  logoutButton: {
+    backgroundColor: '#0397A8',
+    paddingVertical: 15,
+    alignItems: 'center',
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    width: width * 0.9,
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
+  logoutText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

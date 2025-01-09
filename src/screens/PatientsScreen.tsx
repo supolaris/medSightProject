@@ -66,11 +66,16 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
     navigation.navigate('AddNewPatient');
   };
 
+  const onMenuPressed = () => {
+    navigation.navigate('SideMenu');
+  };
+
   return (
     <Patients
       isLoading={isLoading}
       searchVal={searchVal}
       myPatientsData={myPatientsData}
+      onMenuPressed={onMenuPressed}
       onHandleSearch={onHandleSearch}
       onSearchPressed={onSearchPressed}
       onPatientPressed={onPatientPressed}
