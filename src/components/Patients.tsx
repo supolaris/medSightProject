@@ -19,6 +19,7 @@ interface IProps {
   searchVal: string;
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
+  onPatientAddPressed: () => void;
 }
 
 const Patients = (props: IProps) => {
@@ -107,7 +108,9 @@ const Patients = (props: IProps) => {
         />
 
         {/* Add Patient Button */}
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          onPress={props.onPatientAddPressed}
+          style={styles.addButton}>
           <Image
             source={require('../assets/images/addPatient.png')}
             style={styles.addIcon}

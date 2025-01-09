@@ -26,12 +26,17 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
     navigation.navigate('PatientDetails', { patient: item });
   };
 
+  const onPatientAddPressed = () => {
+    navigation.navigate('AddNewPatient');
+  };
+
   return (
     <Patients
       myPatientsData={myPatientsData}
       searchVal={searchVal}
       onPatientPressed={onPatientPressed}
       onHandleSearch={onHandleSearch}
+      onPatientAddPressed={onPatientAddPressed}
     />
   );
 };

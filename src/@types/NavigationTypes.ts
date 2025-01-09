@@ -12,6 +12,7 @@ export type RootStackParamList = {
   PatientDetails: {
     patient: IMyPatientItems;
   };
+  AddNewPatient: undefined;
 };
 
 export type MainStackScreenProps<T extends keyof RootStackParamList> =
