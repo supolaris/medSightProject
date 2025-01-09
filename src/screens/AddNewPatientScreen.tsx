@@ -20,7 +20,7 @@ const AddNewPatientScreen = ({
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // Handle Date Change
+  // Date.....................
   const handleDateChange = (event: any, selectedDate?: Date) => {
     setShowDatePicker(false);
     if (selectedDate) {
@@ -28,19 +28,19 @@ const AddNewPatientScreen = ({
     }
   };
 
-  // Save Button Handler
+  // Save Button.....................
   const handleSave = () => {
     if (!form.familyName || !form.givenName || !form.contact) {
       Alert.alert('Error', 'Please fill out all required fields.');
       return;
     }
     Alert.alert('Success', 'Patient information saved successfully!');
-    // Add your save logic here (e.g., API call)
+    //save logic here (API call)
   };
 
-  // Back Button Handler
+  // Back Button
   const onBackButtonPressed = () => {
-    navigation.navigate('Patients'); // Navigate back to Patients screen
+    navigation.navigate('Patients');
   };
 
   return (
