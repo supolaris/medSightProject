@@ -7,46 +7,58 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 
 const Configuration = () => {
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.header}>
-          <Image
-            source={require('../assets/images/appLogo.webp')} // Replace with your configuration icon
-            style={styles.icon}
-          />
-          <Text style={styles.title}>Configuration</Text>
+    <SafeAreaView style={styles.container}>
+      {/* <LoadingPopup isVisible={props.isLoading} /> */}
+      <ImageBackground
+        resizeMode="stretch"
+        style={{
+          flex: 1,
+        }}
+        source={require('../assets/images/common/appBackground.webp')}>
+        <View style={styles.container}>
+          <ScrollView contentContainerStyle={styles.contentContainer}>
+            <View style={styles.header}>
+              <Image
+                source={require('../assets/images/configImage.png')} // Replace with your configuration icon
+                style={styles.icon}
+              />
+              <Text style={styles.title}>Configuration</Text>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>GPT Version</Text>
+              <View style={styles.inputBox}>
+                <Text style={styles.inputText}>GPT-40</Text>
+              </View>
+
+              <Text style={styles.label}>SKU</Text>
+              <View style={styles.inputBox}>
+                <Text style={styles.inputText}>Copilot</Text>
+              </View>
+
+              <Text style={styles.label}>Organization</Text>
+              <View style={styles.inputBox}>
+                <Text style={styles.inputText}>Default Health</Text>
+              </View>
+            </View>
+
+            <TouchableOpacity style={styles.saveButton}>
+              <Image
+                source={require('../assets/images/saveIcon.png')}
+                style={styles.saveIcon}
+              />
+              <Text style={styles.saveText}>SAVE</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>GPT Version</Text>
-          <View style={styles.inputBox}>
-            <Text style={styles.inputText}>GPT-40</Text>
-          </View>
-
-          <Text style={styles.label}>SKU</Text>
-          <View style={styles.inputBox}>
-            <Text style={styles.inputText}>Copilot</Text>
-          </View>
-
-          <Text style={styles.label}>Organization</Text>
-          <View style={styles.inputBox}>
-            <Text style={styles.inputText}>Default Health</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.saveButton}>
-          <Image
-            source={require('../assets/images/patientImage.png')} // Replace with your save icon
-            style={styles.saveIcon}
-          />
-          <Text style={styles.saveText}>SAVE</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 
@@ -68,8 +80,8 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 34,
+    height: 34,
     resizeMode: 'contain',
     marginBottom: 10,
   },
@@ -77,11 +89,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: '#333',
-    alignSelf: 'center',
+
     marginLeft: 8,
   },
   inputContainer: {
-    width: '100%',
+    width: '75%',
     marginBottom: 30,
   },
   label: {
@@ -111,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1e88e5',
+    backgroundColor: '#3781C3',
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -122,8 +134,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   saveIcon: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     resizeMode: 'contain',
     marginRight: 8,
   },

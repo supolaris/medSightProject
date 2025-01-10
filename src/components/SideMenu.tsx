@@ -43,12 +43,13 @@ const SideMenu = (props: IProps) => {
         style={{
           flex: 1,
           paddingHorizontal: 15,
+          marginTop: 50,
         }}>
         <TouchableOpacity
           style={styles.optionContainer}
           onPress={props.onLegalPressed}>
           <Image
-            source={require('../assets/images/appLogo.webp')}
+            source={require('../assets/images/legalImage.png')}
             style={styles.optionIcon}
           />
           <Text style={styles.optionText}>Legal</Text>
@@ -57,7 +58,7 @@ const SideMenu = (props: IProps) => {
           style={styles.optionContainer}
           onPress={props.onConfigurationPressed}>
           <Image
-            source={require('../assets/images/appLogo.webp')}
+            source={require('../assets/images/configImage.png')}
             style={styles.optionIcon}
           />
           <Text style={styles.optionText}>Configuration</Text>
@@ -66,13 +67,17 @@ const SideMenu = (props: IProps) => {
           style={styles.optionContainer}
           onPress={props.onShareAppPressed}>
           <Image
-            source={require('../assets/images/appLogo.webp')}
+            source={require('../assets/images/shareImage.png')}
             style={styles.optionIcon}
           />
           <Text style={styles.optionText}>Share app</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.logoutButton}>
+        <Image
+          source={require('../assets/images/logoutImage.png')}
+          style={styles.logoutImage}
+        />
         <Text style={styles.logoutText}>LOGOUT</Text>
       </TouchableOpacity>
     </View>
@@ -89,17 +94,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   profileContainer: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: '#3781C3',
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    alignItems: 'center',
+    flexDirection: 'row',
     position: 'relative',
   },
   profileImage: {
-    width: 80,
-    height: 80,
+    width: 63.28,
+    height: 63.28,
     borderRadius: 40,
     borderWidth: 2,
     borderColor: '#fff',
@@ -108,9 +113,10 @@ const styles = StyleSheet.create({
   },
   profileName: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20.5,
     fontWeight: '600',
-    marginTop: 10,
+    alignSelf: 'center',
+    marginLeft: 10,
   },
   closeButton: {
     position: 'absolute',
@@ -118,8 +124,8 @@ const styles = StyleSheet.create({
     top: 20,
     backgroundColor: '#fff',
     borderRadius: 15,
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 28,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -161,10 +167,17 @@ const styles = StyleSheet.create({
     width: width * 0.9,
     alignSelf: 'center',
     marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   logoutText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  logoutImage: {
+    marginRight: 10,
+    width: 22,
+    height: 22,
   },
 });
