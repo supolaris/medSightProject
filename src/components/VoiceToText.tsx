@@ -417,6 +417,7 @@ import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 
 interface IProps {
   isLoading: boolean;
+  userImage: string;
   patient: IMyPatientItems;
   lottieRef: React.RefObject<LottieView>;
   isRecording: boolean;
@@ -424,7 +425,6 @@ interface IProps {
   languageOptions: { label: string; value: string }[];
   selectedLanguage: string;
   onClearText: () => void;
-  setSelectedLanguage: () => void;
   onVoiceRecordPressed: () => void;
   onLanguageChange: (value: string) => void;
 }
@@ -454,7 +454,11 @@ const VoiceToText = (props: IProps) => {
         resizeMode="stretch"
         style={{ flex: 1 }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader showSettingsIcon={false} title="Voice" />
+        <SimpleHeader
+          showSettingsIcon={false}
+          title="Voice"
+          userImage={props.userImage}
+        />
         <ScrollView contentContainerStyle={styles.container}>
           {/* Patient Info */}
           <View style={styles.patientInfo}>

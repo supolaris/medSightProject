@@ -16,4 +16,5 @@ declare module '*.jpeg' {
 }
 declare module globalThis {
   var token: string;
+  var graphToken: string;
 }

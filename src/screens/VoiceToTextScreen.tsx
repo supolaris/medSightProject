@@ -3,14 +3,15 @@ import Voice from '@react-native-community/voice';
 import LottieView from 'lottie-react-native';
 import VoiceToText from '../components/VoiceToText';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { mmkv } from '../utils/CommonFunctions';
 
 const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
   const { patient } = route.params;
+  const lottieRef = useRef<LottieView>(null);
   const [speechToText, setSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');
-  const lottieRef = useRef<LottieView>(null);
-
+  const [userImage, setUserImage] = useState<string>('');
   const languageOptions = [
     { label: 'English (US)', value: 'en-US' },
     { label: 'Hindi (India)', value: 'hi-IN' },
@@ -32,6 +33,11 @@ const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
+  }, []);
+
+  useEffect(() => {
+    const userName = mmkv.getString('userImage') as string;
+    setUserImage(userName);
   }, []);
 
   const startRecording = async () => {
@@ -70,6 +76,7 @@ const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
   return (
     <VoiceToText
       isLoading={false}
+      userImage={userImage}
       patient={patient}
       lottieRef={lottieRef}
       isRecording={isRecording}

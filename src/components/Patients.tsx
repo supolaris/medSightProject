@@ -17,14 +17,17 @@ import LoadingPopup from './common/popups/LoadingPopup';
 import RenderNoDataView from './common/renderComponents/RenderNoDataView';
 
 interface IProps {
+  userName: string;
   isLoading: boolean;
   myPatientsData: IMyPatientItems[];
   searchVal: string;
+  userImage: string;
   onSearchPressed: () => void;
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
   onPatientAddPressed: () => void;
   onMenuPressed: () => void;
+  onHeaderSettingsPressed: () => void;
 }
 
 const Patients = (props: IProps) => {
@@ -47,11 +50,16 @@ const Patients = (props: IProps) => {
         <SimpleHeader
           showSettingsIcon={false}
           title="Voice"
+          userImage={props.userImage}
           onMenuPressed={props.onMenuPressed}
+          onHeaderSettingsPressed={props.onHeaderSettingsPressed}
         />
         <View style={styles.header}>
-          <Text style={styles.welcomeText}>WELCOME JOHN DOE</Text>
-          <TouchableOpacity></TouchableOpacity>
+          <Text style={styles.welcomeText}>WELCOME {props.userName}</Text>
+          {/* <Image
+            source={{ uri: `data:image/jpeg;base64,${props.userImage}` }}
+            style={{ width: 100, height: 100 }}
+          /> */}
         </View>
         <View style={styles.searchContainer}>
           <View style={styles.searchInputContainer}>

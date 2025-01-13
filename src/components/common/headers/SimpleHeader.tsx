@@ -6,6 +6,7 @@ interface ISimpleHeaderProps {
   showMenuIcon?: boolean;
   showSettingsIcon?: boolean;
   title?: string;
+  userImage?: string;
   onMenuPressed?: () => void;
   onHeaderSettingsPressed?: () => void;
 }
@@ -39,7 +40,11 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
           <View style={styles.profileContainer}>
             <Image
               style={styles.profileImage}
-              source={require('../../../assets/images/dummyUser.png')}
+              source={
+                props.userImage
+                  ? { uri: `data:image/jpeg;base64,${props.userImage}` }
+                  : require('../../../assets/images/dummyUser.png')
+              }
             />
             <View style={styles.profileTextContainer}>
               {/* <Text style={styles.profileName}>JOHN DOE</Text> */}

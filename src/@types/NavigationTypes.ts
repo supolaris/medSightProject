@@ -5,6 +5,7 @@ export type MainStackScreenProps<T extends keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, T>;
 
 export type RootStackParamList = {
+  Walkthrough: undefined;
   Splash: undefined;
   OnBoarding: undefined;
   Login: undefined;

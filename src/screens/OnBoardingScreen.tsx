@@ -11,7 +11,12 @@ import { onBoardingData } from '../constants/StaticData';
 
 import { authorize } from 'react-native-app-auth';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { MicrosoftConfiguration, showToast } from '../utils/CommonFunctions';
+import {
+  MicrosoftConfiguration,
+  MicrosoftGraphConfiguration,
+  mmkv,
+  showToast,
+} from '../utils/CommonFunctions';
 import { AppMessages } from '../constants/AppMessages';
 
 let currentIndex = 0;
@@ -21,7 +26,6 @@ const OnBoardingScreen = ({
   const scrollRef = useRef<FlatList>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [renderedScreen, setRenderedScreen] = useState<number>(0);
-  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
     currentIndex = 0;
@@ -54,15 +58,37 @@ const OnBoardingScreen = ({
         connectionTimeoutSeconds: 5,
         iosPrefersEphemeralSession: true,
       });
-      if (authResponse?.idToken) {
+      if (authResponse?.accessToken) {
+        // console.log('authResponse =>>>>', authResponse);
         global.token = authResponse?.accessToken;
-        navigation.replace('Patients');
+        mmkv.set('userToken', authResponse.accessToken);
+        await getGraphToken();
       } else {
         showToast(AppMessages.wentWrong);
       }
     } catch (error) {
       console.log('error in microsoft login ', error);
       showToast(AppMessages.wentWrong);
+    } finally {
+    }
+  };
+
+  const getGraphToken = async () => {
+    try {
+      let provider = 'identifyServer';
+      const config = MicrosoftGraphConfiguration[provider];
+      let authResponse = await authorize({
+        ...config,
+        connectionTimeoutSeconds: 5,
+        iosPrefersEphemeralSession: true,
+      });
+      if (authResponse?.accessToken) {
+        global.graphToken = authResponse?.accessToken;
+        mmkv.set('userGraphToken', authResponse.accessToken);
+        navigation.replace('Patients');
+      }
+    } catch (error) {
+      console.log('error in getting graph token', error);
     } finally {
       setIsLoading(false);
     }

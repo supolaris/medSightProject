@@ -16,6 +16,7 @@ import RenderPatientInsightTab from './common/renderComponents/RenderPatientInsi
 import RenderEncountersTab from './common/renderComponents/RenderEncountersTab';
 
 interface IProps {
+  userImage: string;
   patient: IMyPatientItems;
   activeTab: string;
   onNewIntakePress: () => void;
@@ -31,7 +32,11 @@ const PatientDetails = (props: IProps) => {
         resizeMode="stretch"
         style={{ flex: 1 }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader showSettingsIcon={false} title="Voice" />
+        <SimpleHeader
+          showSettingsIcon={false}
+          title="Voice"
+          userImage={props.userImage}
+        />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}>

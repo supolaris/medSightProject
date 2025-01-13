@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SideMenuScreen from '../screens/SideMenuScreen';
 import ConfigurationScreen from '../screens/ConfigurationScreen';
 import LegalScreen from '../screens/LegalScreen';
+import WalkthroughScreen from '../screens/WalkthroughScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -22,6 +23,7 @@ export function Routes() {
         screenOptions={{
           headerShown: false,
         }}>
+        {/* <Stack.Screen name="Walkthrough" component={WalkthroughScreen} /> */}
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
         <Stack.Screen name="VoiceToText" component={VoiceToTextScreen} />

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PatientDetails from '../components/PatientDetails';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { mmkv } from '../utils/CommonFunctions';
 
 const PatientDetailScreen = ({
   route,
@@ -8,6 +9,12 @@ const PatientDetailScreen = ({
 }: MainStackScreenProps<'PatientDetails'>) => {
   const { patient } = route.params;
   const [activeTab, setActiveTab] = useState<string>('PatientInsight');
+  const [userImage, setUserImage] = useState<string>('');
+
+  useEffect(() => {
+    const userName = mmkv.getString('userImage') as string;
+    setUserImage(userName);
+  }, []);
 
   const handleNewIntake = () => {
     navigation.navigate('VoiceToText', { patient: patient });
@@ -27,6 +34,7 @@ const PatientDetailScreen = ({
 
   return (
     <PatientDetails
+      userImage={userImage}
       patient={patient}
       activeTab={activeTab}
       onNewIntakePress={handleNewIntake}

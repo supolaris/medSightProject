@@ -86,3 +86,18 @@ export interface IMyPatientsResponse {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+
+export interface IUserDetails {
+  '@odata.context': string;
+  userPrincipalName: string | null;
+  id: string | null;
+  displayName: string;
+  surname: string | null;
+  givenName: string | null;
+  preferredLanguage: string | null;
+  mail: string | null;
+  mobilePhone: string | null;
+  jobTitle: string | null;
+  officeLocation: string | null;
+  businessPhones: string[];
+}
