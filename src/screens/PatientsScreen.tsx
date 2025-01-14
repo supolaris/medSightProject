@@ -8,7 +8,10 @@ import {
   getSearchPatientsService,
 } from '../utils/MyPatientServices';
 import { mmkv } from '../utils/CommonFunctions';
-import { getUserMicrosoftImage } from '../utils/OnBoardingServices';
+import {
+  getUserDetailsService,
+  getUserMicrosoftImage,
+} from '../utils/OnBoardingServices';
 
 let patientsStoredData: IMyPatientItems[] = [];
 const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
@@ -20,9 +23,8 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
   const [userImage, setUserImage] = useState<string>('');
 
   useEffect(() => {
-    const userName = mmkv.getString('userName') as string;
-    setUserName(userName);
     getPatients();
+    getUserDetails();
   }, []);
 
   const getPatients = async () => {
@@ -53,9 +55,26 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
         );
         setUserImage(base64Image);
         mmkv.set('userImage', base64Image);
+
+        await getUserDetails();
       }
     } catch (error) {
       console.error('Error fetching user photo:', error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
+  const getUserDetails = async () => {
+    try {
+      const response = await getUserDetailsService();
+      if (response?.displayName) {
+        setUserName(response.displayName);
+        mmkv.set('userName', response.displayName);
+      }
+      console.log('response of user details', response);
+    } catch (error) {
+      console.log('error in getting userDetails', error);
     } finally {
       setIsLoading(false);
     }
