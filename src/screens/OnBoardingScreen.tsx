@@ -50,9 +50,9 @@ const OnBoardingScreen = ({
 
   const onMicrosoftLoginPressed = async () => {
     try {
-      setIsLoading(true);
-      let provider = 'identifyServer';
-      const config = MicrosoftConfiguration[provider];
+      // setIsLoading(true);
+      // let provider = 'identifyServer';
+      const config = MicrosoftConfiguration['identifyServer'];
       let authResponse = await authorize({
         ...config,
         connectionTimeoutSeconds: 5,
@@ -75,8 +75,8 @@ const OnBoardingScreen = ({
 
   const getGraphToken = async () => {
     try {
-      let provider = 'identifyServer';
-      const config = MicrosoftGraphConfiguration[provider];
+      // let provider = 'identifyServer';
+      const config = MicrosoftGraphConfiguration['identifyServer'];
       let authResponse = await authorize({
         ...config,
         connectionTimeoutSeconds: 5,
@@ -86,11 +86,14 @@ const OnBoardingScreen = ({
         global.graphToken = authResponse?.accessToken;
         mmkv.set('userGraphToken', authResponse.accessToken);
         navigation.replace('Patients');
+      } else {
+        showToast(AppMessages.wentWrong);
       }
     } catch (error) {
+      showToast(AppMessages.wentWrong);
       console.log('error in getting graph token', error);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 

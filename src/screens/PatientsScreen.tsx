@@ -7,16 +7,17 @@ import {
   getMyPatientsService,
   getSearchPatientsService,
 } from '../utils/MyPatientServices';
-import { mmkv } from '../utils/CommonFunctions';
+import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
 import {
   getUserDetailsService,
   getUserMicrosoftImage,
 } from '../utils/OnBoardingServices';
+import { AppMessages } from '../constants/AppMessages';
 
 let patientsStoredData: IMyPatientItems[] = [];
 const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
   const [searchVal, setSearchVal] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
 
   const [userName, setUserName] = useState<string>('');
@@ -29,7 +30,7 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
 
   const getPatients = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       let tempPageSize = 20;
       const response = await getMyPatientsService(tempPageSize);
       if (response.items) {
@@ -46,7 +47,7 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
 
   const getUserPhoto = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const response = await getUserMicrosoftImage();
       if (response) {
         // console.log('first', response.data);
@@ -118,8 +119,12 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
   };
 
   const onHeaderSettingsPressed = async () => {
-    // console.log('hello world');
-    // navigation.navigate('Splash');
+    const result = userLogout();
+    if (result) {
+      navigation.replace('Splash');
+    } else {
+      showToast(AppMessages.wentWrong);
+    }
   };
 
   return (

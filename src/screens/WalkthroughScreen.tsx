@@ -52,6 +52,7 @@ const WalkthroughScreen = ({
       console.log('error in refresing token', error);
     }
   };
+
   return (
     <View
       style={{

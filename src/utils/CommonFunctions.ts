@@ -118,3 +118,16 @@ export const MicrosoftGraphConfiguration: any = {
     revocationEndpoint: `https://logout.microsoftonline.com/${TENANT_ID}/oauth2/v2.0`,
   },
 };
+
+export const userLogout = () => {
+  try {
+    mmkv.set('userToken', '');
+    mmkv.set('userGraphToken', '');
+    mmkv.set('userImage', '');
+    mmkv.set('userName', '');
+    return true;
+  } catch (error) {
+    console.log('error in logout');
+    return false;
+  }
+};
