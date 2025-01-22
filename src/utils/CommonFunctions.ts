@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { AxiosError } from 'axios';
-import { revoke } from 'react-native-app-auth';
 import { MMKV } from 'react-native-mmkv';
 import Toast from 'react-native-toast-message';
 import { CLIENT_ID, TENANT_ID } from './Config';

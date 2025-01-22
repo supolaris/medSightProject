@@ -15,7 +15,13 @@ import {
 import { AppMessages } from '../constants/AppMessages';
 
 let patientsStoredData: IMyPatientItems[] = [];
-const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
+const PatientsScreen = ({
+  navigation,
+  route,
+}: MainStackScreenProps<'Patients'>) => {
+  let flow = route?.params;
+
+  console.log('flow', flow);
   const [searchVal, setSearchVal] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
@@ -26,7 +32,7 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
   useEffect(() => {
     getPatients();
     getUserDetails();
-  }, []);
+  }, [flow]);
 
   const getPatients = async () => {
     try {
@@ -107,6 +113,8 @@ const PatientsScreen = ({ navigation }: MainStackScreenProps<'Patients'>) => {
   };
 
   const onPatientPressed = (item: IMyPatientItems) => {
+    // console.log('patient id =>>>>>', item.id);
+    mmkv.set('patientId', item.id);
     navigation.navigate('PatientDetails', { patient: item });
   };
 

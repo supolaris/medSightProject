@@ -3,15 +3,22 @@ import Voice from '@react-native-community/voice';
 import LottieView from 'lottie-react-native';
 import VoiceToText from '../components/VoiceToText';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { mmkv } from '../utils/CommonFunctions';
+import { mmkv, showToast } from '../utils/CommonFunctions';
+import { postIntakeNotesService } from '../utils/TranscriptServices';
+import { deletePatientService } from '../utils/MyPatientServices';
+import { AppMessages } from '../constants/AppMessages';
 
-const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
-  const { patient } = route.params;
+const VoiceToTextScreen = ({
+  route,
+  navigation,
+}: MainStackScreenProps<'VoiceToText'>) => {
+  const { userDetails } = route.params;
   const lottieRef = useRef<LottieView>(null);
   const [speechToText, setSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');
   const [userImage, setUserImage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const languageOptions = [
     { label: 'English (US)', value: 'en-US' },
     { label: 'Hindi (India)', value: 'hi-IN' },
@@ -20,6 +27,7 @@ const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
     { label: 'German (Germany)', value: 'de-DE' },
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
   ];
+  const [intakeNotesValue, setIntakeNotesValue] = useState<string>('');
 
   useEffect(() => {
     Voice.onSpeechResults = (event: any) => {
@@ -73,19 +81,71 @@ const VoiceToTextScreen = ({ route }: MainStackScreenProps<'VoiceToText'>) => {
     setSpeechToText('');
   };
 
+  const onIntakeNotesSavePressed = async () => {
+    try {
+      setIsLoading(true);
+      let data = {
+        rawRecordingData: intakeNotesValue,
+      };
+      const response = await postIntakeNotesService(data);
+      if (response.status === 200) {
+        showToast('Notes saved successfully');
+        setIntakeNotesValue('');
+      }
+    } catch (error) {
+      console.log('error in posting intake notes', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleIntakeNotesValue = (value: string) => {
+    setIntakeNotesValue(value.trimStart());
+  };
+
+  const onEditPressed = () => {
+    navigation.navigate('EditScreen');
+  };
+  const onDeletePressed = async () => {
+    try {
+      setIsLoading(true);
+      let patientId = mmkv.getString('patientId');
+      if (patientId) {
+        const response = await deletePatientService(patientId);
+        if (response.status === 204) {
+          mmkv.delete('patientId');
+          navigation.replace('Patients', {
+            flow: 'patientDeleted',
+          });
+        }
+      } else {
+        showToast(AppMessages.wentWrong);
+      }
+    } catch (error) {
+      console.log('error in deleting patient', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <VoiceToText
-      isLoading={false}
+      isLoading={isLoading}
       userImage={userImage}
-      patient={patient}
+      userDetails={userDetails}
       lottieRef={lottieRef}
       isRecording={isRecording}
       speechToText={speechToText}
       languageOptions={languageOptions}
       selectedLanguage={selectedLanguage}
+      intakeNotesValue={intakeNotesValue}
+      handleIntakeNotesValue={handleIntakeNotesValue}
       onClearText={onClearText}
       onLanguageChange={setSelectedLanguage}
       onVoiceRecordPressed={onVoiceRecordPressed}
+      onIntakeNotesSavePressed={onIntakeNotesSavePressed}
+      onEditPressed={onEditPressed}
+      onDeletePressed={onDeletePressed}
     />
   );
 };

@@ -1,22 +1,6 @@
 import axios from 'axios';
 import { baseUrl, microsoftUserDetailBaseUrl, requestTimeout } from './Config';
 
-export const getRequest = async (endPoint: string) => {
-  console.log('Api endpoint', baseUrl + endPoint);
-  console.log('get global.token from get request', global.token);
-  let _baseUrl = baseUrl;
-  const response = await axios({
-    url: `${_baseUrl}${endPoint}`,
-    method: 'get',
-    headers: {
-      Authorization: `Bearer ${global.token}`,
-    },
-    timeout: requestTimeout,
-  });
-
-  return response;
-};
-
 export const getMicrosoftImageRequest = async (endPoint: string) => {
   const response = await axios({
     url: `${microsoftUserDetailBaseUrl}${endPoint}`,
@@ -37,6 +21,55 @@ export const getUserDetailsRequest = async () => {
     method: 'get',
     headers: {
       Authorization: `Bearer ${global.graphToken}`,
+    },
+    timeout: requestTimeout,
+  });
+
+  return response;
+};
+
+export const getRequest = async (endPoint: string) => {
+  console.log('Api endpoint', baseUrl + endPoint);
+  // console.log('get global.token from get request', global.token);
+  let _baseUrl = baseUrl;
+  const response = await axios({
+    url: `${_baseUrl}${endPoint}`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${global.token}`,
+    },
+    timeout: requestTimeout,
+  });
+
+  return response;
+};
+
+export const postRequest = async (endPoint: string, data: any) => {
+  console.log('Api endpoint', baseUrl + endPoint);
+  // console.log('get global.token from get request', global.token);
+  let _baseUrl = baseUrl;
+  const response = await axios({
+    url: `${_baseUrl}${endPoint}`,
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${global.token}`,
+    },
+    data,
+    timeout: requestTimeout,
+  });
+
+  return response;
+};
+
+export const deleteRequest = async (endPoint: string) => {
+  console.log('Api endpoint', baseUrl + endPoint);
+  // console.log('get global.token from get request', global.token);
+  let _baseUrl = baseUrl;
+  const response = await axios({
+    url: `${_baseUrl}${endPoint}`,
+    method: 'delete',
+    headers: {
+      Authorization: `Bearer ${global.token}`,
     },
     timeout: requestTimeout,
   });

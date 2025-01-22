@@ -1,13 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 interface IProps {
   patientName: string;
+  patientInsightDocumentData: any;
 }
 
 const RenderPatientInsightTab = (props: IProps) => {
+  const renderDocumentItem = ({ item }: { item: any }) => {
+    return (
+      <View
+        style={{
+          marginVertical: 5,
+          borderWidth: 1,
+          borderColor: 'gray',
+          borderRadius: 10,
+          padding: 5,
+        }}>
+        <Text style={styles.medicationText}>{`${item.textContent}`}</Text>
+      </View>
+    );
+  };
+
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.insightContainer}>
         <Text style={styles.insightText}>
           The patient, {props.patientName}, has had multiple general examination
@@ -31,27 +47,16 @@ const RenderPatientInsightTab = (props: IProps) => {
             Potential Malaria Viral Pharyngitis Indigestion
           </Text>
         </View>
-        <View style={styles.medicalHistoryContainer2}>
-          <Text style={styles.medicalHistorySubTitle}>Medications:</Text>
-          <Text style={styles.medicationText}>
-            - Medicine A 500 mg twice a day for 5 days
-          </Text>
-          <Text style={styles.medicationText}>
-            - Medicine B 250 mg twice a day for 5 days
-          </Text>
-          <Text style={styles.medicationText}>
-            - Medicine C 50 mg three times a day for 5 days
-          </Text>
-          <Text style={styles.medicationText}>
-            - Cough Syrup 10 ml twice a day for 5 days
-          </Text>
-          <Text style={styles.medicationText}>
-            - Panadol as needed for fever
-          </Text>
-          <Text style={styles.medicationText}>
-            - Pepto-Bismol four times a day for five days
-          </Text>
-        </View>
+        {props.patientInsightDocumentData?.length > 0 && (
+          <View style={styles.medicalHistoryContainer2}>
+            {/* <Text style={styles.medicalHistorySubTitle}>Medications:</Text> */}
+
+            <FlatList
+              data={props.patientInsightDocumentData}
+              renderItem={renderDocumentItem}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -60,10 +65,13 @@ const RenderPatientInsightTab = (props: IProps) => {
 export default RenderPatientInsightTab;
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
   insightContainer: {
     width: '95%',
     alignSelf: 'center',
-    marginTop: 10,
+    margin: 10,
   },
   insightText: {
     fontSize: 11,

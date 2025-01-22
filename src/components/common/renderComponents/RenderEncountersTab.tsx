@@ -1,20 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-const RenderEncountersTab = () => {
+interface IProps {
+  encounterData: any;
+}
+
+const RenderEncountersTab = (props: IProps) => {
+  // console.log('props encounter data', props.encounterData);
+
+  const renderEncounterItem = ({
+    item,
+    index,
+  }: {
+    item: any;
+    index: number;
+  }) => {
+    // console.log('iterm =>>>>>>>', item.type?.[0]?.coding?.[0]?.display);
+    return (
+      <View>
+        {index === 0 && (
+          <Text style={styles.encounterSectionTitle}>
+            Name: {item.subject?.display}
+          </Text>
+        )}
+        <Text style={styles.encounterSectionTitle}>
+          {item.type?.[0]?.coding?.[0]?.display}
+        </Text>
+      </View>
+    );
+  };
   return (
     <View>
       <View style={styles.encounterContainer}>
         <Text style={styles.encounterDate}>SEPTEMBER 16, 2024 (01:53)</Text>
         <View style={styles.encounterCard}>
-          <Text style={styles.encounterSectionTitle}>Medications</Text>
+          <FlatList
+            data={props.encounterData}
+            renderItem={renderEncounterItem}
+          />
+          {/* <Text style={styles.encounterSectionTitle}>Medications</Text>
           <Text style={styles.encounterSectionText}>Medication: 1</Text>
           <Text style={styles.encounterSectionText}>Name: Pepto-Bismol</Text>
           <Text style={styles.encounterSectionText}>Dosage: Not specified</Text>
           <Text style={styles.encounterSectionText}>
             Frequency: Four times a day
           </Text>
-          <Text style={styles.encounterSectionText}>Duration: Five days</Text>
+          <Text style={styles.encounterSectionText}>Duration: Five days</Text> */}
         </View>
         <View style={styles.encounterCard}>
           <Text style={styles.encounterSectionTitle}>Subjective</Text>

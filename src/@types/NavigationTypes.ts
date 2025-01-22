@@ -1,5 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { IMyPatientItems } from './CommonTypes';
+import { IGetPatientDetailsResponse } from './ApiResponses';
 
 export type MainStackScreenProps<T extends keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, T>;
@@ -11,9 +12,11 @@ export type RootStackParamList = {
   OnBoarding: undefined;
   Login: undefined;
   VoiceToText: {
-    patient: IMyPatientItems;
+    userDetails: IGetPatientDetailsResponse | null;
   };
-  Patients: undefined;
+  Patients: {
+    flow?: string;
+  };
   PatientDetails: {
     patient: IMyPatientItems;
   };

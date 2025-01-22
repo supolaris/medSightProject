@@ -1,401 +1,4 @@
-// import React, { useState } from 'react';
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   ImageBackground,
-//   TouchableOpacity,
-//   Image,
-//   SafeAreaView,
-// } from 'react-native';
-// import SimpleHeader from './common/headers/SimpleHeader';
-// import { VoiceLottie } from './common/lotties/VoiceLottie';
-// import LottieView from 'lottie-react-native';
-// import { Dropdown } from 'react-native-element-dropdown';
-// import LoadingPopup from './common/popups/LoadingPopup';
-
-// interface IProps {
-//   isLoading: boolean;
-//   lottieRef: React.RefObject<LottieView>;
-//   speechToText: string;
-//   isRecording: boolean;
-//   selectedLanguage: string;
-//   languageOptions: { label: string; value: string }[];
-//   onClearText: () => void;
-//   onVoiceRecordPressed: () => void;
-//   onLanguageChange: (value: string) => void;
-//   patient: {
-//     name: string;
-//     dob: string;
-//     age?: number;
-//     gender?: string;
-//     phone?: string;
-//     address?: string;
-//     image: any;
-//   };
-// }
-
-// const VoiceToText = (props: IProps) => {
-// const [selectedButton, setSelectedButton] = useState<
-//   'NewIntake' | 'StartConsultation' | 'CoPilot'
-// >('NewIntake');
-
-// const handleButtonPress = (
-//   button: 'NewIntake' | 'StartConsultation' | 'CoPilot',
-// ) => {
-//   setSelectedButton(button);
-// };
-
-//   return (
-//     <SafeAreaView
-//       style={{
-//         flex: 1,
-//       }}>
-//       <LoadingPopup isVisible={props.isLoading} />
-//       <ImageBackground
-//         resizeMode="stretch"
-//         style={{
-//           flex: 1,
-//         }}
-//         source={require('../assets/images/common/appBackground.webp')}>
-//         <SimpleHeader showSettingsIcon={false} title="Voice" />
-
-//         <View style={styles.container}>
-//           <View style={styles.innerContainer}>
-//             <View style={styles.patientInfo}>
-//               <Image
-//                 source={props.patient?.image}
-//                 style={styles.patientImage}
-//               />
-//               <View style={styles.patientDetails}>
-//                 <Text style={styles.patientName}>
-//                   Name: {props.patient?.name}
-//                 </Text>
-//                 <Text style={styles.patientDetailsText}>
-//                   DOB: {props.patient?.dob} | AGE: {props.patient?.age} |
-//                   GENDER: {props.patient?.gender}
-//                 </Text>
-//                 <Text style={styles.patientDetailsText}>
-//                   PHONE: {props.patient?.phone || 'NOT AVAILABLE'} | ADDRESS:{' '}
-//                   {props.patient?.address || 'NOT AVAILABLE'}
-//                 </Text>
-//               </View>
-//             </View>
-
-// <View style={styles.actionButtonsContainer}>
-//   {/* New Intake Button */}
-//   <TouchableOpacity
-//     style={[
-//       styles.actionButton,
-//       selectedButton === 'NewIntake' && styles.selectedButton,
-//     ]}
-//     onPress={() => handleButtonPress('NewIntake')}>
-//     <Image
-//       source={require('../assets/images/PatientDetails/intakeIMage.png')}
-//       style={[
-//         styles.actionIcon,
-//         selectedButton === 'NewIntake' && styles.selectedIcon,
-//       ]}
-//     />
-//     <Text
-//       style={[
-//         styles.actionText,
-//         selectedButton === 'NewIntake' && styles.selectedText,
-//       ]}>
-//       NEW INTAKE
-//     </Text>
-//   </TouchableOpacity>
-
-//   {/* Start Consultation Button */}
-//   <TouchableOpacity
-//     style={[
-//       styles.actionButton,
-//       selectedButton === 'StartConsultation' &&
-//         styles.selectedButton,
-//     ]}
-//     onPress={() => handleButtonPress('StartConsultation')}>
-//     <Image
-//       source={require('../assets/images/PatientDetails/consultationImage.png')}
-//       style={[
-//         styles.actionIcon,
-//         selectedButton === 'StartConsultation' &&
-//           styles.selectedIcon,
-//       ]}
-//     />
-//     <Text
-//       style={[
-//         styles.actionText,
-//         selectedButton === 'StartConsultation' &&
-//           styles.selectedText,
-//       ]}>
-//       START CONSULTATION
-//     </Text>
-//   </TouchableOpacity>
-
-//   {/* Co-Pilot Button */}
-//   <TouchableOpacity
-//     style={[
-//       styles.actionButton,
-//       selectedButton === 'CoPilot' && styles.selectedButton,
-//     ]}
-//     onPress={() => handleButtonPress('CoPilot')}>
-//     <Image
-//       source={require('../assets/images/PatientDetails/coPilotImage.png')}
-//       style={[
-//         styles.actionIcon,
-//         selectedButton === 'CoPilot' && styles.selectedIcon,
-//       ]}
-//     />
-//     <Text
-//       style={[
-//         styles.actionText,
-//         selectedButton === 'CoPilot' && styles.selectedText,
-//       ]}>
-//       CO-PILOT
-//     </Text>
-//   </TouchableOpacity>
-// </View>
-
-//             <View style={styles.imageView}>
-//               <Image
-//                 style={styles.Image}
-//                 source={require('../assets/images/headingImage.png')}
-//               />
-//               <Text style={styles.imageViewText}>PATIENT INTAKE</Text>
-//             </View>
-
-//             <View
-//               style={{
-//                 width: '100%',
-//                 alignSelf: 'center',
-//                 flexDirection: 'row',
-//               }}>
-//               <View style={styles.secondView}>
-//                 <View style={{ flexDirection: 'row' }}>
-//                   <Image
-//                     style={{ width: 12.5, height: 13.75, marginTop: 2 }}
-//                     source={require('../assets/images/recordingIcon.png')}
-//                   />
-//                   <Text style={styles.recordingText}>Recording</Text>
-//                 </View>
-//                 <View>
-//                   <Text style={styles.underline}></Text>
-//                 </View>
-//               </View>
-//               <View style={{ justifyContent: 'center' }}>
-//                 <TouchableOpacity
-//                   onPress={props.onClearText}
-//                   style={styles.clearButton}>
-//                   <Text style={styles.clearText}>Clear Text</Text>
-//                 </TouchableOpacity>
-//               </View>
-//             </View>
-
-//             <View style={styles.textContainer}>
-//               <Text style={styles.text}>
-//                 {props.speechToText || 'Start speaking...'}
-//               </Text>
-//             </View>
-
-//             <View style={styles.lottieView}>
-//               <View style={styles.languageSelector}>
-//                 <Text style={styles.label}>Select Language</Text>
-//                 <Dropdown
-//                   style={styles.dropdown}
-//                   data={props.languageOptions}
-//                   labelField="label"
-//                   valueField="value"
-//                   placeholder="Select Language"
-//                   value={props.selectedLanguage}
-//                   onChange={(item) => props.onLanguageChange(item.value)}
-//                 />
-//               </View>
-//               <View>
-//                 <VoiceLottie
-//                   lottieRef={props.lottieRef}
-//                   onVoiceRecordPressed={props.onVoiceRecordPressed}
-//                 />
-//               </View>
-//             </View>
-//           </View>
-//         </View>
-//       </ImageBackground>
-//     </SafeAreaView>
-//   );
-// };
-
-// export default VoiceToText;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   innerContainer: {
-//     flex: 1,
-//     width: '96%',
-//     alignSelf: 'center',
-//     alignItems: 'center',
-//   },
-//   textContainer: {
-//     height: 200,
-//     width: '100%',
-//     borderRadius: 10,
-//     padding: 10,
-//     marginBottom: 20,
-//     borderWidth: 1,
-//     borderColor: '#ddd',
-//   },
-//   text: {
-//     fontSize: 16,
-//     color: '#333',
-//   },
-//   imageView: {
-//     width: '100%',
-//     alignSelf: 'center',
-//     backgroundColor: '#3681C3',
-//     flexDirection: 'row',
-//     paddingVertical: 10,
-//     paddingHorizontal: 7,
-//     borderRadius: 5,
-//   },
-//   Image: {
-//     width: 25,
-//     height: 25,
-//   },
-//   imageViewText: {
-//     color: '#FFFFFF',
-//     marginLeft: 10,
-//     fontSize: 11,
-//     alignSelf: 'center',
-//   },
-//   secondView: {
-//     width: '75%',
-//     alignSelf: 'center',
-//     backgroundColor: '#F8F8F8',
-//     paddingVertical: 10,
-//     paddingHorizontal: 7,
-//     borderRadius: 5,
-//   },
-//   recordingText: {
-//     color: '#000000',
-//     marginLeft: 1,
-//     fontSize: 11,
-//     fontWeight: 'bold',
-//   },
-//   underline: {
-//     width: 69,
-//     height: 1,
-//     backgroundColor: '#12AAC2',
-//     marginTop: 3,
-//   },
-//   patientInfo: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   patientImage: {
-//     width: 53,
-//     height: 53,
-//     borderRadius: 100,
-//     marginRight: 10,
-//     borderWidth: 1,
-//     borderColor: '#06A2B4',
-//   },
-//   patientName: {
-//     fontSize: 11,
-//     fontWeight: 'bold',
-//     color: '#000000',
-//     marginBottom: 5,
-//   },
-//   patientDetailsText: {
-//     fontWeight: 'bold',
-//     color: '#000000',
-//     fontSize: 8,
-//   },
-// actionButtonsContainer: {
-//   flexDirection: 'row',
-//   justifyContent: 'space-around',
-//   width: '100%',
-//   alignSelf: 'center',
-//   marginVertical: 15,
-// },
-// actionButton: {
-//   padding: 10,
-//   borderRadius: 8,
-//   backgroundColor: '#FFFFFF',
-//   elevation: 3,
-//   width: 107,
-//   height: 46,
-//   flexDirection: 'row',
-// },
-// actionIcon: {
-//   width: 23,
-//   height: 23,
-//   marginBottom: 5,
-//   tintColor: '#000000',
-// },
-// actionText: {
-//   fontSize: 9,
-//   fontWeight: 'bold',
-//   color: '#000',
-//   textAlign: 'center',
-//   alignSelf: 'center',
-//   marginLeft: 5,
-// },
-// selectedButton: {
-//   backgroundColor: '#3781C3',
-// },
-// selectedIcon: {
-//   tintColor: '#FFFFFF',
-// },
-// selectedText: {
-//   color: '#FFFFFF',
-// },
-//   lottieView: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//   },
-//   languageSelector: {
-//     width: '40%',
-//     flexDirection: 'row',
-//   },
-//   label: {
-//     fontSize: 9.95,
-//     fontWeight: 'bold',
-//     marginBottom: 5,
-//     marginTop: 5,
-//   },
-//   dropdown: {
-//     width: 103,
-//     height: 25,
-//     fontSize: 5,
-//     borderColor: '#F7FBFF',
-//     borderWidth: 1,
-//     borderRadius: 8,
-//     paddingHorizontal: 8,
-//     backgroundColor: '#F7FBFF',
-//     marginLeft: 10,
-//     shadowColor: '#000',
-//     shadowOffset: { width: 0, height: 6 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 8.21,
-//     elevation: 5,
-//   },
-//   clearButton: {
-//     paddingVertical: 2,
-//     paddingHorizontal: 4,
-//     backgroundColor: '#3781C3',
-//     borderRadius: 4,
-//   },
-//   clearText: {
-//     color: '#fff',
-//     fontWeight: '500',
-//   },
-// });
-
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -414,19 +17,25 @@ import LoadingPopup from './common/popups/LoadingPopup';
 import { VoiceLottie } from './common/lotties/VoiceLottie';
 import { IMyPatientItems } from '../@types/CommonTypes';
 import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
+import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
 
 interface IProps {
   isLoading: boolean;
   userImage: string;
-  patient: IMyPatientItems;
+  userDetails: IGetPatientDetailsResponse | null;
   lottieRef: React.RefObject<LottieView>;
   isRecording: boolean;
   speechToText: string;
   languageOptions: { label: string; value: string }[];
   selectedLanguage: string;
+  intakeNotesValue: string;
+  handleIntakeNotesValue: (value: string) => void;
   onClearText: () => void;
   onVoiceRecordPressed: () => void;
   onLanguageChange: (value: string) => void;
+  onIntakeNotesSavePressed: () => void;
+  onEditPressed: () => void;
+  onDeletePressed: () => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -472,18 +81,22 @@ const VoiceToText = (props: IProps) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                {props.patient?.birthDate && (
+                {props.userDetails?.patient?.birthDate && (
                   <Text style={styles.patientDetailsText}>
-                    DOB: {formatDateOfBirth(props.patient?.birthDate) + ' | '}
+                    DOB:{' '}
+                    {formatDateOfBirth(props.userDetails?.patient?.birthDate) +
+                      ' | '}
                   </Text>
                 )}
-                {props.patient?.birthDate && (
+                {props.userDetails?.patient?.birthDate && (
                   <Text style={styles.patientDetailsText}>
-                    AGE: {calculateAge(props.patient?.birthDate) + ' | '}
+                    AGE:{' '}
+                    {calculateAge(props.userDetails?.patient?.birthDate) +
+                      ' | '}
                   </Text>
                 )}
                 <Text style={styles.patientDetailsText}>
-                  GENDER: {props.patient?.gender}
+                  GENDER: {props.userDetails?.patient?.gender}
                 </Text>
               </View>
               {/* <Text style={styles.patientName}>
@@ -497,21 +110,68 @@ const VoiceToText = (props: IProps) => {
                 | AGE: {'age here'} | GENDER: {props.patient?.gender}
               </Text> */}
               <Text style={styles.patientDetailsText}>
-                PHONE: {props.patient?.telecom?.[0]?.value ?? 'NOT AVAILABLE'}
+                PHONE:{' '}
+                {props.userDetails?.patient?.telecom?.[0]?.value ??
+                  'NOT AVAILABLE'}
               </Text>
               <Text style={styles.patientDetailsText}>
                 ADDRESS:{' '}
-                {props.patient?.address && props.patient.address[0]
+                {props.userDetails?.patient?.address &&
+                props.userDetails?.patient.address[0]
                   ? `${
-                      props.patient.address[0].line?.join(', ') ||
+                      props.userDetails?.patient.address[0].line?.join(', ') ||
                       'NOT AVAILABLE'
-                    }, ${props.patient.address[0].city || 'NOT AVAILABLE'}, ${
-                      props.patient.address[0].state || 'NOT AVAILABLE'
                     }, ${
-                      props.patient.address[0].postalCode || 'NOT AVAILABLE'
-                    }, ${props.patient.address[0].country || 'NOT AVAILABLE'}`
+                      props.userDetails?.patient.address[0].city ||
+                      'NOT AVAILABLE'
+                    }, ${
+                      props.userDetails?.patient.address[0].state ||
+                      'NOT AVAILABLE'
+                    }, ${
+                      props.userDetails?.patient.address[0].postalCode ||
+                      'NOT AVAILABLE'
+                    }, ${
+                      props.userDetails?.patient.address[0].country ||
+                      'NOT AVAILABLE'
+                    }`
                   : 'NOT AVAILABLE'}
               </Text>
+            </View>
+            <View style={{ flexDirection: 'row', marginTop: 7 }}>
+              <TouchableOpacity onPress={props.onEditPressed}>
+                <View>
+                  <Image
+                    source={require('../assets/images/editImage.png')}
+                    style={{ width: 15, height: 15 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 6,
+                      color: '#000000',
+                      top: 2,
+                      fontWeight: 'bold',
+                    }}>
+                    EDIT
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={props.onDeletePressed}>
+                <View style={{ left: 10 }}>
+                  <Image
+                    source={require('../assets/images/deleteImage.png')}
+                    style={{ width: 15, height: 15 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 5,
+                      color: '#000000',
+                      top: 2,
+                      fontWeight: 'bold',
+                    }}>
+                    DELETE
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -728,10 +388,19 @@ const VoiceToText = (props: IProps) => {
                 placeholder="Enter Notes"
                 placeholderTextColor="#000000"
                 multiline
-                value={intakeNotesText}
-                onChangeText={setIntakeNotesText}
+                value={props.intakeNotesValue}
+                onChangeText={props.handleIntakeNotesValue}
               />
-              <TouchableOpacity style={styles.saveButton}>
+              <TouchableOpacity
+                style={[
+                  styles.saveButton,
+                  {
+                    backgroundColor:
+                      props.intakeNotesValue?.length > 0 ? '#3781C3' : 'gray',
+                  },
+                ]}
+                disabled={props.intakeNotesValue?.length > 0 ? false : true}
+                onPress={props.onIntakeNotesSavePressed}>
                 <Text style={styles.saveButtonText}>SAVE</Text>
               </TouchableOpacity>
             </View>
@@ -817,7 +486,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginRight: 10,
   },
-  patientDetails: {},
+  patientDetails: {
+    width: '65%',
+  },
   patientName: {
     fontSize: 11,
     fontWeight: 'bold',

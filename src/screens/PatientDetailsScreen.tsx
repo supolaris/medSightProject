@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PatientDetails from '../components/PatientDetails';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { mmkv } from '../utils/CommonFunctions';
+import { mmkv, showToast } from '../utils/CommonFunctions';
+import {
+  deletePatientService,
+  getMyPatientDetailsService,
+} from '../utils/MyPatientServices';
+import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
+import { AppMessages } from '../constants/AppMessages';
 
 const PatientDetailScreen = ({
   route,
@@ -10,14 +16,37 @@ const PatientDetailScreen = ({
   const { patient } = route.params;
   const [activeTab, setActiveTab] = useState<string>('PatientInsight');
   const [userImage, setUserImage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [userDetails, setUserDetails] =
+    useState<IGetPatientDetailsResponse | null>(null);
 
   useEffect(() => {
     const userName = mmkv.getString('userImage') as string;
     setUserImage(userName);
+    getPatientDetails();
   }, []);
 
+  const getPatientDetails = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getMyPatientDetailsService(patient?.id);
+
+      if (response) {
+        console.log('patient details response', patient?.id);
+        setUserDetails(response);
+      }
+    } catch (error) {
+      console.log('error in getting patient details', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleNewIntake = () => {
-    navigation.navigate('VoiceToText', { patient: patient });
+    navigation.navigate('VoiceToText', {
+      userDetails: userDetails ? userDetails : null,
+    });
   };
 
   const handleStartConsultation = () => {
@@ -31,9 +60,35 @@ const PatientDetailScreen = ({
   const onChangeTab = (val: string) => {
     setActiveTab(val);
   };
+  const onEditPress = () => {
+    navigation.navigate('EditScreen');
+  };
+  const onDeletePress = async () => {
+    try {
+      setIsLoading(true);
+      let patientId = mmkv.getString('patientId');
+      if (patientId) {
+        const response = await deletePatientService(patientId);
+        if (response.status === 204) {
+          mmkv.delete('patientId');
+          navigation.replace('Patients', {
+            flow: 'patientDeleted',
+          });
+        }
+      } else {
+        showToast(AppMessages.wentWrong);
+      }
+    } catch (error) {
+      console.log('error in deleting patient', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <PatientDetails
+      isLoading={isLoading}
+      userDetails={userDetails}
       userImage={userImage}
       patient={patient}
       activeTab={activeTab}
@@ -41,6 +96,8 @@ const PatientDetailScreen = ({
       onStartConsultationPress={handleStartConsultation}
       onCoPilotPress={handleCoPilot}
       onChangeTab={onChangeTab}
+      onEditPress={onEditPress}
+      onDeletePress={onDeletePress}
     />
   );
 };

@@ -14,8 +14,12 @@ import { IMyPatientItems } from '../@types/CommonTypes';
 import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 import RenderPatientInsightTab from './common/renderComponents/RenderPatientInsightTab';
 import RenderEncountersTab from './common/renderComponents/RenderEncountersTab';
+import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
+import LoadingPopup from './common/popups/LoadingPopup';
 
 interface IProps {
+  isLoading: boolean;
+  userDetails: IGetPatientDetailsResponse | null;
   userImage: string;
   patient: IMyPatientItems;
   activeTab: string;
@@ -23,11 +27,14 @@ interface IProps {
   onStartConsultationPress: () => void;
   onCoPilotPress: () => void;
   onChangeTab: (val: string) => void;
+  onEditPress: () => void;
+  onDeletePress: () => void;
 }
 
 const PatientDetails = (props: IProps) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F7FBFF' }}>
+      <LoadingPopup isVisible={props.isLoading} />
       <ImageBackground
         resizeMode="stretch"
         style={{ flex: 1 }}
@@ -41,12 +48,54 @@ const PatientDetails = (props: IProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}>
           <View style={styles.patientCard}>
-            <Image
-              source={require('../assets/images/dummyUser.png')}
-              style={styles.patientImage}
-            />
+            <View style={{ flexDirection: 'row', left: 10 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}></View>
+              <Image
+                source={require('../assets/images/dummyUser.png')}
+                style={styles.patientImage}
+              />
+              <View style={{ flexDirection: 'row', left: 60, marginTop: 7 }}>
+                <TouchableOpacity onPress={props.onEditPress}>
+                  <View>
+                    <Image
+                      source={require('../assets/images/editImage.png')}
+                      style={{ width: 15, height: 15 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 6,
+                        color: '#000000',
+                        top: 2,
+                        fontWeight: 'bold',
+                      }}>
+                      EDIT
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={props.onDeletePress}>
+                  <View style={{ left: 10 }}>
+                    <Image
+                      source={require('../assets/images/deleteImage.png')}
+                      style={{ width: 15, height: 15 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 5,
+                        color: '#000000',
+                        top: 2,
+                        fontWeight: 'bold',
+                      }}>
+                      DELETE
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
             <Text style={styles.patientName}>
-              Name: {props.patient?.name[0]?.family}
+              Name: {props.userDetails?.patient?.name[0]?.family}
             </Text>
           </View>
           <View style={styles.insightView}>
@@ -56,34 +105,49 @@ const PatientDetails = (props: IProps) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                {props.patient?.birthDate && (
+                {props.userDetails?.patient?.birthDate && (
                   <Text style={styles.patientDetails}>
-                    DOB: {formatDateOfBirth(props.patient?.birthDate) + ' | '}
+                    DOB:{' '}
+                    {formatDateOfBirth(props.userDetails?.patient?.birthDate) +
+                      ' | '}
                   </Text>
                 )}
-                {props.patient?.birthDate && (
+                {props.userDetails?.patient?.birthDate && (
                   <Text style={styles.patientDetails}>
-                    AGE: {calculateAge(props.patient?.birthDate) + ' | '}
+                    AGE:{' '}
+                    {calculateAge(props.userDetails?.patient?.birthDate) +
+                      ' | '}
                   </Text>
                 )}
                 <Text style={styles.patientDetails}>
-                  GENDER: {props.patient?.gender}
+                  GENDER: {props.userDetails?.patient?.gender}
                 </Text>
               </View>
               <Text style={styles.patientDetails}>
-                PHONE: {props.patient?.telecom?.[0]?.value ?? 'NOT AVAILABLE'}
+                PHONE:{' '}
+                {props.userDetails?.patient?.telecom?.[0]?.value ??
+                  'NOT AVAILABLE'}
               </Text>
               <Text style={styles.patientDetails}>
                 ADDRESS:{' '}
-                {props.patient?.address && props.patient.address[0]
+                {props.userDetails?.patient?.address &&
+                props.userDetails?.patient.address[0]
                   ? `${
-                      props.patient.address[0].line?.join(', ') ||
+                      props.userDetails?.patient?.address[0].line?.join(', ') ||
                       'NOT AVAILABLE'
-                    }, ${props.patient.address[0].city || 'NOT AVAILABLE'}, ${
-                      props.patient.address[0].state || 'NOT AVAILABLE'
                     }, ${
-                      props.patient.address[0].postalCode || 'NOT AVAILABLE'
-                    }, ${props.patient.address[0].country || 'NOT AVAILABLE'}`
+                      props.userDetails?.patient?.address[0].city ||
+                      'NOT AVAILABLE'
+                    }, ${
+                      props.userDetails?.patient?.address[0].state ||
+                      'NOT AVAILABLE'
+                    }, ${
+                      props.userDetails?.patient?.address[0].postalCode ||
+                      'NOT AVAILABLE'
+                    }, ${
+                      props.userDetails?.patient?.address[0].country ||
+                      'NOT AVAILABLE'
+                    }`
                   : 'NOT AVAILABLE'}
               </Text>
             </View>
@@ -159,11 +223,25 @@ const PatientDetails = (props: IProps) => {
 
           {props.activeTab === 'PatientInsight' ? (
             <RenderPatientInsightTab
-              patientName={props.patient?.name[0]?.family}
+              patientName={
+                props.userDetails?.patient?.name[0]?.family as string
+              }
+              patientInsightDocumentData={props.userDetails?.documentReferences}
             />
           ) : props.activeTab === 'Encounters' ? (
-            <RenderEncountersTab />
+            <RenderEncountersTab
+              encounterData={props.userDetails?.encounters}
+            />
           ) : null}
+
+          {/* <>
+            <Text
+              style={{
+                fontSize: 10,
+              }}>
+              {`${props.test}`}
+            </Text>
+          </> */}
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>
