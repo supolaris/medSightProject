@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SideMenuScreen from '../screens/SideMenuScreen';
 import ConfigurationScreen from '../screens/ConfigurationScreen';
 import LegalScreen from '../screens/LegalScreen';
+import EditScreen from '../screens/EditScreen';
 import WalkthroughScreen from '../screens/WalkthroughScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -33,6 +34,7 @@ export function Routes() {
         <Stack.Screen name="SideMenu" component={SideMenuScreen} />
         <Stack.Screen name="Configuration" component={ConfigurationScreen} />
         <Stack.Screen name="Legal" component={LegalScreen} />
+        <Stack.Screen name="EditScreen" component={EditScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,7 +1,8 @@
 import { Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddNewPatient from '../components/AddNewPatient';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { mmkv } from '../utils/CommonFunctions';
 
 const AddNewPatientScreen = ({
   navigation,
@@ -19,6 +20,14 @@ const AddNewPatientScreen = ({
   });
 
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const [userImage, setUserImage] = useState<string>('');
+
+  useEffect(() => {
+    const userImage = mmkv.getString('userImage') as string;
+
+    setUserImage(userImage);
+  }, []);
 
   // Date.....................
   const handleDateChange = (event: any, selectedDate?: Date) => {
@@ -45,6 +54,7 @@ const AddNewPatientScreen = ({
 
   return (
     <AddNewPatient
+      userImage={userImage}
       form={form}
       showDatePicker={showDatePicker}
       setForm={setForm}

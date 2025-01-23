@@ -14,6 +14,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SimpleHeader from './common/headers/SimpleHeader';
 interface AddNewPatientProps {
+  userImage: string;
   form: {
     familyName: string;
     givenName: string;
@@ -33,6 +34,7 @@ interface AddNewPatientProps {
   onBackButtonPressed: () => void;
 }
 const AddNewPatient: React.FC<AddNewPatientProps> = ({
+  userImage,
   form,
   setForm,
   showDatePicker,
@@ -47,7 +49,11 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
         resizeMode="stretch"
         style={{ flex: 1 }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader showSettingsIcon={false} title="Add New Patient" />
+        <SimpleHeader
+          showSettingsIcon={false}
+          title="Add New Patient"
+          userImage={userImage}
+        />
         <ScrollView contentContainerStyle={styles.formContainer}>
           {/* Avatar Section */}
           <View style={styles.avatarSection}>

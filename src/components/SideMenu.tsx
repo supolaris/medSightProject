@@ -10,6 +10,8 @@ import {
 const { width } = Dimensions.get('window');
 
 interface IProps {
+  userImage: string;
+  userName: string;
   onPressClose: () => void;
   onLegalPressed: () => void;
   onConfigurationPressed: () => void;
@@ -21,10 +23,14 @@ const SideMenu = (props: IProps) => {
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Image
-          source={require('../assets/images/dummyUser.png')}
+          source={
+            props.userImage
+              ? props.userImage
+              : require('../assets/images/dummyUser.png')
+          }
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>John Doe</Text>
+        <Text style={styles.profileName}>{props.userName}</Text>
         <TouchableOpacity
           style={styles.closeButton}
           onPress={props.onPressClose}>
