@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,18 @@ import { Dropdown } from 'react-native-element-dropdown';
 import LoadingPopup from './common/popups/LoadingPopup';
 import { VoiceLottie } from './common/lotties/VoiceLottie';
 import { IMyPatientItems } from '../@types/CommonTypes';
-import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
+import {
+  calculateAge,
+  formatDateOfBirth,
+  normalizeFont,
+  normalizeHeight,
+  normalizeWidth,
+} from '../utils/CommonFunctions';
 import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { AppColors } from '../constants/AppColors';
+import CustomTouchable from './common/touchables/CustomTouchable';
+import { AppMessages } from '../constants/AppMessages';
 
 interface IProps {
   isLoading: boolean;
@@ -29,6 +39,7 @@ interface IProps {
   languageOptions: { label: string; value: string }[];
   selectedLanguage: string;
   intakeNotesValue: string;
+  speachTextData: string[];
   handleIntakeNotesValue: (value: string) => void;
   onClearText: () => void;
   onVoiceRecordPressed: () => void;
@@ -41,7 +52,6 @@ interface IProps {
 const VoiceToText = (props: IProps) => {
   const [activeTab, setActiveTab] = useState('Recording');
   const [transcriptText, setTranscriptText] = useState('');
-  const [intakeNotesText, setIntakeNotesText] = useState('');
   const [selectedButton, setSelectedButton] = useState<
     'NewIntake' | 'StartConsultation' | 'CoPilot'
   >('NewIntake');
@@ -55,6 +65,12 @@ const VoiceToText = (props: IProps) => {
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
+
+  const speachTextData = useMemo(() => {
+    return props.speachTextData
+      .map((text, index) => `${index + 1}. ${text}`)
+      .join('\n');
+  }, [props.speachTextData]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -310,28 +326,63 @@ const VoiceToText = (props: IProps) => {
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.text}>
-                  {props.speechToText || 'Start speaking...'}
+                  {speachTextData || 'Start speaking...'}
                 </Text>
               </View>
               <View style={styles.lottieView}>
                 <View style={styles.languageSelector}>
-                  <Text style={styles.label}>Select Language</Text>
-                  <Dropdown
-                    style={styles.dropdown}
-                    data={props.languageOptions}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Language"
-                    value={props.selectedLanguage}
-                    onChange={(item) => props.onLanguageChange(item.value)}
-                  />
+                  <View
+                    style={{
+                      width: '50%',
+                    }}>
+                    <Text style={styles.label}>Select Language</Text>
+                    <Dropdown
+                      style={styles.dropdown}
+                      data={props.languageOptions}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Select Language"
+                      value={props.selectedLanguage}
+                      onChange={(item) => props.onLanguageChange(item.value)}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    onPress={props.onVoiceRecordPressed}
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <VoiceLottie
+                      lottieRef={props.lottieRef}
+                      onVoiceRecordPressed={props.onVoiceRecordPressed}
+                    />
+                    <ImageBackground
+                      resizeMode="contain"
+                      source={require('../assets/images/common/microphoneBg.webp')}
+                      style={styles.microphoneBgImage}>
+                      <SimpleLineIcons
+                        name="microphone"
+                        size={20}
+                        color={AppColors.white}
+                      />
+                    </ImageBackground>
+                  </TouchableOpacity>
                 </View>
-                <View>
-                  <VoiceLottie
-                    lottieRef={props.lottieRef}
-                    onVoiceRecordPressed={props.onVoiceRecordPressed}
-                  />
-                </View>
+
+                <CustomTouchable
+                  preset={{
+                    text: 'Intake Insight',
+                    fontSize: normalizeFont(9.54),
+                    fontWeight: 'medium',
+                    textColor: AppColors.white,
+                    variant: 'primary',
+                    width: normalizeWidth(80),
+                    height: normalizeHeight(40),
+                  }}
+                  style={{
+                    backgroundColor: '#12AAC2',
+                  }}
+                />
               </View>
             </View>
           )}
@@ -358,7 +409,12 @@ const VoiceToText = (props: IProps) => {
                 placeholder="Enter Text"
                 placeholderTextColor="#000000"
                 multiline
-                value={transcriptText}
+                editable={speachTextData ? false : true}
+                value={
+                  speachTextData
+                    ? `The language of the provided conversation transcript is ${props.selectedLanguage}. Here is the analysis of the conversation with the identification of speakers\n\n${speachTextData}`
+                    : transcriptText
+                }
                 onChangeText={setTranscriptText}
               />
               <TouchableOpacity style={styles.saveButton}>
@@ -388,7 +444,12 @@ const VoiceToText = (props: IProps) => {
                 placeholder="Enter Notes"
                 placeholderTextColor="#000000"
                 multiline
-                value={props.intakeNotesValue}
+                editable={speachTextData ? false : true}
+                value={
+                  speachTextData
+                    ? `${AppMessages.tempIntakeNotesMessage}`
+                    : props.intakeNotesValue
+                }
                 onChangeText={props.handleIntakeNotesValue}
               />
               <TouchableOpacity
@@ -600,10 +661,12 @@ const styles = StyleSheet.create({
   lottieView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 20,
   },
   languageSelector: {
-    width: '50%',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   label: {
     fontSize: 12,
@@ -675,5 +738,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 15,
     marginTop: 5,
+  },
+
+  microphoneBgImage: {
+    height: 50,
+    width: 50,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

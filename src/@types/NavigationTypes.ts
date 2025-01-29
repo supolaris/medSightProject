@@ -14,7 +14,8 @@ export type RootStackParamList = {
   VoiceToText: {
     userDetails: IGetPatientDetailsResponse | null;
   };
-  Patients: {
+
+  Patients?: {
     flow?: string;
   };
   PatientDetails: {

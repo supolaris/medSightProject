@@ -59,10 +59,12 @@ const OnBoardingScreen = ({
         iosPrefersEphemeralSession: true,
       });
       if (authResponse?.accessToken) {
-        // console.log('authResponse =>>>>', authResponse);
-        global.token = authResponse?.accessToken;
+        console.log('authResponse first =>>>>', authResponse);
+        global.token = authResponse.accessToken;
         mmkv.set('userToken', authResponse.accessToken);
-        await getGraphToken();
+        mmkv.set('tokenExpirationTime', authResponse.accessTokenExpirationDate);
+        navigation.replace('Patients');
+        // await getGraphToken();
       } else {
         showToast(AppMessages.wentWrong);
       }

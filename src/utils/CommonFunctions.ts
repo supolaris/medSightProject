@@ -130,3 +130,27 @@ export const userLogout = () => {
     return false;
   }
 };
+
+export const checkTokenValidity = (): boolean => {
+  try {
+    const expirationTime = mmkv.getString('tokenExpirationTime');
+    const authToken = mmkv.getString('userToken') as string;
+    if (!expirationTime) {
+      console.log('No expiration time found, redirect to login');
+      return false;
+    }
+    const currentTime = moment().utc();
+    const tokenExpiryTime = moment(expirationTime);
+    if (tokenExpiryTime.isAfter(currentTime)) {
+      console.log('token expiration time remaining');
+      global.token = authToken;
+      return true;
+    } else {
+      console.log('Token expired, redirect to login');
+      return false;
+    }
+  } catch (error) {
+    console.log('Error while checking token validity:', error);
+    return false;
+  }
+};

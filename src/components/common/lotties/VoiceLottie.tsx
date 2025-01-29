@@ -18,7 +18,7 @@ export const VoiceLottie = (props: IProps) => {
         autoPlay={false}
         loop
         style={styles.lottie}
-        source={require('../../../assets/lotties/voiceLottie.json')}
+        source={require('../../../assets/lotties/wavesLottie.json')}
       />
     </TouchableOpacity>
   );

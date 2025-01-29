@@ -11,7 +11,7 @@ import {
 import SimpleHeader from './common/headers/SimpleHeader';
 import LoadingPopup from './common/popups/LoadingPopup';
 interface IProps {
-  isLoading: boolean;
+  // isLoading: boolean;
 }
 
 const Legal = (props: IProps) => {

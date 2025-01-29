@@ -28,10 +28,18 @@ const VoiceToTextScreen = ({
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
   ];
   const [intakeNotesValue, setIntakeNotesValue] = useState<string>('');
+  const [speachTextData, setSpeachTextData] = useState<string[]>([]);
 
   useEffect(() => {
     Voice.onSpeechResults = (event: any) => {
       setSpeechToText((prev) => prev + ' ' + event.value[0]);
+      setSpeachTextData((prev) => {
+        const updatedData = [...prev, event.value[0]];
+        console.log('Updated speachTextData:', updatedData); // Log updated state
+        return updatedData;
+      });
+
+      console.log('speachTextData', speachTextData);
     };
 
     Voice.onSpeechEnd = () => {
@@ -42,6 +50,10 @@ const VoiceToTextScreen = ({
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
+
+  useEffect(() => {
+    console.log('speachTextData', speachTextData);
+  }, [speachTextData]);
 
   useEffect(() => {
     const userName = mmkv.getString('userImage') as string;
@@ -79,6 +91,7 @@ const VoiceToTextScreen = ({
 
   const onClearText = () => {
     setSpeechToText('');
+    // setSpeachTextData([])
   };
 
   const onIntakeNotesSavePressed = async () => {
@@ -139,6 +152,7 @@ const VoiceToTextScreen = ({
       languageOptions={languageOptions}
       selectedLanguage={selectedLanguage}
       intakeNotesValue={intakeNotesValue}
+      speachTextData={speachTextData}
       handleIntakeNotesValue={handleIntakeNotesValue}
       onClearText={onClearText}
       onLanguageChange={setSelectedLanguage}

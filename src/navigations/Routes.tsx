@@ -24,7 +24,7 @@ export function Routes() {
         screenOptions={{
           headerShown: false,
         }}>
-        {/* <Stack.Screen name="Walkthrough" component={WalkthroughScreen} /> */}
+        <Stack.Screen name="Walkthrough" component={WalkthroughScreen} />
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
         <Stack.Screen name="VoiceToText" component={VoiceToTextScreen} />

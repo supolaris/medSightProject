@@ -2,7 +2,11 @@ import { View } from 'react-native';
 import React, { useEffect } from 'react';
 import { addEventListener } from '@react-native-community/netinfo';
 import { UserContext } from '../context/Context';
-import { MicrosoftGraphConfiguration, mmkv } from '../utils/CommonFunctions';
+import {
+  checkTokenValidity,
+  MicrosoftGraphConfiguration,
+  mmkv,
+} from '../utils/CommonFunctions';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 import { refresh } from 'react-native-app-auth';
 
@@ -12,20 +16,22 @@ const WalkthroughScreen = ({
   const { updateisInternetConnected } = UserContext();
 
   useEffect(() => {
-    handleNetworkInfo();
+    // handleNetworkInfo();
     checkAuthentication();
   }, []);
 
   const checkAuthentication = () => {
     try {
-      const userToken = mmkv.getString('userToken');
-      if (userToken) {
+      const isAuthenticated = checkTokenValidity();
+      if (isAuthenticated) {
+        console.log('hello world authenticated');
         navigation.navigate('Patients');
       } else {
+        console.log('hello world not authenticated');
         navigation.navigate('Splash');
       }
     } catch (error) {
-      console.log('error in authenticating user', error);
+      console.log('error in checkAuthentication', error);
     }
   };
 

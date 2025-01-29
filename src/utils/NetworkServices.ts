@@ -30,7 +30,7 @@ export const getUserDetailsRequest = async () => {
 
 export const getRequest = async (endPoint: string) => {
   console.log('Api endpoint', baseUrl + endPoint);
-  // console.log('get global.token from get request', global.token);
+  console.log('get global.token from get request', global.token);
   let _baseUrl = baseUrl;
   const response = await axios({
     url: `${_baseUrl}${endPoint}`,

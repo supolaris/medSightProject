@@ -23,7 +23,7 @@ const PatientsScreen = ({
 
   console.log('flow', flow);
   const [searchVal, setSearchVal] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
 
   const [userName, setUserName] = useState<string>('');
@@ -31,23 +31,23 @@ const PatientsScreen = ({
 
   useEffect(() => {
     getPatients();
-    getUserDetails();
+    // getUserDetails();
   }, [flow]);
 
   const getPatients = async () => {
     try {
-      // setIsLoading(true);
+      setIsLoading(true);
       let tempPageSize = 20;
       const response = await getMyPatientsService(tempPageSize);
       if (response.items) {
         patientsStoredData = response.items;
         setMyPatientsData(response.items);
-        await getUserPhoto();
+        // await getUserPhoto();
       }
     } catch (error) {
       console.log('error in getting patients', error);
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 

@@ -60,9 +60,11 @@ const PatientDetailScreen = ({
   const onChangeTab = (val: string) => {
     setActiveTab(val);
   };
+
   const onEditPress = () => {
     navigation.navigate('EditScreen');
   };
+
   const onDeletePress = async () => {
     try {
       setIsLoading(true);
