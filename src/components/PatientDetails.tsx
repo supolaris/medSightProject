@@ -29,6 +29,8 @@ interface IProps {
   onChangeTab: (val: string) => void;
   onEditPress: () => void;
   onDeletePress: () => void;
+  onMenuPressed: () => void;
+  onHeaderSettingsPressed: () => void;
 }
 
 const PatientDetails = (props: IProps) => {
@@ -42,6 +44,8 @@ const PatientDetails = (props: IProps) => {
         <SimpleHeader
           showSettingsIcon={false}
           title="Voice"
+          onMenuPressed={props.onMenuPressed}
+          onHeaderSettingsPressed={props.onHeaderSettingsPressed}
           userImage={props.userImage}
         />
         <ScrollView
@@ -57,7 +61,7 @@ const PatientDetails = (props: IProps) => {
                 source={require('../assets/images/dummyUser.png')}
                 style={styles.patientImage}
               />
-              <View style={{ flexDirection: 'row', left: 60, marginTop: 7 }}>
+              <View style={{ flexDirection: 'row', left: 90, marginTop: 7 }}>
                 <TouchableOpacity onPress={props.onEditPress}>
                   <View>
                     <Image
@@ -83,7 +87,7 @@ const PatientDetails = (props: IProps) => {
                     />
                     <Text
                       style={{
-                        fontSize: 5,
+                        fontSize: 6,
                         color: '#000000',
                         top: 2,
                         fontWeight: 'bold',
@@ -318,7 +322,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   actionText: {
-    fontSize: 9,
+    fontSize: 7.4,
     fontWeight: 'bold',
     color: '#000',
     textAlign: 'center',

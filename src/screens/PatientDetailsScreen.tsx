@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PatientDetails from '../components/PatientDetails';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { mmkv, showToast } from '../utils/CommonFunctions';
+import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
 import {
   deletePatientService,
   getMyPatientDetailsService,
@@ -26,6 +26,10 @@ const PatientDetailScreen = ({
     setUserImage(userName);
     getPatientDetails();
   }, []);
+
+  const onMenuPressed = () => {
+    navigation.navigate('SideMenu');
+  };
 
   const getPatientDetails = async () => {
     try {
@@ -87,6 +91,15 @@ const PatientDetailScreen = ({
     }
   };
 
+  const onHeaderSettingsPressed = async () => {
+    const result = userLogout();
+    if (result) {
+      navigation.replace('Splash');
+    } else {
+      showToast(AppMessages.wentWrong);
+    }
+  };
+
   return (
     <PatientDetails
       isLoading={isLoading}
@@ -100,6 +113,8 @@ const PatientDetailScreen = ({
       onChangeTab={onChangeTab}
       onEditPress={onEditPress}
       onDeletePress={onDeletePress}
+      onMenuPressed={onMenuPressed}
+      onHeaderSettingsPressed={onHeaderSettingsPressed}
     />
   );
 };

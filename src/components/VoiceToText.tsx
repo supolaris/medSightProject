@@ -47,6 +47,8 @@ interface IProps {
   onIntakeNotesSavePressed: () => void;
   onEditPressed: () => void;
   onDeletePressed: () => void;
+  onMenuPressed: () => void;
+  onHeaderSettingsPressed: () => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -82,6 +84,8 @@ const VoiceToText = (props: IProps) => {
         <SimpleHeader
           showSettingsIcon={false}
           title="Voice"
+          onMenuPressed={props.onMenuPressed}
+          onHeaderSettingsPressed={props.onHeaderSettingsPressed}
           userImage={props.userImage}
         />
         <ScrollView contentContainerStyle={styles.container}>
@@ -179,7 +183,7 @@ const VoiceToText = (props: IProps) => {
                   />
                   <Text
                     style={{
-                      fontSize: 5,
+                      fontSize: 6,
                       color: '#000000',
                       top: 2,
                       fontWeight: 'bold',
@@ -642,7 +646,7 @@ const styles = StyleSheet.create({
     tintColor: '#000000',
   },
   actionText: {
-    fontSize: 9,
+    fontSize: 7.4,
     fontWeight: 'bold',
     color: '#000',
     textAlign: 'center',

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import AlertPopup from './common/popups/LogoutPopup';
 const { width } = Dimensions.get('window');
 
 interface IProps {
@@ -16,11 +17,24 @@ interface IProps {
   onLegalPressed: () => void;
   onConfigurationPressed: () => void;
   onShareAppPressed: () => void;
+  handleLogout: () => void;
+  handleCancel: () => void;
+  handleConfirm: () => void;
+  isPopupVisible: boolean;
 }
 
 const SideMenu = (props: IProps) => {
   return (
     <View style={styles.container}>
+      <AlertPopup
+        messageText="Are you sure you want to logout"
+        isAlertPopupVisible={props.isPopupVisible}
+        cancelText="Cancel"
+        confirmText="YES"
+        onAlertPopupClose={props.handleCancel}
+        onAlertPopupCancel={props.handleCancel}
+        onAlertPopupConfirm={props.handleConfirm}
+      />
       <View style={styles.profileContainer}>
         <Image
           source={
@@ -79,7 +93,9 @@ const SideMenu = (props: IProps) => {
           <Text style={styles.optionText}>Share app</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.logoutButton}>
+      <TouchableOpacity
+        onPress={props.handleLogout}
+        style={styles.logoutButton}>
         <Image
           source={require('../assets/images/logoutImage.png')}
           style={styles.logoutImage}

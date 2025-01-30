@@ -18,7 +18,7 @@ const EditScreen = ({
   const [birthDate, setBirthDate] = useState('11/12/1980');
 
   const handleback = () => {
-    // navigation.navigate('PatientDetails');
+    navigation.navigate('Patients');
   };
 
   return (

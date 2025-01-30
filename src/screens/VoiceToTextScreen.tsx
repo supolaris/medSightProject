@@ -3,7 +3,7 @@ import Voice from '@react-native-community/voice';
 import LottieView from 'lottie-react-native';
 import VoiceToText from '../components/VoiceToText';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { mmkv, showToast } from '../utils/CommonFunctions';
+import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
 import { postIntakeNotesService } from '../utils/TranscriptServices';
 import { deletePatientService } from '../utils/MyPatientServices';
 import { AppMessages } from '../constants/AppMessages';
@@ -141,6 +141,19 @@ const VoiceToTextScreen = ({
     }
   };
 
+  const onHeaderSettingsPressed = async () => {
+    const result = userLogout();
+    if (result) {
+      navigation.replace('Splash');
+    } else {
+      showToast(AppMessages.wentWrong);
+    }
+  };
+
+  const onMenuPressed = () => {
+    navigation.navigate('SideMenu');
+  };
+
   return (
     <VoiceToText
       isLoading={isLoading}
@@ -160,6 +173,8 @@ const VoiceToTextScreen = ({
       onIntakeNotesSavePressed={onIntakeNotesSavePressed}
       onEditPressed={onEditPressed}
       onDeletePressed={onDeletePressed}
+      onMenuPressed={onMenuPressed}
+      onHeaderSettingsPressed={onHeaderSettingsPressed}
     />
   );
 };
