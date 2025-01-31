@@ -66,7 +66,7 @@ const PatientDetails = (props: IProps) => {
                   <View>
                     <Image
                       source={require('../assets/images/editImage.png')}
-                      style={{ width: 15, height: 15 }}
+                      style={{ width: 16, height: 16 }}
                     />
                     <Text
                       style={{
@@ -83,7 +83,7 @@ const PatientDetails = (props: IProps) => {
                   <View style={{ left: 10 }}>
                     <Image
                       source={require('../assets/images/deleteImage.png')}
-                      style={{ width: 15, height: 15 }}
+                      style={{ width: 16, height: 16 }}
                     />
                     <Text
                       style={{
