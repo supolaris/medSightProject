@@ -17,11 +17,14 @@ import LoadingPopup from './common/popups/LoadingPopup';
 import RenderNoDataView from './common/renderComponents/RenderNoDataView';
 
 interface IProps {
-  userName: string;
+  userProfileData: {
+    displayName: string;
+    email: string;
+    photo: string;
+  };
   isLoading: boolean;
-  myPatientsData: IMyPatientItems[];
   searchVal: string;
-  userImage: string;
+  myPatientsData: IMyPatientItems[];
   onSearchPressed: () => void;
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
@@ -49,13 +52,13 @@ const Patients = (props: IProps) => {
         source={require('../assets/images/common/appBackground.webp')}>
         <SimpleHeader
           showSettingsIcon={false}
-          title="Voice"
-          userImage={props.userImage}
           onMenuPressed={props.onMenuPressed}
           onHeaderSettingsPressed={props.onHeaderSettingsPressed}
         />
         <View style={styles.header}>
-          <Text style={styles.welcomeText}>WELCOME {props.userName}</Text>
+          <Text style={styles.welcomeText}>
+            WELCOME {props.userProfileData?.displayName}
+          </Text>
           {/* <Image
             source={{ uri: `data:image/jpeg;base64,${props.userImage}` }}
             style={{ width: 100, height: 100 }}

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import AlertPopup from './common/popups/LogoutPopup';
+import AlertPopup from './common/popups/AlertPopup';
 const { width } = Dimensions.get('window');
 
 interface IProps {

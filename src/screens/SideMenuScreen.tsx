@@ -4,8 +4,8 @@ import { MainStackScreenProps } from '../@types/NavigationTypes';
 import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
 import { AppMessages } from '../constants/AppMessages';
 import { Alert } from 'react-native';
-import LogoutPopup from '../components/common/popups/LogoutPopup';
-import showLogoutPopup from '../components/common/popups/LogoutPopup';
+import LogoutPopup from '../components/common/popups/AlertPopup';
+import showLogoutPopup from '../components/common/popups/AlertPopup';
 
 const SideMenuScreen = ({ navigation }: MainStackScreenProps<'SideMenu'>) => {
   const [isPopupVisible, setPopupVisible] = useState(false);

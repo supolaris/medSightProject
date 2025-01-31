@@ -10,4 +10,6 @@ export const ApiNames = {
   generateIntakeDocuments: '/api/Transcript/createIntakeDocuments',
   generateConsultantNotes: '/api/Transcript/generateConsultationSoapNotes',
   generateConsultantDocuments: '/api/Transcript/createConsultationDocuments',
+  //user
+  getUserProfile: '/api/User/profile',
 };

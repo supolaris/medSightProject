@@ -5,4 +5,5 @@ export const AppColors = {
   primaryColor: '#3681C3',
   secondaryTextColor: '#5E99CF',
   borderColor: '#',
+  transparentBg: 'rgba(0, 0, 0, 0.7)',
 };

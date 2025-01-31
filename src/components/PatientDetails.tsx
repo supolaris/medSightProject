@@ -20,7 +20,7 @@ import LoadingPopup from './common/popups/LoadingPopup';
 interface IProps {
   isLoading: boolean;
   userDetails: IGetPatientDetailsResponse | null;
-  userImage: string;
+
   patient: IMyPatientItems;
   activeTab: string;
   onNewIntakePress: () => void;
@@ -43,10 +43,8 @@ const PatientDetails = (props: IProps) => {
         source={require('../assets/images/common/appBackground.webp')}>
         <SimpleHeader
           showSettingsIcon={false}
-          title="Voice"
           onMenuPressed={props.onMenuPressed}
           onHeaderSettingsPressed={props.onHeaderSettingsPressed}
-          userImage={props.userImage}
         />
         <ScrollView
           showsVerticalScrollIndicator={false}

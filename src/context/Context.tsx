@@ -3,12 +3,24 @@ import { ReactNode, createContext, useState, useContext } from 'react';
 
 export interface ContextType {
   isInternetConnected: boolean;
+  userProfileData: {
+    displayName: string;
+    email: string;
+    photo: string;
+  };
+  updateUserProfileData: (data: ContextType['userProfileData']) => void;
   updateisInternetConnected: (
     value: ContextType['isInternetConnected'],
   ) => void;
 }
 const initialContextValue: ContextType = {
   isInternetConnected: false,
+  userProfileData: {
+    displayName: '',
+    email: '',
+    photo: '',
+  },
+  updateUserProfileData: () => {},
   updateisInternetConnected: () => {},
 };
 
@@ -19,6 +31,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const [isInternetConnected, setisInternetConnected] = useState<
     ContextType['isInternetConnected']
   >(initialContextValue.isInternetConnected);
+
+  const [userProfileData, setUserProfileData] = useState<
+    ContextType['userProfileData']
+  >(initialContextValue.userProfileData);
+
+  const updateUserProfileData = (data: ContextType['userProfileData']) => {
+    setUserProfileData(data);
+  };
+
   const updateisInternetConnected = (
     state: ContextType['isInternetConnected'],
   ) => {
@@ -29,6 +50,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     <userContext.Provider
       value={{
         isInternetConnected,
+        userProfileData,
+        updateUserProfileData,
         updateisInternetConnected,
       }}>
       {children}

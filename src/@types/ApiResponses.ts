@@ -301,3 +301,9 @@ export interface IPostIntakeNotesResponse {
   smartTranscript: string;
   soapNotes: string;
 }
+
+export interface IGetUserProfileResponse {
+  displayName: string;
+  email: string;
+  photo: string;
+}

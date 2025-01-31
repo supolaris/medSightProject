@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   Image,
+  TextInput,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
   SafeAreaView,
   ImageBackground,
-  TextInput,
-  Alert,
+  TouchableOpacity,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker';
+import AlertPopup from './common/popups/AlertPopup';
+import { AppMessages } from '../constants/AppMessages';
 import SimpleHeader from './common/headers/SimpleHeader';
+import ImageSelectionPopup from './common/popups/ImageSelectionPopup';
+import moment from 'moment';
 interface AddNewPatientProps {
   userImage: string;
   form: {
@@ -26,22 +29,38 @@ interface AddNewPatientProps {
     postal: string;
     country: string;
   };
-  setForm: React.Dispatch<React.SetStateAction<any>>;
-  showDatePicker: boolean;
-  setShowDatePicker: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDateChange: (event: any, selectedDate?: Date) => void;
+  isAlertPopupVisible: boolean;
+  isDatePickerVisible: boolean;
+  isImageSelectionPopupVisible: boolean;
   handleSave: () => void;
+  onPressDOBPicker: () => void;
+  onCancelDatePicker: () => void;
   onBackButtonPressed: () => void;
+  onImageSelectPressed: () => void;
+  onAlertPopupCancelPressed: () => void;
+  onAlertPopupConfirmPressed: () => void;
+  onImageSelectionPopupClose: () => void;
+  onConfirmDatePicker: (date: Date) => void;
+  setForm: React.Dispatch<React.SetStateAction<any>>;
+  onImageSelectionOptionPressed: (val: number) => void;
 }
 const AddNewPatient: React.FC<AddNewPatientProps> = ({
-  userImage,
   form,
+  userImage,
+  isAlertPopupVisible,
+  isDatePickerVisible,
+  isImageSelectionPopupVisible,
   setForm,
-  showDatePicker,
-  setShowDatePicker,
-  handleDateChange,
   handleSave,
+  onPressDOBPicker,
+  onCancelDatePicker,
+  onConfirmDatePicker,
   onBackButtonPressed,
+  onImageSelectPressed,
+  onAlertPopupCancelPressed,
+  onAlertPopupConfirmPressed,
+  onImageSelectionPopupClose,
+  onImageSelectionOptionPressed,
 }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -49,20 +68,44 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
         resizeMode="stretch"
         style={{ flex: 1 }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader
-          showSettingsIcon={false}
-          title="Add New Patient"
-          userImage={userImage}
+        <SimpleHeader showSettingsIcon={false} />
+        <ImageSelectionPopup
+          isImageSelectionPopupVisible={isImageSelectionPopupVisible}
+          onImageSelectionPopupClose={onImageSelectionPopupClose}
+          onImageSelectionOptionPressed={onImageSelectionOptionPressed}
+        />
+        <AlertPopup
+          confirmText="Save"
+          cancelText="Cancel"
+          messageText={AppMessages.saveText}
+          isAlertPopupVisible={isAlertPopupVisible}
+          onAlertPopupCancel={onAlertPopupCancelPressed}
+          onAlertPopupConfirm={onAlertPopupConfirmPressed}
+        />
+        <DatePicker
+          modal
+          mode="date"
+          date={new Date()}
+          maximumDate={new Date()}
+          open={isDatePickerVisible}
+          onCancel={onCancelDatePicker}
+          onConfirm={(date: Date) => onConfirmDatePicker(date)}
         />
         <ScrollView contentContainerStyle={styles.formContainer}>
           {/* Avatar Section */}
           <View style={styles.avatarSection}>
             <View style={styles.avatarContainer}>
               <Image
-                source={require('../assets/images/profileImage.png')}
+                source={
+                  userImage
+                    ? { uri: userImage }
+                    : require('../assets/images/profileImage.png')
+                }
                 style={styles.avatarIcon}
               />
-              <TouchableOpacity style={styles.cameraIconContainer}>
+              <TouchableOpacity
+                style={styles.cameraIconContainer}
+                onPress={onImageSelectPressed}>
                 <Image
                   source={require('../assets/images/cameraIcon.png')}
                   style={styles.cameraIcon}
@@ -95,20 +138,14 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Birth Date</Text>
             <TouchableOpacity
-              onPress={() => setShowDatePicker(true)}
+              onPress={onPressDOBPicker}
               style={[styles.inputField, styles.dateInput]}>
               <Text style={{ color: form.birthDate ? '#000' : '#8A8A8A' }}>
-                {form.birthDate || 'Select Birth Date'}
+                {form.birthDate
+                  ? moment(form.birthDate).format('YYYY-MM-DD')
+                  : 'Select Birth Date'}
               </Text>
             </TouchableOpacity>
-            {showDatePicker && (
-              <DateTimePicker
-                mode="date"
-                display="default"
-                value={form.birthDate ? new Date(form.birthDate) : new Date()}
-                onChange={handleDateChange}
-              />
-            )}
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Contact (Phone/Email)</Text>
@@ -175,19 +212,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  avatarContainer: {
+  avatarContainer: {},
+  avatarIcon: {
     width: 100,
     height: 100,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    borderColor: '#12AAC2',
     borderWidth: 2,
-  },
-  avatarIcon: {
-    width: 60,
-    height: 60,
+    borderRadius: 100,
+    borderColor: '#12AAC2',
+    resizeMode: 'stretch',
   },
   cameraIconContainer: {
     position: 'absolute',

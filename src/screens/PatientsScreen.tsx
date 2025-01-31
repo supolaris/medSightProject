@@ -8,11 +8,9 @@ import {
   getSearchPatientsService,
 } from '../utils/MyPatientServices';
 import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
-import {
-  getUserDetailsService,
-  getUserMicrosoftImage,
-} from '../utils/OnBoardingServices';
 import { AppMessages } from '../constants/AppMessages';
+import { getUserProfileService } from '../utils/UserServices';
+import { UserContext } from '../context/Context';
 
 let patientsStoredData: IMyPatientItems[] = [];
 const PatientsScreen = ({
@@ -21,69 +19,47 @@ const PatientsScreen = ({
 }: MainStackScreenProps<'Patients'>) => {
   let flow = route?.params;
 
-  console.log('flow', flow);
+  const userContext = UserContext();
   const [searchVal, setSearchVal] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
 
-  const [userName, setUserName] = useState<string>('');
-  const [userImage, setUserImage] = useState<string>('');
-
   useEffect(() => {
-    getPatients();
-    // getUserDetails();
+    Promise.all([getPatients(), getUserProfile()]).finally(() => {
+      setIsLoading(false);
+    });
   }, [flow]);
 
   const getPatients = async () => {
     try {
-      setIsLoading(true);
       let tempPageSize = 20;
       const response = await getMyPatientsService(tempPageSize);
       if (response.items) {
         patientsStoredData = response.items;
         setMyPatientsData(response.items);
-        // await getUserPhoto();
       }
     } catch (error) {
       console.log('error in getting patients', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const getUserPhoto = async () => {
+  const getUserProfile = async () => {
     try {
-      // setIsLoading(true);
-      const response = await getUserMicrosoftImage();
+      const response = await getUserProfileService();
       if (response) {
-        // console.log('first', response.data);
-        const base64Image = Buffer.from(response.data, 'binary').toString(
-          'base64',
-        );
-        setUserImage(base64Image);
-        mmkv.set('userImage', base64Image);
-
-        await getUserDetails();
+        // const base64Image = Buffer.from(response.photo, 'binary').toString(
+        //   'base64',
+        // );
+        userContext.updateUserProfileData({
+          displayName: response?.displayName,
+          email: response?.email,
+          photo: response?.photo,
+        });
+      } else {
+        showToast('Error in getting user profile data');
       }
-    } catch (error) {
-      console.error('Error fetching user photo:', error);
-    } finally {
-      // setIsLoading(false);
-    }
-  };
-
-  const getUserDetails = async () => {
-    try {
-      const response = await getUserDetailsService();
-      if (response?.displayName) {
-        setUserName(response.displayName);
-        mmkv.set('userName', response.displayName);
-      }
-      console.log('response of user details', response);
     } catch (error) {
       console.log('error in getting userDetails', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -140,14 +116,13 @@ const PatientsScreen = ({
       isLoading={isLoading}
       searchVal={searchVal}
       myPatientsData={myPatientsData}
-      userName={userName}
-      userImage={userImage}
-      onHeaderSettingsPressed={onHeaderSettingsPressed}
+      userProfileData={userContext.userProfileData}
       onMenuPressed={onMenuPressed}
       onHandleSearch={onHandleSearch}
       onSearchPressed={onSearchPressed}
       onPatientPressed={onPatientPressed}
       onPatientAddPressed={onPatientAddPressed}
+      onHeaderSettingsPressed={onHeaderSettingsPressed}
     />
   );
 };

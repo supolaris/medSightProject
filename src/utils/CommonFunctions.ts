@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { AxiosError } from 'axios';
 import { MMKV } from 'react-native-mmkv';
-import Toast from 'react-native-toast-message';
+import Toast from 'react-native-simple-toast';
 import { CLIENT_ID, TENANT_ID } from './Config';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
@@ -58,11 +58,7 @@ export const calculateAge = (dob: string) => {
 };
 
 export const showToast = (message: string) => {
-  Toast.show({
-    type: 'info',
-    text1: message,
-    position: 'bottom',
-  });
+  Toast.show(message, Toast.LONG);
 };
 
 export const MicrosoftConfiguration: any = {
@@ -120,10 +116,11 @@ export const MicrosoftGraphConfiguration: any = {
 
 export const userLogout = () => {
   try {
-    mmkv.set('userToken', '');
-    mmkv.set('userGraphToken', '');
-    mmkv.set('userImage', '');
-    mmkv.set('userName', '');
+    mmkv.clearAll();
+    // mmkv.set('userToken', '');
+    // mmkv.set('userGraphToken', '');
+    // mmkv.set('userImage', '');
+    // mmkv.set('userName', '');
     return true;
   } catch (error) {
     console.log('error in logout');
@@ -133,8 +130,8 @@ export const userLogout = () => {
 
 export const checkTokenValidity = (): boolean => {
   try {
-    const expirationTime = mmkv.getString('tokenExpirationTime');
     const authToken = mmkv.getString('userToken') as string;
+    const expirationTime = mmkv.getString('tokenExpirationTime');
     if (!expirationTime) {
       console.log('No expiration time found, redirect to login');
       return false;

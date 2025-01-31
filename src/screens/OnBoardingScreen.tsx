@@ -59,7 +59,7 @@ const OnBoardingScreen = ({
         iosPrefersEphemeralSession: true,
       });
       if (authResponse?.accessToken) {
-        console.log('authResponse first =>>>>', authResponse);
+        // console.log('authResponse first =>>>>', authResponse);
         global.token = authResponse.accessToken;
         mmkv.set('userToken', authResponse.accessToken);
         mmkv.set('tokenExpirationTime', authResponse.accessTokenExpirationDate);

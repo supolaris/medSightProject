@@ -1,17 +1,18 @@
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import React from 'react';
 import { AppColors } from '../../../constants/AppColors';
+import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { UserContext } from '../../../context/Context';
 
 interface ISimpleHeaderProps {
   showMenuIcon?: boolean;
   showSettingsIcon?: boolean;
-  title?: string;
-  userImage?: string;
   onMenuPressed?: () => void;
   onHeaderSettingsPressed?: () => void;
 }
 
 const SimpleHeader = (props: ISimpleHeaderProps) => {
+  const userContext = UserContext();
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -41,13 +42,14 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
             <Image
               style={styles.profileImage}
               source={
-                props.userImage
-                  ? { uri: `data:image/jpeg;base64,${props.userImage}` }
+                userContext.userProfileData?.photo
+                  ? {
+                      uri: `data:image/jpeg;base64,${userContext.userProfileData?.photo}`,
+                    }
                   : require('../../../assets/images/dummyUser.png')
               }
             />
             <View style={styles.profileTextContainer}>
-              {/* <Text style={styles.profileName}>JOHN DOE</Text> */}
               <Text style={styles.logoutText}>Logout</Text>
             </View>
           </View>
@@ -79,8 +81,8 @@ const styles = StyleSheet.create({
   menuIcon: {
     width: 24,
     height: 24,
-    tintColor: AppColors.primaryColor,
     marginRight: 8,
+    borderRadius: 24,
   },
   logoContainer: {
     flexDirection: 'row',

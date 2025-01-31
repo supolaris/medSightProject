@@ -24,11 +24,6 @@ const Legal = (props: IProps) => {
           flex: 1,
         }}
         source={require('../assets/images/common/appBackground.webp')}>
-        {/* <SimpleHeader
-          showSettingsIcon={false}
-          title="Voice"
-          onMenuPressed={props.onMenuPressed}
-        /> */}
         <View style={styles.container}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.iconContainer}>

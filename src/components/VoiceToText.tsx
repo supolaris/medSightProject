@@ -83,10 +83,8 @@ const VoiceToText = (props: IProps) => {
         source={require('../assets/images/common/appBackground.webp')}>
         <SimpleHeader
           showSettingsIcon={false}
-          title="Voice"
           onMenuPressed={props.onMenuPressed}
           onHeaderSettingsPressed={props.onHeaderSettingsPressed}
-          userImage={props.userImage}
         />
         <ScrollView contentContainerStyle={styles.container}>
           {/* Patient Info */}

@@ -1,30 +1,25 @@
 import React from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { AppColors } from '../../../constants/AppColors';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface IAlertPopupProps {
   title?: string;
-  isAlertPopupVisible: boolean;
   messageText: string;
   cancelText: string;
   confirmText: string;
-  onAlertPopupClose: () => void;
+  isAlertPopupVisible: boolean;
+  onAlertPopupClose?: () => void;
   onAlertPopupCancel: () => void;
   onAlertPopupConfirm: () => void;
 }
 
 const AlertPopup = ({
   title,
-  isAlertPopupVisible,
   messageText,
   cancelText,
   confirmText,
+  isAlertPopupVisible,
   onAlertPopupClose,
   onAlertPopupCancel,
   onAlertPopupConfirm,
@@ -36,9 +31,13 @@ const AlertPopup = ({
       onRequestClose={onAlertPopupClose}>
       <View style={styles.container}>
         <View style={styles.innerContainer}>
-          <Image
-            source={require('../../../assets/images/logoutIcon.webp')}
-            style={styles.image}
+          <MaterialIcons
+            style={{
+              marginBottom: 20,
+            }}
+            size={40}
+            name="logout"
+            color={AppColors.black}
           />
           <View style={styles.textView}>
             {title && <Text style={styles.title}>{title}</Text>}
@@ -65,57 +64,53 @@ const AlertPopup = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   innerContainer: {
     width: 300,
     padding: 20,
-    backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
+    backgroundColor: 'white',
   },
-  image: {
-    width: 50,
-    height: 50,
-    marginBottom: 20,
-  },
+
   textView: {
     marginBottom: 20,
   },
   title: {
     fontSize: 18,
+    color: '#000000',
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#000000',
   },
   message: {
     fontSize: 16,
     textAlign: 'center',
   },
   buttonView: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
   },
   cancelButton: {
-    backgroundColor: '#f1f1f1',
     alignSelf: 'center',
-    paddingHorizontal: 30,
-    paddingVertical: 5,
     borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 30,
+    backgroundColor: AppColors.primaryColor,
   },
   confirmButton: {
-    backgroundColor: '#0397A8',
     alignSelf: 'center',
-    paddingHorizontal: 30,
-    paddingVertical: 5,
     borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 30,
+    backgroundColor: AppColors.primaryColor,
   },
   buttonText: {
-    color: 'black',
     fontSize: 16,
+    color: AppColors.white,
   },
 });
 

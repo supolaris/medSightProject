@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import PatientDetails from '../components/PatientDetails';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
 import {
   deletePatientService,
   getMyPatientDetailsService,
 } from '../utils/MyPatientServices';
-import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
 import { AppMessages } from '../constants/AppMessages';
+import PatientDetails from '../components/PatientDetails';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
+import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
 
 const PatientDetailScreen = ({
   route,
@@ -15,15 +15,13 @@ const PatientDetailScreen = ({
 }: MainStackScreenProps<'PatientDetails'>) => {
   const { patient } = route.params;
   const [activeTab, setActiveTab] = useState<string>('PatientInsight');
-  const [userImage, setUserImage] = useState<string>('');
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [userDetails, setUserDetails] =
     useState<IGetPatientDetailsResponse | null>(null);
 
   useEffect(() => {
-    const userName = mmkv.getString('userImage') as string;
-    setUserImage(userName);
     getPatientDetails();
   }, []);
 
@@ -102,19 +100,18 @@ const PatientDetailScreen = ({
 
   return (
     <PatientDetails
-      isLoading={isLoading}
-      userDetails={userDetails}
-      userImage={userImage}
       patient={patient}
+      isLoading={isLoading}
       activeTab={activeTab}
-      onNewIntakePress={handleNewIntake}
-      onStartConsultationPress={handleStartConsultation}
-      onCoPilotPress={handleCoPilot}
+      userDetails={userDetails}
       onChangeTab={onChangeTab}
       onEditPress={onEditPress}
       onDeletePress={onDeletePress}
       onMenuPressed={onMenuPressed}
+      onCoPilotPress={handleCoPilot}
+      onNewIntakePress={handleNewIntake}
       onHeaderSettingsPressed={onHeaderSettingsPressed}
+      onStartConsultationPress={handleStartConsultation}
     />
   );
 };
