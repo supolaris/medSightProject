@@ -1,14 +1,9 @@
 import { View } from 'react-native';
 import React, { useEffect } from 'react';
-import { addEventListener } from '@react-native-community/netinfo';
 import { UserContext } from '../context/Context';
-import {
-  checkTokenValidity,
-  MicrosoftGraphConfiguration,
-  mmkv,
-} from '../utils/CommonFunctions';
+import { checkTokenValidity } from '../utils/CommonFunctions';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { refresh } from 'react-native-app-auth';
+import { addEventListener } from '@react-native-community/netinfo';
 
 const WalkthroughScreen = ({
   navigation,
@@ -16,13 +11,14 @@ const WalkthroughScreen = ({
   const { updateisInternetConnected } = UserContext();
 
   useEffect(() => {
-    // handleNetworkInfo();
-    checkAuthentication();
+    Promise.all([handleNetworkInfo(), checkAuthentication()]);
   }, []);
 
-  const checkAuthentication = () => {
+  const checkAuthentication = async () => {
     try {
-      const isAuthenticated = checkTokenValidity();
+      const isAuthenticated = await checkTokenValidity();
+
+      console.log('isAuthenticated', isAuthenticated);
       if (isAuthenticated) {
         console.log('hello world authenticated');
         navigation.navigate('Patients');
@@ -38,24 +34,12 @@ const WalkthroughScreen = ({
   const handleNetworkInfo = async () => {
     try {
       addEventListener((state) => {
-        console.log('Connection type', state.type);
-        console.log('Is connected?', state.isConnected);
+        // console.log('Connection type', state.type);
+        // console.log('Is connected?', state.isConnected);
         updateisInternetConnected(state.isConnected!);
       });
     } catch (error) {
       console.log('Error arises on checking network info');
-    }
-  };
-
-  const tokenRefresh = async () => {
-    try {
-      let provider = 'identifyServer';
-      const config = MicrosoftGraphConfiguration[provider];
-      const result = await refresh(config, {
-        refreshToken: '',
-      });
-    } catch (error) {
-      console.log('error in refresing token', error);
     }
   };
 

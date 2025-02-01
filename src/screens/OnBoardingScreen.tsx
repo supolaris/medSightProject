@@ -1,23 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
-
 import {
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import OnBoarding from '../components/OnBoarding';
-import { onBoardingData } from '../constants/StaticData';
-
-import { authorize } from 'react-native-app-auth';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
 import {
   MicrosoftConfiguration,
-  MicrosoftGraphConfiguration,
   mmkv,
   showToast,
 } from '../utils/CommonFunctions';
+import { authorize } from 'react-native-app-auth';
+import OnBoarding from '../components/OnBoarding';
 import { AppMessages } from '../constants/AppMessages';
+import { onBoardingData } from '../constants/StaticData';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 let currentIndex = 0;
 const OnBoardingScreen = ({
@@ -50,8 +47,6 @@ const OnBoardingScreen = ({
 
   const onMicrosoftLoginPressed = async () => {
     try {
-      // setIsLoading(true);
-      // let provider = 'identifyServer';
       const config = MicrosoftConfiguration['identifyServer'];
       let authResponse = await authorize({
         ...config,
@@ -59,12 +54,11 @@ const OnBoardingScreen = ({
         iosPrefersEphemeralSession: true,
       });
       if (authResponse?.accessToken) {
-        // console.log('authResponse first =>>>>', authResponse);
         global.token = authResponse.accessToken;
+        mmkv.set('refreshToken', authResponse.refreshToken);
         mmkv.set('userToken', authResponse.accessToken);
         mmkv.set('tokenExpirationTime', authResponse.accessTokenExpirationDate);
         navigation.replace('Patients');
-        // await getGraphToken();
       } else {
         showToast(AppMessages.wentWrong);
       }
@@ -75,29 +69,29 @@ const OnBoardingScreen = ({
     }
   };
 
-  const getGraphToken = async () => {
-    try {
-      // let provider = 'identifyServer';
-      const config = MicrosoftGraphConfiguration['identifyServer'];
-      let authResponse = await authorize({
-        ...config,
-        connectionTimeoutSeconds: 5,
-        iosPrefersEphemeralSession: true,
-      });
-      if (authResponse?.accessToken) {
-        global.graphToken = authResponse?.accessToken;
-        mmkv.set('userGraphToken', authResponse.accessToken);
-        navigation.replace('Patients');
-      } else {
-        showToast(AppMessages.wentWrong);
-      }
-    } catch (error) {
-      showToast(AppMessages.wentWrong);
-      console.log('error in getting graph token', error);
-    } finally {
-      // setIsLoading(false);
-    }
-  };
+  // const getGraphToken = async () => {
+  //   try {
+  //     // let provider = 'identifyServer';
+  //     const config = MicrosoftGraphConfiguration['identifyServer'];
+  //     let authResponse = await authorize({
+  //       ...config,
+  //       connectionTimeoutSeconds: 5,
+  //       iosPrefersEphemeralSession: true,
+  //     });
+  //     if (authResponse?.accessToken) {
+  //       global.graphToken = authResponse?.accessToken;
+  //       mmkv.set('userGraphToken', authResponse.accessToken);
+  //       navigation.replace('Patients');
+  //     } else {
+  //       showToast(AppMessages.wentWrong);
+  //     }
+  //   } catch (error) {
+  //     showToast(AppMessages.wentWrong);
+  //     console.log('error in getting graph token', error);
+  //   } finally {
+  //     // setIsLoading(false);
+  //   }
+  // };
 
   return (
     <OnBoarding

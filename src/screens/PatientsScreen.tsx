@@ -7,7 +7,13 @@ import {
   getMyPatientsService,
   getSearchPatientsService,
 } from '../utils/MyPatientServices';
-import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
+import {
+  checkTokenValidity,
+  mmkv,
+  showToast,
+  tokenRefresh,
+  userLogout,
+} from '../utils/CommonFunctions';
 import { AppMessages } from '../constants/AppMessages';
 import { getUserProfileService } from '../utils/UserServices';
 import { UserContext } from '../context/Context';
@@ -32,11 +38,16 @@ const PatientsScreen = ({
 
   const getPatients = async () => {
     try {
-      let tempPageSize = 20;
-      const response = await getMyPatientsService(tempPageSize);
-      if (response.items) {
-        patientsStoredData = response.items;
-        setMyPatientsData(response.items);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        let tempPageSize = 20;
+        const response = await getMyPatientsService(tempPageSize);
+        if (response.items) {
+          patientsStoredData = response.items;
+          setMyPatientsData(response.items);
+        }
+      } else {
+        console.log('add login popup');
       }
     } catch (error) {
       console.log('error in getting patients', error);
@@ -45,18 +56,23 @@ const PatientsScreen = ({
 
   const getUserProfile = async () => {
     try {
-      const response = await getUserProfileService();
-      if (response) {
-        // const base64Image = Buffer.from(response.photo, 'binary').toString(
-        //   'base64',
-        // );
-        userContext.updateUserProfileData({
-          displayName: response?.displayName,
-          email: response?.email,
-          photo: response?.photo,
-        });
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        const response = await getUserProfileService();
+        if (response) {
+          // const base64Image = Buffer.from(response.photo, 'binary').toString(
+          //   'base64',
+          // );
+          userContext.updateUserProfileData({
+            displayName: response?.displayName,
+            email: response?.email,
+            photo: response?.photo,
+          });
+        } else {
+          showToast('Error in getting user profile data');
+        }
       } else {
-        showToast('Error in getting user profile data');
+        console.log('add login popup');
       }
     } catch (error) {
       console.log('error in getting userDetails', error);
@@ -74,11 +90,16 @@ const PatientsScreen = ({
     if (searchVal?.length > 0) {
       try {
         setIsLoading(true);
-        const response = await getSearchPatientsService(
-          searchVal?.toLowerCase(),
-        );
-        if (response?.items) {
-          setMyPatientsData(response?.items);
+        const isTokenValid = await checkTokenValidity();
+        if (isTokenValid) {
+          const response = await getSearchPatientsService(
+            searchVal?.toLowerCase(),
+          );
+          if (response?.items) {
+            setMyPatientsData(response?.items);
+          }
+        } else {
+          console.log('add login popup');
         }
       } catch (error) {
         console.log('error in getting searched patient', error);

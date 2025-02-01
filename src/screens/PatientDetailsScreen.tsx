@@ -7,7 +7,12 @@ import { AppMessages } from '../constants/AppMessages';
 import PatientDetails from '../components/PatientDetails';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
-import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
+import {
+  checkTokenValidity,
+  mmkv,
+  showToast,
+  userLogout,
+} from '../utils/CommonFunctions';
 
 const PatientDetailScreen = ({
   route,
@@ -32,11 +37,18 @@ const PatientDetailScreen = ({
   const getPatientDetails = async () => {
     try {
       setIsLoading(true);
-      const response = await getMyPatientDetailsService(patient?.id);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        const response = await getMyPatientDetailsService(patient?.id);
 
-      if (response) {
-        console.log('patient details response', patient?.id);
-        setUserDetails(response);
+        if (response) {
+          console.log('patient details response', patient?.id);
+          setUserDetails(response);
+        } else {
+          showToast(AppMessages.wentWrong);
+        }
+      } else {
+        console.log('add login popup');
       }
     } catch (error) {
       console.log('error in getting patient details', error);
@@ -70,17 +82,22 @@ const PatientDetailScreen = ({
   const onDeletePress = async () => {
     try {
       setIsLoading(true);
-      let patientId = mmkv.getString('patientId');
-      if (patientId) {
-        const response = await deletePatientService(patientId);
-        if (response.status === 204) {
-          mmkv.delete('patientId');
-          navigation.replace('Patients', {
-            flow: 'patientDeleted',
-          });
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        let patientId = mmkv.getString('patientId');
+        if (patientId) {
+          const response = await deletePatientService(patientId);
+          if (response.status === 204) {
+            mmkv.delete('patientId');
+            navigation.replace('Patients', {
+              flow: 'patientDeleted',
+            });
+          }
+        } else {
+          showToast(AppMessages.wentWrong);
         }
       } else {
-        showToast(AppMessages.wentWrong);
+        console.log('add login popup');
       }
     } catch (error) {
       console.log('error in deleting patient', error);

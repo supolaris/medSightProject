@@ -3,7 +3,12 @@ import Voice from '@react-native-community/voice';
 import LottieView from 'lottie-react-native';
 import VoiceToText from '../components/VoiceToText';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { mmkv, showToast, userLogout } from '../utils/CommonFunctions';
+import {
+  checkTokenValidity,
+  mmkv,
+  showToast,
+  userLogout,
+} from '../utils/CommonFunctions';
 import { postIntakeNotesService } from '../utils/TranscriptServices';
 import { deletePatientService } from '../utils/MyPatientServices';
 import { AppMessages } from '../constants/AppMessages';
@@ -97,13 +102,18 @@ const VoiceToTextScreen = ({
   const onIntakeNotesSavePressed = async () => {
     try {
       setIsLoading(true);
-      let data = {
-        rawRecordingData: intakeNotesValue,
-      };
-      const response = await postIntakeNotesService(data);
-      if (response.status === 200) {
-        showToast('Notes saved successfully');
-        setIntakeNotesValue('');
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        let data = {
+          rawRecordingData: intakeNotesValue,
+        };
+        const response = await postIntakeNotesService(data);
+        if (response.status === 200) {
+          showToast('Notes saved successfully');
+          setIntakeNotesValue('');
+        }
+      } else {
+        console.log('add login popup');
       }
     } catch (error) {
       console.log('error in posting intake notes', error);
@@ -122,17 +132,22 @@ const VoiceToTextScreen = ({
   const onDeletePressed = async () => {
     try {
       setIsLoading(true);
-      let patientId = mmkv.getString('patientId');
-      if (patientId) {
-        const response = await deletePatientService(patientId);
-        if (response.status === 204) {
-          mmkv.delete('patientId');
-          navigation.replace('Patients', {
-            flow: 'patientDeleted',
-          });
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        let patientId = mmkv.getString('patientId');
+        if (patientId) {
+          const response = await deletePatientService(patientId);
+          if (response.status === 204) {
+            mmkv.delete('patientId');
+            navigation.replace('Patients', {
+              flow: 'patientDeleted',
+            });
+          }
+        } else {
+          showToast(AppMessages.wentWrong);
         }
       } else {
-        showToast(AppMessages.wentWrong);
+        console.log('add login popup');
       }
     } catch (error) {
       console.log('error in deleting patient', error);

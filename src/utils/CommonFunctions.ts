@@ -2,6 +2,7 @@ import moment from 'moment';
 import { AxiosError } from 'axios';
 import { MMKV } from 'react-native-mmkv';
 import Toast from 'react-native-simple-toast';
+import { refresh } from 'react-native-app-auth';
 import { CLIENT_ID, TENANT_ID } from './Config';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
@@ -88,39 +89,35 @@ export const MicrosoftConfiguration: any = {
   },
 };
 
-export const MicrosoftGraphConfiguration: any = {
-  identifyServer: {
-    serviceConfiguration: {
-      authorizationEndpoint:
-        'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-      tokenEndpoint:
-        'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-    },
-    clientId: CLIENT_ID,
-    redirectUrl: 'com.medsightai.android01://oauth/auth/',
-    scopes: [
-      'openid',
-      'profile',
-      'email',
-      'offline_access',
-      'User.Read',
-      'User.ReadBasic.All',
-    ],
-    additionalParameters: {
-      prompt: 'select_account',
-    },
-    issuer: `https://login.microsoftonline.com/${TENANT_ID}/v2.0`,
-    revocationEndpoint: `https://logout.microsoftonline.com/${TENANT_ID}/oauth2/v2.0`,
-  },
-};
+// export const MicrosoftGraphConfiguration: any = {
+//   identifyServer: {
+//     serviceConfiguration: {
+//       authorizationEndpoint:
+//         'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+//       tokenEndpoint:
+//         'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+//     },
+//     clientId: CLIENT_ID,
+//     redirectUrl: 'com.medsightai.android01://oauth/auth/',
+//     scopes: [
+//       'openid',
+//       'profile',
+//       'email',
+//       'offline_access',
+//       'User.Read',
+//       'User.ReadBasic.All',
+//     ],
+//     additionalParameters: {
+//       prompt: 'select_account',
+//     },
+//     issuer: `https://login.microsoftonline.com/${TENANT_ID}/v2.0`,
+//     revocationEndpoint: `https://logout.microsoftonline.com/${TENANT_ID}/oauth2/v2.0`,
+//   },
+// };
 
 export const userLogout = () => {
   try {
     mmkv.clearAll();
-    // mmkv.set('userToken', '');
-    // mmkv.set('userGraphToken', '');
-    // mmkv.set('userImage', '');
-    // mmkv.set('userName', '');
     return true;
   } catch (error) {
     console.log('error in logout');
@@ -128,26 +125,61 @@ export const userLogout = () => {
   }
 };
 
-export const checkTokenValidity = (): boolean => {
+export const checkTokenValidity = async (): Promise<boolean> => {
   try {
-    const authToken = mmkv.getString('userToken') as string;
+    const authToken = mmkv.getString('userToken');
+    if (!authToken) {
+      console.log('Auth token does not exist, redirecting to login');
+      return false;
+    }
+    const refreshToken = mmkv.getString('refreshToken');
+    if (!refreshToken) {
+      console.log('Refresh token does not exist, redirecting to login');
+      return false;
+    }
     const expirationTime = mmkv.getString('tokenExpirationTime');
     if (!expirationTime) {
-      console.log('No expiration time found, redirect to login');
+      console.log('No expiration time found, redirecting to login');
       return false;
     }
     const currentTime = moment().utc();
     const tokenExpiryTime = moment(expirationTime);
     if (tokenExpiryTime.isAfter(currentTime)) {
-      console.log('token expiration time remaining');
+      console.log('Token is valid');
       global.token = authToken;
       return true;
-    } else {
-      console.log('Token expired, redirect to login');
-      return false;
     }
-  } catch (error) {
-    console.log('Error while checking token validity:', error);
+    console.log('Token expired, attempting to refresh');
+    const newToken = await tokenRefresh(refreshToken);
+    if (newToken) {
+      console.log('Token refreshed successfully');
+      return true;
+    }
+    console.log('Token refresh failed, redirecting to login');
     return false;
+  } catch (error) {
+    console.error('Error while checking token validity:', error);
+    return false;
+  }
+};
+
+export const tokenRefresh = async (
+  refreshToken: string,
+): Promise<string | null> => {
+  try {
+    const config = MicrosoftConfiguration['identifyServer'];
+    const result = await refresh(config, { refreshToken });
+    if (result && result.accessToken && result.refreshToken) {
+      mmkv.set('userToken', result.accessToken);
+      mmkv.set('refreshToken', result.refreshToken);
+      mmkv.set('tokenExpirationTime', result.accessTokenExpirationDate);
+      global.token = result.accessToken;
+      return result.accessToken;
+    }
+    console.log('Token refresh response is invalid');
+    return null;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return null;
   }
 };
