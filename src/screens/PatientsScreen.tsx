@@ -48,6 +48,7 @@ const PatientsScreen = ({
         }
       } else {
         console.log('add login popup');
+        // navigation.replace("Splash")
       }
     } catch (error) {
       console.log('error in getting patients', error);
@@ -73,6 +74,7 @@ const PatientsScreen = ({
         }
       } else {
         console.log('add login popup');
+        // navigation.replace("Splash")
       }
     } catch (error) {
       console.log('error in getting userDetails', error);
@@ -100,6 +102,7 @@ const PatientsScreen = ({
           }
         } else {
           console.log('add login popup');
+          // navigation.replace("Splash")
         }
       } catch (error) {
         console.log('error in getting searched patient', error);

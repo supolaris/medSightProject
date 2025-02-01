@@ -49,6 +49,7 @@ const PatientDetailScreen = ({
         }
       } else {
         console.log('add login popup');
+        // navigation.replace("Splash")
       }
     } catch (error) {
       console.log('error in getting patient details', error);
@@ -98,6 +99,7 @@ const PatientDetailScreen = ({
         }
       } else {
         console.log('add login popup');
+        // navigation.replace("Splash")
       }
     } catch (error) {
       console.log('error in deleting patient', error);

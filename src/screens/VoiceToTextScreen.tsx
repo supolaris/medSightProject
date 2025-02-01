@@ -114,6 +114,7 @@ const VoiceToTextScreen = ({
         }
       } else {
         console.log('add login popup');
+        // navigation.replace("Splash")
       }
     } catch (error) {
       console.log('error in posting intake notes', error);
@@ -148,6 +149,7 @@ const VoiceToTextScreen = ({
         }
       } else {
         console.log('add login popup');
+        // navigation.replace("Splash")
       }
     } catch (error) {
       console.log('error in deleting patient', error);
