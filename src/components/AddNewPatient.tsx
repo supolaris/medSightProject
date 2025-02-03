@@ -43,6 +43,8 @@ interface AddNewPatientProps {
   onConfirmDatePicker: (date: Date) => void;
   setForm: React.Dispatch<React.SetStateAction<any>>;
   onImageSelectionOptionPressed: (val: number) => void;
+  onMenuPressed: () => void;
+  onHeaderSettingsPressed: () => void;
 }
 const AddNewPatient: React.FC<AddNewPatientProps> = ({
   form,
@@ -61,6 +63,8 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
   onAlertPopupConfirmPressed,
   onImageSelectionPopupClose,
   onImageSelectionOptionPressed,
+  onMenuPressed,
+  onHeaderSettingsPressed,
 }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -68,7 +72,11 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
         resizeMode="stretch"
         style={{ flex: 1 }}
         source={require('../assets/images/common/appBackground.webp')}>
-        <SimpleHeader showSettingsIcon={false} />
+        <SimpleHeader
+          onMenuPressed={onMenuPressed}
+          onHeaderSettingsPressed={onHeaderSettingsPressed}
+          showSettingsIcon={false}
+        />
         <ImageSelectionPopup
           isImageSelectionPopupVisible={isImageSelectionPopupVisible}
           onImageSelectionPopupClose={onImageSelectionPopupClose}

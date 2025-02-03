@@ -4,7 +4,7 @@ import {
   launchImageLibrary,
   MediaType,
 } from 'react-native-image-picker';
-import { showToast } from '../utils/CommonFunctions';
+import { showToast, userLogout } from '../utils/CommonFunctions';
 import { AppMessages } from '../constants/AppMessages';
 import AddNewPatient from '../components/AddNewPatient';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
@@ -146,6 +146,19 @@ const AddNewPatientScreen = ({
     setIsDatePickerVisible(true);
   };
 
+  const onMenuPressed = () => {
+    navigation.navigate('SideMenu');
+  };
+
+  const onHeaderSettingsPressed = async () => {
+    const result = userLogout();
+    if (result) {
+      navigation.replace('Splash');
+    } else {
+      showToast(AppMessages.wentWrong);
+    }
+  };
+
   return (
     <AddNewPatient
       form={form}
@@ -164,6 +177,8 @@ const AddNewPatientScreen = ({
       onImageSelectionPopupClose={onImageSelectionPopupClose}
       onAlertPopupConfirmPressed={onAlertPopupConfirmPressed}
       onImageSelectionOptionPressed={onImageSelectionOptionPressed}
+      onHeaderSettingsPressed={onHeaderSettingsPressed}
+      onMenuPressed={onMenuPressed}
       //
     />
   );

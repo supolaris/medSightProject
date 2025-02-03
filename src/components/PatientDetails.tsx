@@ -59,7 +59,7 @@ const PatientDetails = (props: IProps) => {
                 source={require('../assets/images/dummyUser.png')}
                 style={styles.patientImage}
               />
-              <View style={{ flexDirection: 'row', left: 90, marginTop: 7 }}>
+              <View style={{ flexDirection: 'row', left: 60, marginTop: 7 }}>
                 <TouchableOpacity onPress={props.onEditPress}>
                   <View>
                     <Image
@@ -325,7 +325,8 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     alignSelf: 'center',
-    marginLeft: 5,
+    marginLeft: 3,
+    width: '65%',
   },
 
   viewInsightText: {

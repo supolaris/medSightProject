@@ -8,11 +8,16 @@ import {
   Dimensions,
 } from 'react-native';
 import AlertPopup from './common/popups/AlertPopup';
+import { UserContext } from '../context/Context';
 const { width } = Dimensions.get('window');
 
 interface IProps {
-  userImage: string;
-  userName: string;
+  userProfileData: {
+    displayName: string;
+    email: string;
+    photo: string;
+  };
+
   onPressClose: () => void;
   onLegalPressed: () => void;
   onConfigurationPressed: () => void;
@@ -24,6 +29,7 @@ interface IProps {
 }
 
 const SideMenu = (props: IProps) => {
+  const userContext = UserContext();
   return (
     <View style={styles.container}>
       <AlertPopup
@@ -37,14 +43,18 @@ const SideMenu = (props: IProps) => {
       />
       <View style={styles.profileContainer}>
         <Image
+          style={styles.profileImage}
           source={
-            props.userImage
-              ? props.userImage
+            userContext.userProfileData?.photo
+              ? {
+                  uri: `data:image/jpeg;base64,${userContext.userProfileData?.photo}`,
+                }
               : require('../assets/images/dummyUser.png')
           }
-          style={styles.profileImage}
         />
-        <Text style={styles.profileName}>{props.userName}</Text>
+        <Text style={styles.profileName}>
+          {props.userProfileData?.displayName}
+        </Text>
         <TouchableOpacity
           style={styles.closeButton}
           onPress={props.onPressClose}>

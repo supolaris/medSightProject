@@ -649,7 +649,8 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     alignSelf: 'center',
-    marginLeft: 5,
+    marginLeft: 3,
+    width: '65%',
   },
   selectedButton: {
     backgroundColor: '#3781C3',

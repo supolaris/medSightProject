@@ -1,23 +1,49 @@
-import React from 'react';
-import { AppColors } from '../../../constants/AppColors';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { AppColors } from '../../../constants/AppColors';
 import { UserContext } from '../../../context/Context';
+import { userLogout } from '../../../utils/CommonFunctions';
+import AlertPopup from '../../common/popups/AlertPopup';
 
 interface ISimpleHeaderProps {
   showMenuIcon?: boolean;
   showSettingsIcon?: boolean;
   onMenuPressed?: () => void;
-  onHeaderSettingsPressed?: () => void;
 }
 
 const SimpleHeader = (props: ISimpleHeaderProps) => {
   const userContext = UserContext();
+  const navigation = useNavigation();
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  // const handleLogout = async () => {
+  //   const result = userLogout();
+  //   if (result) {
+  //     navigation.replace('Splash');
+  //   }
+  // };
+
+  const handleLogout = () => {
+    setIsPopupVisible(true); // Show the popup when logout is clicked
+  };
+
+  // Close the popup without action
+  const handleCancel = () => {
+    setIsPopupVisible(false); // Close the popup
+  };
+
+  // Confirm logout and navigate to Splash
+  const handleConfirm = () => {
+    setIsPopupVisible(false); // Close the popup
+    // Add any logout logic here if needed (e.g., clearing user data)
+    navigation.replace('Splash'); // Navigate to Splash screen
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
         <View style={{ flexDirection: 'row' }}>
-          {/* Menu Icon */}
           <TouchableOpacity
             style={styles.leftIcon}
             onPress={props.onMenuPressed}>
@@ -32,12 +58,9 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
           />
           <Text style={styles.logoText}>Medsight AI</Text>
         </View>
-        {/* Logo and Title */}
-
-        {/* Profile Section */}
         <TouchableOpacity
           style={styles.rightIcon}
-          onPress={props.onHeaderSettingsPressed}>
+          onPress={() => setIsPopupVisible(true)}>
           <View style={styles.profileContainer}>
             <Image
               style={styles.profileImage}
@@ -55,6 +78,16 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
           </View>
         </TouchableOpacity>
       </View>
+
+      <AlertPopup
+        messageText="Are you sure you want to logout"
+        isAlertPopupVisible={isPopupVisible}
+        cancelText="Cancel"
+        confirmText="YES"
+        onAlertPopupClose={handleCancel}
+        onAlertPopupCancel={handleCancel}
+        onAlertPopupConfirm={handleConfirm}
+      />
     </View>
   );
 };
@@ -84,10 +117,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 24,
   },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   logoImage: {
     width: 41,
     height: 33,
@@ -114,11 +143,6 @@ const styles = StyleSheet.create({
   },
   profileTextContainer: {
     marginLeft: 8,
-  },
-  profileName: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: '#3681C3',
   },
   logoutText: {
     fontSize: 8,
