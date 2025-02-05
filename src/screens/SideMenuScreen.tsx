@@ -1,31 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import SideMenu from '../components/SideMenu';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
-import {
-  checkTokenValidity,
-  mmkv,
-  showToast,
-  userLogout,
-} from '../utils/CommonFunctions';
-import { AppMessages } from '../constants/AppMessages';
-import { Alert } from 'react-native';
-import LogoutPopup from '../components/common/popups/AlertPopup';
-import showLogoutPopup from '../components/common/popups/AlertPopup';
-import { getUserProfileService } from '../utils/UserServices';
 import { UserContext } from '../context/Context';
+import React, { useEffect, useState } from 'react';
+import { getUserProfileService } from '../utils/UserServices';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { checkTokenValidity, mmkv, showToast } from '../utils/CommonFunctions';
 
 const SideMenuScreen = ({ navigation }: MainStackScreenProps<'SideMenu'>) => {
-  const [isPopupVisible, setPopupVisible] = useState(false);
   const userContext = UserContext();
-  const [userImage, setUserImage] = useState<string>('');
-  const [userName, setUserName] = useState<string>('');
-  useEffect(() => {
-    const userImage = mmkv.getString('userImage') as string;
-    const userName = mmkv.getString('userName') as string;
-
-    setUserImage(userImage);
-    setUserName(userName);
-  }, []);
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [isMessagePopupVisible, setIsMessagePopupVisible] =
+    useState<boolean>(false);
 
   useEffect(() => {
     Promise.all([, getUserProfile()]).finally(() => {});
@@ -79,23 +63,32 @@ const SideMenuScreen = ({ navigation }: MainStackScreenProps<'SideMenu'>) => {
       } else {
         console.log('add login popup');
         // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in getting userDetails', error);
     }
   };
 
+  const onMessagePopupConfirm = () => {
+    mmkv.clearAll();
+    setIsMessagePopupVisible(false);
+    navigation.replace('Splash');
+  };
+
   return (
     <SideMenu
-      onPressClose={onPressClose}
-      onLegalPressed={onLegalPressed}
-      onConfigurationPressed={onConfigurationPressed}
-      onShareAppPressed={onShareAppPressed}
-      handleLogout={handleLogout}
-      handleCancel={handleCancel}
-      handleConfirm={handleConfirm}
       isPopupVisible={isPopupVisible}
       userProfileData={userContext.userProfileData}
+      isMessagePopupVisible={isMessagePopupVisible}
+      handleLogout={handleLogout}
+      handleCancel={handleCancel}
+      onPressClose={onPressClose}
+      handleConfirm={handleConfirm}
+      onLegalPressed={onLegalPressed}
+      onShareAppPressed={onShareAppPressed}
+      onMessagePopupConfirm={onMessagePopupConfirm}
+      onConfigurationPressed={onConfigurationPressed}
     />
   );
 };

@@ -10,12 +10,6 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import LottieView from 'lottie-react-native';
-import SimpleHeader from './common/headers/SimpleHeader';
-import { Dropdown } from 'react-native-element-dropdown';
-import LoadingPopup from './common/popups/LoadingPopup';
-import { VoiceLottie } from './common/lotties/VoiceLottie';
-import { IMyPatientItems } from '../@types/CommonTypes';
 import {
   calculateAge,
   formatDateOfBirth,
@@ -23,32 +17,40 @@ import {
   normalizeHeight,
   normalizeWidth,
 } from '../utils/CommonFunctions';
+import LottieView from 'lottie-react-native';
+import { AppColors } from '../constants/AppColors';
+import { AppMessages } from '../constants/AppMessages';
+import LoadingPopup from './common/popups/LoadingPopup';
+import SimpleHeader from './common/headers/SimpleHeader';
+import { Dropdown } from 'react-native-element-dropdown';
+import MessagePopup from './common/popups/MessagePopup';
+import { VoiceLottie } from './common/lotties/VoiceLottie';
+import CustomTouchable from './common/touchables/CustomTouchable';
 import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { AppColors } from '../constants/AppColors';
-import CustomTouchable from './common/touchables/CustomTouchable';
-import { AppMessages } from '../constants/AppMessages';
 
 interface IProps {
   isLoading: boolean;
   userImage: string;
-  userDetails: IGetPatientDetailsResponse | null;
-  lottieRef: React.RefObject<LottieView>;
   isRecording: boolean;
   speechToText: string;
-  languageOptions: { label: string; value: string }[];
   selectedLanguage: string;
   intakeNotesValue: string;
   speachTextData: string[];
-  handleIntakeNotesValue: (value: string) => void;
+  isMessagePopupVisible: boolean;
+  lottieRef: React.RefObject<LottieView>;
+  userDetails: IGetPatientDetailsResponse | null;
+  languageOptions: { label: string; value: string }[];
   onClearText: () => void;
-  onVoiceRecordPressed: () => void;
-  onLanguageChange: (value: string) => void;
-  onIntakeNotesSavePressed: () => void;
   onEditPressed: () => void;
-  onDeletePressed: () => void;
   onMenuPressed: () => void;
+  onDeletePressed: () => void;
+  onVoiceRecordPressed: () => void;
+  onMessagePopupConfirm: () => void;
+  onIntakeNotesSavePressed: () => void;
   onHeaderSettingsPressed: () => void;
+  onLanguageChange: (value: string) => void;
+  handleIntakeNotesValue: (value: string) => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -77,6 +79,12 @@ const VoiceToText = (props: IProps) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LoadingPopup isVisible={props.isLoading} />
+      <MessagePopup
+        buttonText="ok"
+        messageText={AppMessages.sessionExpired}
+        isMessagePopupVisible={props.isMessagePopupVisible}
+        onMessagePopupConfirm={props.onMessagePopupConfirm}
+      />
       <ImageBackground
         resizeMode="stretch"
         style={{ flex: 1 }}
@@ -84,7 +92,7 @@ const VoiceToText = (props: IProps) => {
         <SimpleHeader
           showSettingsIcon={false}
           onMenuPressed={props.onMenuPressed}
-          onHeaderSettingsPressed={props.onHeaderSettingsPressed}
+          // onHeaderSettingsPressed={props.onHeaderSettingsPressed}
         />
         <ScrollView contentContainerStyle={styles.container}>
           {/* Patient Info */}

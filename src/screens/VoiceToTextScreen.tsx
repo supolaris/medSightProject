@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Voice from '@react-native-community/voice';
-import LottieView from 'lottie-react-native';
-import VoiceToText from '../components/VoiceToText';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
 import {
   checkTokenValidity,
   mmkv,
   showToast,
   userLogout,
 } from '../utils/CommonFunctions';
-import { postIntakeNotesService } from '../utils/TranscriptServices';
-import { deletePatientService } from '../utils/MyPatientServices';
+import LottieView from 'lottie-react-native';
+import Voice from '@react-native-community/voice';
+import VoiceToText from '../components/VoiceToText';
 import { AppMessages } from '../constants/AppMessages';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { deletePatientService } from '../utils/MyPatientServices';
+import { postIntakeNotesService } from '../utils/TranscriptServices';
 
 const VoiceToTextScreen = ({
   route,
@@ -21,9 +21,13 @@ const VoiceToTextScreen = ({
   const lottieRef = useRef<LottieView>(null);
   const [speechToText, setSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('en-US');
   const [userImage, setUserImage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('en-US');
+  const [speachTextData, setSpeachTextData] = useState<string[]>([]);
+  const [intakeNotesValue, setIntakeNotesValue] = useState<string>('');
+  const [isMessagePopupVisible, setIsMessagePopupVisible] =
+    useState<boolean>(false);
   const languageOptions = [
     { label: 'English (US)', value: 'en-US' },
     { label: 'Hindi (India)', value: 'hi-IN' },
@@ -32,8 +36,6 @@ const VoiceToTextScreen = ({
     { label: 'German (Germany)', value: 'de-DE' },
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
   ];
-  const [intakeNotesValue, setIntakeNotesValue] = useState<string>('');
-  const [speachTextData, setSpeachTextData] = useState<string[]>([]);
 
   useEffect(() => {
     Voice.onSpeechResults = (event: any) => {
@@ -114,7 +116,7 @@ const VoiceToTextScreen = ({
         }
       } else {
         console.log('add login popup');
-        // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in posting intake notes', error);
@@ -149,7 +151,7 @@ const VoiceToTextScreen = ({
         }
       } else {
         console.log('add login popup');
-        // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in deleting patient', error);
@@ -171,27 +173,35 @@ const VoiceToTextScreen = ({
     navigation.navigate('SideMenu');
   };
 
+  const onMessagePopupConfirm = () => {
+    mmkv.clearAll();
+    setIsMessagePopupVisible(false);
+    navigation.replace('Splash');
+  };
+
   return (
     <VoiceToText
       isLoading={isLoading}
       userImage={userImage}
-      userDetails={userDetails}
       lottieRef={lottieRef}
+      userDetails={userDetails}
       isRecording={isRecording}
       speechToText={speechToText}
+      speachTextData={speachTextData}
       languageOptions={languageOptions}
       selectedLanguage={selectedLanguage}
       intakeNotesValue={intakeNotesValue}
-      speachTextData={speachTextData}
-      handleIntakeNotesValue={handleIntakeNotesValue}
+      isMessagePopupVisible={isMessagePopupVisible}
       onClearText={onClearText}
+      onEditPressed={onEditPressed}
+      onMenuPressed={onMenuPressed}
+      onDeletePressed={onDeletePressed}
       onLanguageChange={setSelectedLanguage}
       onVoiceRecordPressed={onVoiceRecordPressed}
-      onIntakeNotesSavePressed={onIntakeNotesSavePressed}
-      onEditPressed={onEditPressed}
-      onDeletePressed={onDeletePressed}
-      onMenuPressed={onMenuPressed}
+      onMessagePopupConfirm={onMessagePopupConfirm}
+      handleIntakeNotesValue={handleIntakeNotesValue}
       onHeaderSettingsPressed={onHeaderSettingsPressed}
+      onIntakeNotesSavePressed={onIntakeNotesSavePressed}
     />
   );
 };

@@ -10,11 +10,13 @@ import {
   SafeAreaView,
   ImageBackground,
 } from 'react-native';
-import SimpleHeader from './common/headers/SimpleHeader';
 import { IMyPatientItems } from '../@types/CommonTypes';
-import RenderPatientListCard from './common/renderComponents/RenderPatientListCard';
 import LoadingPopup from './common/popups/LoadingPopup';
+import SimpleHeader from './common/headers/SimpleHeader';
 import RenderNoDataView from './common/renderComponents/RenderNoDataView';
+import RenderPatientListCard from './common/renderComponents/RenderPatientListCard';
+import MessagePopup from './common/popups/MessagePopup';
+import { AppMessages } from '../constants/AppMessages';
 
 interface IProps {
   userProfileData: {
@@ -24,13 +26,15 @@ interface IProps {
   };
   isLoading: boolean;
   searchVal: string;
+  isMessagePopupVisible: boolean;
   myPatientsData: IMyPatientItems[];
+  onMenuPressed: () => void;
   onSearchPressed: () => void;
+  onPatientAddPressed: () => void;
+  onMessagePopupConfirm: () => void;
+  onHeaderSettingsPressed: () => void;
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
-  onPatientAddPressed: () => void;
-  onMenuPressed: () => void;
-  onHeaderSettingsPressed: () => void;
 }
 
 const Patients = (props: IProps) => {
@@ -44,6 +48,7 @@ const Patients = (props: IProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <LoadingPopup isVisible={props.isLoading} />
+
       <ImageBackground
         resizeMode="stretch"
         style={{
@@ -53,16 +58,17 @@ const Patients = (props: IProps) => {
         <SimpleHeader
           showSettingsIcon={false}
           onMenuPressed={props.onMenuPressed}
-          onHeaderSettingsPressed={props.onHeaderSettingsPressed}
+        />
+        <MessagePopup
+          buttonText="ok"
+          messageText={AppMessages.sessionExpired}
+          isMessagePopupVisible={props.isMessagePopupVisible}
+          onMessagePopupConfirm={props.onMessagePopupConfirm}
         />
         <View style={styles.header}>
           <Text style={styles.welcomeText}>
             WELCOME {props.userProfileData?.displayName}
           </Text>
-          {/* <Image
-            source={{ uri: `data:image/jpeg;base64,${props.userImage}` }}
-            style={{ width: 100, height: 100 }}
-          /> */}
         </View>
         <View style={styles.searchContainer}>
           <View style={styles.searchInputContainer}>

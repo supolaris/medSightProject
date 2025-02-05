@@ -16,6 +16,8 @@ import RenderPatientInsightTab from './common/renderComponents/RenderPatientInsi
 import RenderEncountersTab from './common/renderComponents/RenderEncountersTab';
 import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
 import LoadingPopup from './common/popups/LoadingPopup';
+import MessagePopup from './common/popups/MessagePopup';
+import { AppMessages } from '../constants/AppMessages';
 
 interface IProps {
   isLoading: boolean;
@@ -23,20 +25,28 @@ interface IProps {
 
   patient: IMyPatientItems;
   activeTab: string;
-  onNewIntakePress: () => void;
-  onStartConsultationPress: () => void;
-  onCoPilotPress: () => void;
-  onChangeTab: (val: string) => void;
+  isMessagePopupVisible: boolean;
   onEditPress: () => void;
   onDeletePress: () => void;
   onMenuPressed: () => void;
+  onCoPilotPress: () => void;
+  onNewIntakePress: () => void;
+  onMessagePopupConfirm: () => void;
+  onChangeTab: (val: string) => void;
   onHeaderSettingsPressed: () => void;
+  onStartConsultationPress: () => void;
 }
 
 const PatientDetails = (props: IProps) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F7FBFF' }}>
       <LoadingPopup isVisible={props.isLoading} />
+      <MessagePopup
+        buttonText="ok"
+        messageText={AppMessages.sessionExpired}
+        isMessagePopupVisible={props.isMessagePopupVisible}
+        onMessagePopupConfirm={props.onMessagePopupConfirm}
+      />
       <ImageBackground
         resizeMode="stretch"
         style={{ flex: 1 }}
@@ -44,7 +54,7 @@ const PatientDetails = (props: IProps) => {
         <SimpleHeader
           showSettingsIcon={false}
           onMenuPressed={props.onMenuPressed}
-          onHeaderSettingsPressed={props.onHeaderSettingsPressed}
+          // onHeaderSettingsPressed={props.onHeaderSettingsPressed}
         />
         <ScrollView
           showsVerticalScrollIndicator={false}

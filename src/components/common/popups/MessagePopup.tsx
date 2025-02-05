@@ -1,58 +1,38 @@
 import React from 'react';
 import { AppColors } from '../../../constants/AppColors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface IAlertPopupProps {
+interface IMessagePopupProps {
   title?: string;
   messageText: string;
-  cancelText: string;
-  confirmText: string;
-  isAlertPopupVisible: boolean;
-  onAlertPopupClose?: () => void;
-  onAlertPopupCancel: () => void;
-  onAlertPopupConfirm: () => void;
+  buttonText: string;
+  isMessagePopupVisible: boolean;
+  onMessagePopupConfirm: () => void;
 }
 
-const AlertPopup = ({
-  title,
-  messageText,
-  cancelText,
-  confirmText,
-  isAlertPopupVisible,
-  onAlertPopupClose,
-  onAlertPopupCancel,
-  onAlertPopupConfirm,
-}: IAlertPopupProps) => {
+const MessagePopup = (props: IMessagePopupProps) => {
   return (
-    <Modal
-      transparent={true}
-      visible={isAlertPopupVisible}
-      onRequestClose={onAlertPopupClose}>
+    <Modal transparent={true} visible={props.isMessagePopupVisible}>
       <View style={styles.container}>
         <View style={styles.innerContainer}>
-          <MaterialIcons
+          <Ionicons
+            size={40}
+            name="alert-circle"
+            color={AppColors.primaryColor}
             style={{
               marginBottom: 20,
             }}
-            size={40}
-            name="logout"
-            color={AppColors.black}
           />
           <View style={styles.textView}>
-            {title && <Text style={styles.title}>{title}</Text>}
-            <Text style={styles.message}>{messageText}</Text>
+            {props.title && <Text style={styles.title}>{props.title}</Text>}
+            <Text style={styles.message}>{props.messageText}</Text>
           </View>
           <View style={styles.buttonView}>
             <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={onAlertPopupCancel}>
-              <Text style={styles.buttonText}>{cancelText}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               style={styles.confirmButton}
-              onPress={onAlertPopupConfirm}>
-              <Text style={styles.buttonText}>{confirmText}</Text>
+              onPress={props.onMessagePopupConfirm}>
+              <Text style={styles.buttonText}>{props.buttonText}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -91,8 +71,8 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
   },
   cancelButton: {
     alignSelf: 'center',
@@ -114,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AlertPopup;
+export default MessagePopup;

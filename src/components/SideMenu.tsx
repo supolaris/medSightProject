@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import AlertPopup from './common/popups/AlertPopup';
 import { UserContext } from '../context/Context';
+import AlertPopup from './common/popups/AlertPopup';
+import MessagePopup from './common/popups/MessagePopup';
+import { AppMessages } from '../constants/AppMessages';
+
 const { width } = Dimensions.get('window');
 
 interface IProps {
@@ -17,15 +20,16 @@ interface IProps {
     email: string;
     photo: string;
   };
-
+  isPopupVisible: boolean;
+  isMessagePopupVisible: boolean;
   onPressClose: () => void;
-  onLegalPressed: () => void;
-  onConfigurationPressed: () => void;
-  onShareAppPressed: () => void;
   handleLogout: () => void;
   handleCancel: () => void;
   handleConfirm: () => void;
-  isPopupVisible: boolean;
+  onLegalPressed: () => void;
+  onShareAppPressed: () => void;
+  onMessagePopupConfirm: () => void;
+  onConfigurationPressed: () => void;
 }
 
 const SideMenu = (props: IProps) => {
@@ -40,6 +44,12 @@ const SideMenu = (props: IProps) => {
         onAlertPopupClose={props.handleCancel}
         onAlertPopupCancel={props.handleCancel}
         onAlertPopupConfirm={props.handleConfirm}
+      />
+      <MessagePopup
+        buttonText="ok"
+        messageText={AppMessages.sessionExpired}
+        isMessagePopupVisible={props.isMessagePopupVisible}
+        onMessagePopupConfirm={props.onMessagePopupConfirm}
       />
       <View style={styles.profileContainer}>
         <Image

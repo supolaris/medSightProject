@@ -20,9 +20,9 @@ const PatientDetailScreen = ({
 }: MainStackScreenProps<'PatientDetails'>) => {
   const { patient } = route.params;
   const [activeTab, setActiveTab] = useState<string>('PatientInsight');
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [isMessagePopupVisible, setIsMessagePopupVisible] =
+    useState<boolean>(false);
   const [userDetails, setUserDetails] =
     useState<IGetPatientDetailsResponse | null>(null);
 
@@ -49,7 +49,7 @@ const PatientDetailScreen = ({
         }
       } else {
         console.log('add login popup');
-        // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in getting patient details', error);
@@ -99,7 +99,7 @@ const PatientDetailScreen = ({
         }
       } else {
         console.log('add login popup');
-        // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in deleting patient', error);
@@ -117,18 +117,26 @@ const PatientDetailScreen = ({
     }
   };
 
+  const onMessagePopupConfirm = () => {
+    mmkv.clearAll();
+    setIsMessagePopupVisible(false);
+    navigation.replace('Splash');
+  };
+
   return (
     <PatientDetails
       patient={patient}
       isLoading={isLoading}
       activeTab={activeTab}
       userDetails={userDetails}
+      isMessagePopupVisible={isMessagePopupVisible}
       onChangeTab={onChangeTab}
       onEditPress={onEditPress}
       onDeletePress={onDeletePress}
       onMenuPressed={onMenuPressed}
       onCoPilotPress={handleCoPilot}
       onNewIntakePress={handleNewIntake}
+      onMessagePopupConfirm={onMessagePopupConfirm}
       onHeaderSettingsPressed={onHeaderSettingsPressed}
       onStartConsultationPress={handleStartConsultation}
     />

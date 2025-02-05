@@ -1,8 +1,4 @@
-import Patients from '../components/Patients';
-import { Buffer } from 'buffer';
 import React, { useEffect, useState } from 'react';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { IMyPatientItems } from '../@types/CommonTypes';
 import {
   getMyPatientsService,
   getSearchPatientsService,
@@ -11,12 +7,14 @@ import {
   checkTokenValidity,
   mmkv,
   showToast,
-  tokenRefresh,
   userLogout,
 } from '../utils/CommonFunctions';
-import { AppMessages } from '../constants/AppMessages';
-import { getUserProfileService } from '../utils/UserServices';
+import Patients from '../components/Patients';
 import { UserContext } from '../context/Context';
+import { AppMessages } from '../constants/AppMessages';
+import { IMyPatientItems } from '../@types/CommonTypes';
+import { getUserProfileService } from '../utils/UserServices';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
 
 let patientsStoredData: IMyPatientItems[] = [];
 const PatientsScreen = ({
@@ -28,6 +26,8 @@ const PatientsScreen = ({
   const userContext = UserContext();
   const [searchVal, setSearchVal] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isMessagePopupVisible, setIsMessagePopupVisible] =
+    useState<boolean>(false);
   const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const PatientsScreen = ({
         }
       } else {
         console.log('add login popup');
-        // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in getting patients', error);
@@ -61,9 +61,6 @@ const PatientsScreen = ({
       if (isTokenValid) {
         const response = await getUserProfileService();
         if (response) {
-          // const base64Image = Buffer.from(response.photo, 'binary').toString(
-          //   'base64',
-          // );
           userContext.updateUserProfileData({
             displayName: response?.displayName,
             email: response?.email,
@@ -74,7 +71,7 @@ const PatientsScreen = ({
         }
       } else {
         console.log('add login popup');
-        // navigation.replace("Splash")
+        setIsMessagePopupVisible(true);
       }
     } catch (error) {
       console.log('error in getting userDetails', error);
@@ -102,7 +99,7 @@ const PatientsScreen = ({
           }
         } else {
           console.log('add login popup');
-          // navigation.replace("Splash")
+          setIsMessagePopupVisible(true);
         }
       } catch (error) {
         console.log('error in getting searched patient', error);
@@ -113,7 +110,6 @@ const PatientsScreen = ({
   };
 
   const onPatientPressed = (item: IMyPatientItems) => {
-    // console.log('patient id =>>>>>', item.id);
     mmkv.set('patientId', item.id);
     navigation.navigate('PatientDetails', { patient: item });
   };
@@ -135,17 +131,25 @@ const PatientsScreen = ({
     }
   };
 
+  const onMessagePopupConfirm = () => {
+    mmkv.clearAll();
+    setIsMessagePopupVisible(false);
+    navigation.replace('Splash');
+  };
+
   return (
     <Patients
       isLoading={isLoading}
       searchVal={searchVal}
       myPatientsData={myPatientsData}
+      isMessagePopupVisible={isMessagePopupVisible}
       userProfileData={userContext.userProfileData}
       onMenuPressed={onMenuPressed}
       onHandleSearch={onHandleSearch}
       onSearchPressed={onSearchPressed}
       onPatientPressed={onPatientPressed}
       onPatientAddPressed={onPatientAddPressed}
+      onMessagePopupConfirm={onMessagePopupConfirm}
       onHeaderSettingsPressed={onHeaderSettingsPressed}
     />
   );
