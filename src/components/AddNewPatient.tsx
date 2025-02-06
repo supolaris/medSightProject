@@ -16,6 +16,7 @@ import { AppMessages } from '../constants/AppMessages';
 import SimpleHeader from './common/headers/SimpleHeader';
 import ImageSelectionPopup from './common/popups/ImageSelectionPopup';
 import moment from 'moment';
+import LoadingPopup from './common/popups/LoadingPopup';
 interface AddNewPatientProps {
   userImage: string;
   form: {
@@ -29,42 +30,44 @@ interface AddNewPatientProps {
     postal: string;
     country: string;
   };
+  isVisible: boolean;
   isAlertPopupVisible: boolean;
   isDatePickerVisible: boolean;
   isImageSelectionPopupVisible: boolean;
   handleSave: () => void;
+  onMenuPressed: () => void;
   onPressDOBPicker: () => void;
   onCancelDatePicker: () => void;
   onBackButtonPressed: () => void;
   onImageSelectPressed: () => void;
+  onHeaderSettingsPressed: () => void;
   onAlertPopupCancelPressed: () => void;
   onAlertPopupConfirmPressed: () => void;
   onImageSelectionPopupClose: () => void;
   onConfirmDatePicker: (date: Date) => void;
   setForm: React.Dispatch<React.SetStateAction<any>>;
   onImageSelectionOptionPressed: (val: number) => void;
-  onMenuPressed: () => void;
-  onHeaderSettingsPressed: () => void;
 }
 const AddNewPatient: React.FC<AddNewPatientProps> = ({
   form,
+  isVisible,
   userImage,
   isAlertPopupVisible,
   isDatePickerVisible,
   isImageSelectionPopupVisible,
   setForm,
   handleSave,
+  onMenuPressed,
   onPressDOBPicker,
   onCancelDatePicker,
   onConfirmDatePicker,
   onBackButtonPressed,
   onImageSelectPressed,
+  onHeaderSettingsPressed,
   onAlertPopupCancelPressed,
   onAlertPopupConfirmPressed,
   onImageSelectionPopupClose,
   onImageSelectionOptionPressed,
-  onMenuPressed,
-  onHeaderSettingsPressed,
 }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -74,7 +77,7 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
         source={require('../assets/images/common/appBackground.webp')}>
         <SimpleHeader
           onMenuPressed={onMenuPressed}
-          onHeaderSettingsPressed={onHeaderSettingsPressed}
+          // onHeaderSettingsPressed={onHeaderSettingsPressed}
           showSettingsIcon={false}
         />
         <ImageSelectionPopup
@@ -90,6 +93,7 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
           onAlertPopupCancel={onAlertPopupCancelPressed}
           onAlertPopupConfirm={onAlertPopupConfirmPressed}
         />
+        <LoadingPopup isVisible={isVisible} />
         <DatePicker
           modal
           mode="date"

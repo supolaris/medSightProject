@@ -61,23 +61,6 @@ export const postRequest = async (endPoint: string, data: any) => {
   return response;
 };
 
-export const postWithoutDataRequest = async (endPoint: string) => {
-  console.log('Api endpoint', baseUrl + endPoint);
-  // console.log('get global.token from get request', global.token);
-  let _baseUrl = baseUrl;
-  const response = await axios({
-    url: `${_baseUrl}${endPoint}`,
-    method: 'post',
-    headers: {
-      Authorization: `Bearer ${global.token}`,
-    },
-
-    timeout: requestTimeout,
-  });
-
-  return response;
-};
-
 export const deleteRequest = async (endPoint: string) => {
   console.log('Api endpoint', baseUrl + endPoint);
   // console.log('get global.token from get request', global.token);

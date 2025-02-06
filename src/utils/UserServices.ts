@@ -1,9 +1,9 @@
-import { IGetUserProfileResponse } from '../@types/ApiResponses';
+import { getRequest } from './NetworkServices';
 import { ApiNames } from '../constants/ApiNames';
-import { postWithoutDataRequest } from './NetworkServices';
+import { IGetUserProfileResponse } from '../@types/ApiResponses';
 
 export const getUserProfileService = async () => {
   const { data: response }: { data: IGetUserProfileResponse } =
-    await postWithoutDataRequest(ApiNames.getUserProfile);
+    await getRequest(ApiNames.getUserProfile);
   return response;
 };

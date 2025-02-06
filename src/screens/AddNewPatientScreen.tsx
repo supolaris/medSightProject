@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   launchCamera,
   launchImageLibrary,
   MediaType,
 } from 'react-native-image-picker';
-import { showToast, userLogout } from '../utils/CommonFunctions';
+import moment from 'moment';
 import { AppMessages } from '../constants/AppMessages';
 import AddNewPatient from '../components/AddNewPatient';
+import { showToast, userLogout } from '../utils/CommonFunctions';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { addNewPatientService } from '../utils/MyPatientServices';
 import { requestCameraPermission } from '../utils/PermissionsUtils';
-import moment from 'moment';
 
 const AddNewPatientScreen = ({
   navigation,
@@ -26,19 +27,13 @@ const AddNewPatientScreen = ({
     country: '',
   });
   const [userImage, setUserImage] = useState<string>('');
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [isImageSelectionPopupVisible, setIsImageSelectionPopupVisible] =
     useState<boolean>(false);
   const [isAlertPopupVisible, setIsAlertPopupVisible] =
     useState<boolean>(false);
   const [isDatePickerVisible, setIsDatePickerVisible] =
     useState<boolean>(false);
-
-  // const handleDateChange = (event: any, selectedDate?: Date) => {
-  //   setShowDatePicker(false);
-  //   if (selectedDate) {
-  //     setForm({ ...form, birthDate: selectedDate.toISOString().split('T')[0] });
-  //   }
-  // };
 
   // Save Button.....................
   const handleSave = () => {
@@ -48,6 +43,65 @@ const AddNewPatientScreen = ({
       setIsAlertPopupVisible(true);
     }
     //save logic here (API call)
+  };
+
+  const savePatient = async () => {
+    try {
+      setIsVisible(true);
+      const data = {
+        name: [
+          {
+            use: 'official',
+            text: `${form.givenName} ${form.familyName}`,
+            family: form.familyName,
+            given: [form.givenName],
+            prefix: ['Mr.'],
+            suffix: ['Jr.'],
+          },
+        ],
+        telecom: [
+          {
+            system: 'phone',
+            value: form.contact,
+            use: 'home',
+            rank: 1,
+          },
+          {
+            system: 'email',
+            value: form.contact,
+            use: 'work',
+            rank: 2,
+          },
+        ],
+        gender: 'male',
+        birthDate: moment(form.birthDate).format('YYYY-MM-DD'),
+        address: [
+          {
+            use: 'home',
+            type: 'physical',
+            text: `${form.address}, ${form.city}, ${form.state} ${form.postal}`,
+            line: [form.address],
+            city: form.city,
+            district: 'TestDistrict',
+            state: form.state,
+            postalCode: form.postal,
+            country: form.country,
+          },
+        ],
+      };
+      const response = await addNewPatientService(data);
+      console.log('add patient response', response);
+      if (response.status === 201) {
+        navigation.replace('Patients', {
+          flow: 'patientAdded',
+        });
+      }
+    } catch (error) {
+      console.log('error in saving patient');
+      showToast(AppMessages.wentWrong);
+    } finally {
+      setIsVisible(false);
+    }
   };
 
   // Back Button
@@ -129,7 +183,7 @@ const AddNewPatientScreen = ({
 
   const onAlertPopupConfirmPressed = () => {
     setIsAlertPopupVisible(false);
-    navigation.navigate('Patients');
+    savePatient();
   };
 
   const onConfirmDatePicker = (date: any) => {
@@ -162,23 +216,24 @@ const AddNewPatientScreen = ({
   return (
     <AddNewPatient
       form={form}
+      isVisible={isVisible}
       userImage={userImage}
       isAlertPopupVisible={isAlertPopupVisible}
       isDatePickerVisible={isDatePickerVisible}
       isImageSelectionPopupVisible={isImageSelectionPopupVisible}
       setForm={setForm}
       handleSave={handleSave}
+      onMenuPressed={onMenuPressed}
       onPressDOBPicker={onPressDOBPicker}
       onCancelDatePicker={onCancelDatePicker}
       onBackButtonPressed={onBackButtonPressed}
       onConfirmDatePicker={onConfirmDatePicker}
       onImageSelectPressed={onImageSelectPressed}
+      onHeaderSettingsPressed={onHeaderSettingsPressed}
       onAlertPopupCancelPressed={onAlertPopupCancelPressed}
       onImageSelectionPopupClose={onImageSelectionPopupClose}
       onAlertPopupConfirmPressed={onAlertPopupConfirmPressed}
       onImageSelectionOptionPressed={onImageSelectionOptionPressed}
-      onHeaderSettingsPressed={onHeaderSettingsPressed}
-      onMenuPressed={onMenuPressed}
       //
     />
   );

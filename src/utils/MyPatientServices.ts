@@ -21,11 +21,13 @@ export const getSearchPatientsService = async (searchedPatient: string) => {
   return response;
 };
 
-export const postPatientsService = async (data: any) => {
-  let { data: response }: { data: IGetMyPatientsResponse } = await postRequest(
-    ApiNames.postPatient,
-    data,
-  );
+export const addNewPatientService = async (data: any) => {
+  // let { data: response }: { data: IGetMyPatientsResponse } = await postRequest(
+  //   ApiNames.postPatient,
+  //   data,
+  // );
+
+  let response = await postRequest(ApiNames.postPatient, data);
   return response;
 };
 
