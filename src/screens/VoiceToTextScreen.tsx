@@ -37,6 +37,26 @@ const VoiceToTextScreen = ({
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
   ];
 
+  //
+  const [activeTab, setActiveTab] = useState('Recording');
+  const [transcriptText, setTranscriptText] = useState('');
+  const [selectedButton, setSelectedButton] = useState<
+    'NewIntake' | 'StartConsultation' | 'CoPilot'
+  >('NewIntake');
+
+  const handleTabPress = (tab: any) => {
+    setActiveTab(tab);
+  };
+  const onChnageTranscriptText = (val: any) => {
+    setTranscriptText(val);
+  };
+
+  const handleButtonPress = (
+    button: 'NewIntake' | 'StartConsultation' | 'CoPilot',
+  ) => {
+    setSelectedButton(button);
+  };
+
   useEffect(() => {
     Voice.onSpeechResults = (event: any) => {
       setSpeechToText((prev) => prev + ' ' + event.value[0]);
@@ -184,9 +204,12 @@ const VoiceToTextScreen = ({
       isLoading={isLoading}
       userImage={userImage}
       lottieRef={lottieRef}
+      activeTab={activeTab}
       userDetails={userDetails}
       isRecording={isRecording}
       speechToText={speechToText}
+      transcriptText={transcriptText}
+      selectedButton={selectedButton}
       speachTextData={speachTextData}
       languageOptions={languageOptions}
       selectedLanguage={selectedLanguage}
@@ -195,10 +218,13 @@ const VoiceToTextScreen = ({
       onClearText={onClearText}
       onEditPressed={onEditPressed}
       onMenuPressed={onMenuPressed}
+      handleTabPress={handleTabPress}
       onDeletePressed={onDeletePressed}
+      handleButtonPress={handleButtonPress}
       onLanguageChange={setSelectedLanguage}
       onVoiceRecordPressed={onVoiceRecordPressed}
       onMessagePopupConfirm={onMessagePopupConfirm}
+      onChnageTranscriptText={onChnageTranscriptText}
       handleIntakeNotesValue={handleIntakeNotesValue}
       onHeaderSettingsPressed={onHeaderSettingsPressed}
       onIntakeNotesSavePressed={onIntakeNotesSavePressed}

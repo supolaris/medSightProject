@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -20,10 +20,10 @@ import {
 import LottieView from 'lottie-react-native';
 import { AppColors } from '../constants/AppColors';
 import { AppMessages } from '../constants/AppMessages';
+import MessagePopup from './common/popups/MessagePopup';
 import LoadingPopup from './common/popups/LoadingPopup';
 import SimpleHeader from './common/headers/SimpleHeader';
 import { Dropdown } from 'react-native-element-dropdown';
-import MessagePopup from './common/popups/MessagePopup';
 import { VoiceLottie } from './common/lotties/VoiceLottie';
 import CustomTouchable from './common/touchables/CustomTouchable';
 import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
@@ -32,8 +32,11 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 interface IProps {
   isLoading: boolean;
   userImage: string;
+  activeTab: string;
   isRecording: boolean;
   speechToText: string;
+  transcriptText: string;
+  selectedButton: string;
   selectedLanguage: string;
   intakeNotesValue: string;
   speachTextData: string[];
@@ -47,29 +50,18 @@ interface IProps {
   onDeletePressed: () => void;
   onVoiceRecordPressed: () => void;
   onMessagePopupConfirm: () => void;
-  onIntakeNotesSavePressed: () => void;
   onHeaderSettingsPressed: () => void;
+  onIntakeNotesSavePressed: () => void;
+  handleTabPress: (label: string) => void;
   onLanguageChange: (value: string) => void;
+  onChnageTranscriptText: (val: string) => void;
   handleIntakeNotesValue: (value: string) => void;
+  handleButtonPress: (
+    button: 'NewIntake' | 'StartConsultation' | 'CoPilot',
+  ) => void;
 }
 
 const VoiceToText = (props: IProps) => {
-  const [activeTab, setActiveTab] = useState('Recording');
-  const [transcriptText, setTranscriptText] = useState('');
-  const [selectedButton, setSelectedButton] = useState<
-    'NewIntake' | 'StartConsultation' | 'CoPilot'
-  >('NewIntake');
-
-  const handleButtonPress = (
-    button: 'NewIntake' | 'StartConsultation' | 'CoPilot',
-  ) => {
-    setSelectedButton(button);
-  };
-
-  const handleTabPress = (tab: any) => {
-    setActiveTab(tab);
-  };
-
   const speachTextData = useMemo(() => {
     return props.speachTextData
       .map((text, index) => `${index + 1}. ${text}`)
@@ -206,20 +198,20 @@ const VoiceToText = (props: IProps) => {
             <TouchableOpacity
               style={[
                 styles.actionButton,
-                selectedButton === 'NewIntake' && styles.selectedButton,
+                props.selectedButton === 'NewIntake' && styles.selectedButton,
               ]}
-              onPress={() => handleButtonPress('NewIntake')}>
+              onPress={() => props.handleButtonPress('NewIntake')}>
               <Image
                 source={require('../assets/images/PatientDetails/intakeIMage.png')}
                 style={[
                   styles.actionIcon,
-                  selectedButton === 'NewIntake' && styles.selectedIcon,
+                  props.selectedButton === 'NewIntake' && styles.selectedIcon,
                 ]}
               />
               <Text
                 style={[
                   styles.actionText,
-                  selectedButton === 'NewIntake' && styles.selectedText,
+                  props.selectedButton === 'NewIntake' && styles.selectedText,
                 ]}>
                 NEW INTAKE
               </Text>
@@ -229,20 +221,23 @@ const VoiceToText = (props: IProps) => {
             <TouchableOpacity
               style={[
                 styles.actionButton,
-                selectedButton === 'StartConsultation' && styles.selectedButton,
+                props.selectedButton === 'StartConsultation' &&
+                  styles.selectedButton,
               ]}
-              onPress={() => handleButtonPress('StartConsultation')}>
+              onPress={() => props.handleButtonPress('StartConsultation')}>
               <Image
                 source={require('../assets/images/PatientDetails/consultationImage.png')}
                 style={[
                   styles.actionIcon,
-                  selectedButton === 'StartConsultation' && styles.selectedIcon,
+                  props.selectedButton === 'StartConsultation' &&
+                    styles.selectedIcon,
                 ]}
               />
               <Text
                 style={[
                   styles.actionText,
-                  selectedButton === 'StartConsultation' && styles.selectedText,
+                  props.selectedButton === 'StartConsultation' &&
+                    styles.selectedText,
                 ]}>
                 START CONSULTATION
               </Text>
@@ -252,20 +247,20 @@ const VoiceToText = (props: IProps) => {
             <TouchableOpacity
               style={[
                 styles.actionButton,
-                selectedButton === 'CoPilot' && styles.selectedButton,
+                props.selectedButton === 'CoPilot' && styles.selectedButton,
               ]}
-              onPress={() => handleButtonPress('CoPilot')}>
+              onPress={() => props.handleButtonPress('CoPilot')}>
               <Image
                 source={require('../assets/images/PatientDetails/coPilotImage.png')}
                 style={[
                   styles.actionIcon,
-                  selectedButton === 'CoPilot' && styles.selectedIcon,
+                  props.selectedButton === 'CoPilot' && styles.selectedIcon,
                 ]}
               />
               <Text
                 style={[
                   styles.actionText,
-                  selectedButton === 'CoPilot' && styles.selectedText,
+                  props.selectedButton === 'CoPilot' && styles.selectedText,
                 ]}>
                 CO-PILOT
               </Text>
@@ -296,20 +291,20 @@ const VoiceToText = (props: IProps) => {
                 key={tab.label}
                 style={[
                   styles.tabButton,
-                  activeTab === tab.label && styles.activeTab,
+                  props.activeTab === tab.label && styles.activeTab,
                 ]}
-                onPress={() => handleTabPress(tab.label)}>
+                onPress={() => props.handleTabPress(tab.label)}>
                 <Image
                   source={tab.icon}
                   style={[
                     styles.tabIcon,
-                    activeTab === tab.label && styles.activeTabIcon,
+                    props.activeTab === tab.label && styles.activeTabIcon,
                   ]}
                 />
                 <Text
                   style={[
                     styles.tabText,
-                    activeTab === tab.label && styles.activeTabText,
+                    props.activeTab === tab.label && styles.activeTabText,
                   ]}>
                   {tab.label}
                 </Text>
@@ -318,7 +313,7 @@ const VoiceToText = (props: IProps) => {
           </View>
 
           {/* Tab Content */}
-          {activeTab === 'Recording' && (
+          {props.activeTab === 'Recording' && (
             <View>
               <View style={styles.recordingContainer}>
                 <View style={styles.recordingHeader}>
@@ -397,7 +392,7 @@ const VoiceToText = (props: IProps) => {
             </View>
           )}
 
-          {activeTab === 'Smart Transcript' && (
+          {props.activeTab === 'Smart Transcript' && (
             <View>
               <View style={styles.recordingContainer}>
                 <View style={styles.recordingHeader}>
@@ -423,9 +418,9 @@ const VoiceToText = (props: IProps) => {
                 value={
                   speachTextData
                     ? `The language of the provided conversation transcript is ${props.selectedLanguage}. Here is the analysis of the conversation with the identification of speakers\n\n${speachTextData}`
-                    : transcriptText
+                    : props.transcriptText
                 }
-                onChangeText={setTranscriptText}
+                onChangeText={props.onChnageTranscriptText}
               />
               <TouchableOpacity style={styles.saveButton}>
                 <Text style={styles.saveButtonText}>SAVE</Text>
@@ -433,7 +428,7 @@ const VoiceToText = (props: IProps) => {
             </View>
           )}
 
-          {activeTab === 'Intake Notes' && (
+          {props.activeTab === 'Intake Notes' && (
             <View>
               <View style={styles.recordingContainer}>
                 <View style={styles.recordingHeader}>
@@ -477,7 +472,7 @@ const VoiceToText = (props: IProps) => {
             </View>
           )}
 
-          {activeTab === 'Previous Notes' && (
+          {props.activeTab === 'Previous Notes' && (
             <View>
               <View style={styles.recordingContainer}>
                 <View style={styles.recordingHeader}>
