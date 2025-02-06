@@ -307,3 +307,8 @@ export interface IGetUserProfileResponse {
   email: string;
   photo: string;
 }
+
+export interface IGenerateIntakeNotesResponse {
+  smartTranscript: string;
+  soapNotes: string;
+}

@@ -12,6 +12,7 @@ import { AppMessages } from '../constants/AppMessages';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 import { deletePatientService } from '../utils/MyPatientServices';
 import { postIntakeNotesService } from '../utils/TranscriptServices';
+import { getPreviousNotesService } from '../utils/VoiceToTextServices';
 
 const VoiceToTextScreen = ({
   route,
@@ -43,6 +44,85 @@ const VoiceToTextScreen = ({
   const [selectedButton, setSelectedButton] = useState<
     'NewIntake' | 'StartConsultation' | 'CoPilot'
   >('NewIntake');
+
+  /// c addition
+  const [cActiveTab, setCActiveTab] = useState('Recording');
+  const [cSelectedButton, setCSelectedButton] = useState<
+    'NewIntake' | 'StartConsultation' | 'CoPilot'
+  >('NewIntake');
+  const [cSpeachTextData, setCSpeachTextData] = useState<string[]>([]);
+  const [cTranscriptText, setCTranscriptText] = useState('');
+  const [cSelectedLanguage, setCSelectedLanguage] = useState('en-US');
+  const [cIntakeNotesValue, setCIntakeNotesValue] = useState<string>('');
+  const cLottieRef = useRef<LottieView>(null);
+  const cLanguageOptions = [
+    { label: 'English (US)', value: 'en-US' },
+    { label: 'Hindi (India)', value: 'hi-IN' },
+    { label: 'French (France)', value: 'fr-FR' },
+    { label: 'Spanish (Spain)', value: 'es-ES' },
+    { label: 'German (Germany)', value: 'de-DE' },
+    { label: 'Chinese (Simplified)', value: 'zh-CN' },
+  ];
+
+  const [previousNotes, setPreviousNotes] = useState<{
+    summary: string;
+    conditions: any[];
+    medications: any[];
+  }>({
+    summary: '',
+    conditions: [],
+    medications: [],
+  });
+
+  const onCTabPress = (tab: any) => {
+    setCActiveTab(tab);
+  };
+
+  const onCLanguageChange = (language: string) => {
+    setCSelectedLanguage(language);
+  };
+
+  const onCVoiceRecordPressed = () => {
+    if (isRecording) {
+      cLottieRef.current?.pause();
+      stopRecording();
+    } else {
+      cLottieRef.current?.play();
+      startRecording();
+    }
+    setIsRecording(!isRecording);
+  };
+
+  const onCChangeTranscriptText = (val: any) => {
+    setCTranscriptText(val);
+  };
+
+  const handleCIntakeNotesValue = (value: string) => {
+    setCIntakeNotesValue(value.trimStart());
+  };
+
+  const onCIntakeNotesSavePressed = async () => {
+    // try {
+    //   setIsLoading(true);
+    //   const isTokenValid = await checkTokenValidity();
+    //   if (isTokenValid) {
+    //     let data = { rawRecordingData: cIntakeNotesValue };
+    //     const response = await postIntakeNotesService(data);
+    //     if (response.smartTranscript || response.soapNotes) {
+    //       showToast('Notes saved successfully');
+    //       setCIntakeNotesValue('');
+    //     }
+    //   } else {
+    //     setIsMessagePopupVisible(true);
+    //   }
+    // } catch (error) {
+    //   console.log('error in posting intake notes', error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
+  };
+
+  /// c end
 
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
@@ -87,6 +167,35 @@ const VoiceToTextScreen = ({
     setUserImage(userName);
   }, []);
 
+  useEffect(() => {
+    getPreviousNotes();
+  }, []);
+
+  const getPreviousNotes = async () => {
+    try {
+      setIsLoading(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        const patientId = mmkv.getString('patientId') as string;
+        const response = await getPreviousNotesService(patientId);
+        if (response) {
+          setPreviousNotes({
+            summary: response.summary,
+            conditions: response.conditions,
+            medications: response.medications,
+          });
+        }
+      } else {
+        console.log('add login popup');
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in getting previous notes');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const startRecording = async () => {
     try {
       setIsRecording(true);
@@ -122,27 +231,28 @@ const VoiceToTextScreen = ({
   };
 
   const onIntakeNotesSavePressed = async () => {
-    try {
-      setIsLoading(true);
-      const isTokenValid = await checkTokenValidity();
-      if (isTokenValid) {
-        let data = {
-          rawRecordingData: intakeNotesValue,
-        };
-        const response = await postIntakeNotesService(data);
-        if (response.status === 200) {
-          showToast('Notes saved successfully');
-          setIntakeNotesValue('');
-        }
-      } else {
-        console.log('add login popup');
-        setIsMessagePopupVisible(true);
-      }
-    } catch (error) {
-      console.log('error in posting intake notes', error);
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+    //   setIsLoading(true);
+    //   const isTokenValid = await checkTokenValidity();
+    //   if (isTokenValid) {
+    //     let data = {
+    //       rawRecordingData: intakeNotesValue,
+    //     };
+    //     const response = await postIntakeNotesService(data);
+    //     if (response.smartTranscript || response.soapNotes) {
+    //       showToast('Notes saved successfully');
+    //       setTranscriptText(response.smartTranscript);
+    //       setIntakeNotesValue(response.soapNotes);
+    //     }
+    //   } else {
+    //     console.log('add login popup');
+    //     setIsMessagePopupVisible(true);
+    //   }
+    // } catch (error) {
+    //   console.log('error in posting intake notes', error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const handleIntakeNotesValue = (value: string) => {
@@ -199,8 +309,34 @@ const VoiceToTextScreen = ({
     navigation.replace('Splash');
   };
 
+  const onIntakeInsightPressed = async () => {
+    try {
+      setIsLoading(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        console.log(' hello world');
+        const data = {
+          rawRecordingData: speechToText,
+        };
+        const response = await postIntakeNotesService(data);
+        if (response) {
+          setTranscriptText(response.smartTranscript);
+          setIntakeNotesValue(response.soapNotes);
+        }
+      } else {
+        console.log('add login popup');
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in getting intakes notes', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <VoiceToText
+      previousNotes={previousNotes}
       isLoading={isLoading}
       userImage={userImage}
       lottieRef={lottieRef}
@@ -228,6 +364,22 @@ const VoiceToTextScreen = ({
       handleIntakeNotesValue={handleIntakeNotesValue}
       onHeaderSettingsPressed={onHeaderSettingsPressed}
       onIntakeNotesSavePressed={onIntakeNotesSavePressed}
+      onIntakeInsightPressed={onIntakeInsightPressed}
+      /// c added
+      cLottieRef={cLottieRef}
+      cActiveTab={cActiveTab}
+      cTranscriptText={cTranscriptText}
+      cSelectedButton={cSelectedButton}
+      cSpeachTextData={cSpeachTextData}
+      cLanguageOptions={cLanguageOptions}
+      cSelectedLanguage={cSelectedLanguage}
+      cIntakeNotesValue={cIntakeNotesValue}
+      onCTabPress={onCTabPress}
+      onCLanguageChange={onCLanguageChange}
+      onCVoiceRecordPressed={onCVoiceRecordPressed}
+      onCChangeTranscriptText={onCChangeTranscriptText}
+      handleCIntakeNotesValue={handleCIntakeNotesValue}
+      onCIntakeNotesSavePressed={onCIntakeNotesSavePressed}
     />
   );
 };

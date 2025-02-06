@@ -22,6 +22,12 @@ import { AppMessages } from '../../../constants/AppMessages';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 interface IProps {
+  speechToText: string;
+  previousNotes: {
+    summary: string;
+    conditions: any[];
+    medications: any[];
+  };
   activeTab: string;
   selectedButton: string;
   transcriptText: string;
@@ -32,6 +38,7 @@ interface IProps {
   languageOptions: { label: string; value: string }[];
   onVoiceRecordPressed: () => void;
   onIntakeNotesSavePressed: () => void;
+  onIntakeInsightPressed: () => void;
   handleTabPress: (label: string) => void;
   onLanguageChange: (value: string) => void;
   onChnageTranscriptText: (val: string) => void;
@@ -150,6 +157,7 @@ const RenderIntakTab = (props: IProps) => {
 
             <CustomTouchable
               preset={{
+                isDisabled: props.speechToText ? false : true,
                 text: 'Intake Insight',
                 fontSize: normalizeFont(9.54),
                 fontWeight: 'medium',
@@ -161,6 +169,7 @@ const RenderIntakTab = (props: IProps) => {
               style={{
                 backgroundColor: '#12AAC2',
               }}
+              onPress={props.onIntakeInsightPressed}
             />
           </View>
         </View>
@@ -182,18 +191,14 @@ const RenderIntakTab = (props: IProps) => {
               <Text style={styles.recordingText}>Smart Transcript</Text>
             </View>
           </View>
-
           <TextInput
             style={styles.smartTranscriptInput}
+            scrollEnabled
             placeholder="Enter Text"
             placeholderTextColor="#000000"
             multiline
-            editable={props.speachTextData ? false : true}
-            value={
-              props.speachTextData
-                ? `The language of the provided conversation transcript is ${props.selectedLanguage}. Here is the analysis of the conversation with the identification of speakers\n\n${props.speachTextData}`
-                : props.transcriptText
-            }
+            editable={props.transcriptText ? false : true}
+            value={props.transcriptText}
             onChangeText={props.onChnageTranscriptText}
           />
           <TouchableOpacity style={styles.saveButton}>
@@ -223,12 +228,8 @@ const RenderIntakTab = (props: IProps) => {
             placeholder="Enter Notes"
             placeholderTextColor="#000000"
             multiline
-            editable={props.speachTextData ? false : true}
-            value={
-              props.speachTextData
-                ? `${AppMessages.tempIntakeNotesMessage}`
-                : props.intakeNotesValue
-            }
+            editable={props.intakeNotesValue ? false : true}
+            value={props.intakeNotesValue}
             onChangeText={props.handleIntakeNotesValue}
           />
           <TouchableOpacity
@@ -262,40 +263,26 @@ const RenderIntakTab = (props: IProps) => {
               <Text style={styles.recordingText}>Previous Notes</Text>
             </View>
           </View>
-          <View style={styles.previousNotesMainView}>
-            <Text style={styles.previousNotesDate}>
-              SEPTEMBER 16, 2024 (01:53)
-            </Text>
-            <View style={styles.previousNotesContainer}>
-              <View style={styles.previousNotesCard}>
-                <Text style={styles.noteSectionTitle}>Medications</Text>
-                <Text style={styles.noteText}>Medication: 1</Text>
-                <Text style={styles.noteText}>Name: Pepto-Bismol</Text>
-                <Text style={styles.noteText}>Dosage: Not specified</Text>
-                <Text style={styles.noteText}>Frequency: Four times a day</Text>
-                <Text style={styles.noteText}>Duration: Five days</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.previousNotesDate}>
-                SEPTEMBER 16, 2024 (01:53)
-              </Text>
+          {props.previousNotes?.summary ? (
+            <View style={styles.previousNotesMainView}>
               <View style={styles.previousNotesContainer}>
-                <Text style={styles.noteSectionTitle}>Subjective</Text>
-                <Text style={styles.noteText}>
-                  Chief Complaint: Stomach pain since last night.
-                </Text>
-                <Text style={styles.noteText}>
-                  History of Present Illness: The patient reports experiencing
-                  stomach pain that began the previous night. This pain is also
-                  interfering with sleep.
-                </Text>
-                <Text style={styles.noteText}>
-                  Relevant Personal or Family Medical History: None mentioned.
-                </Text>
+                <View style={styles.previousNotesCard}>
+                  <Text style={styles.noteSectionTitle}>Summary</Text>
+                  <Text style={styles.noteText}>
+                    {props.previousNotes?.summary}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+              }}>
+              <Text style={styles.noteText}>{AppMessages.noDataAvailable}</Text>
+            </View>
+          )}
         </View>
       )}
     </View>
@@ -368,7 +355,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   smartTranscriptInput: {
-    height: 200,
+    // height: 200,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#3781C3',

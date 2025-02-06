@@ -12,4 +12,6 @@ export const ApiNames = {
   generateConsultantDocuments: '/api/Transcript/createConsultationDocuments',
   //user
   getUserProfile: '/api/User/profile',
+  //medical history
+  getMecialHistory: '/api/Patient/GetMedicalHistorySummary/',
 };

@@ -14,6 +14,7 @@ interface IProps extends TouchableOpacityProps {
   preset: {
     width?: DimensionValue;
     height?: DimensionValue;
+    isDisabled?: boolean;
     text: string;
     textColor?: string;
     fontSize?: number;
@@ -26,6 +27,7 @@ interface IProps extends TouchableOpacityProps {
 const CustomTouchable: React.FC<IProps> = ({ preset, style, ...props }) => {
   return (
     <TouchableOpacity
+      disabled={preset.isDisabled}
       activeOpacity={activeOpacity}
       style={[
         styles.container,

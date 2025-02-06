@@ -20,6 +20,11 @@ import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 import RenderConsultantTab from './common/renderComponents/RenderConsultantTab';
 
 interface IProps {
+  previousNotes: {
+    summary: string;
+    conditions: any[];
+    medications: any[];
+  };
   isLoading: boolean;
   userImage: string;
   activeTab: string;
@@ -49,6 +54,23 @@ interface IProps {
   handleButtonPress: (
     button: 'NewIntake' | 'StartConsultation' | 'CoPilot',
   ) => void;
+  onIntakeInsightPressed: () => void;
+
+  /// c added
+  cActiveTab: string;
+  cTranscriptText: string;
+  cSelectedButton: string;
+  cSelectedLanguage: string;
+  cIntakeNotesValue: string;
+  cSpeachTextData: string[];
+  cLottieRef: React.RefObject<LottieView>;
+  cLanguageOptions: { label: string; value: string }[];
+  onCVoiceRecordPressed: () => void;
+  onCIntakeNotesSavePressed: () => void;
+  onCTabPress: (label: string) => void;
+  onCLanguageChange: (value: string) => void;
+  onCChangeTranscriptText: (val: string) => void;
+  handleCIntakeNotesValue: (value: string) => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -261,6 +283,8 @@ const VoiceToText = (props: IProps) => {
 
           {props.selectedButton === 'NewIntake' ? (
             <RenderIntakTab
+              speechToText={props.speechToText}
+              previousNotes={props.previousNotes}
               activeTab={props.activeTab}
               lottieRef={props.lottieRef}
               selectedButton={props.selectedButton}
@@ -275,23 +299,27 @@ const VoiceToText = (props: IProps) => {
               onChnageTranscriptText={props.onChnageTranscriptText}
               handleIntakeNotesValue={props.handleIntakeNotesValue}
               onIntakeNotesSavePressed={props.onIntakeNotesSavePressed}
+              onIntakeInsightPressed={props.onIntakeInsightPressed}
             />
           ) : (
-            <RenderConsultantTab
-              activeTab={props.activeTab}
-              lottieRef={props.lottieRef}
-              selectedButton={props.selectedButton}
-              speachTextData={props.speachTextData}
-              transcriptText={props.transcriptText}
-              languageOptions={props.languageOptions}
-              selectedLanguage={props.selectedLanguage}
-              intakeNotesValue={props.intakeNotesValue}
-              handleTabPress={props.handleTabPress}
-              onLanguageChange={props.onLanguageChange}
-              onVoiceRecordPressed={props.onVoiceRecordPressed}
-              onChnageTranscriptText={props.onChnageTranscriptText}
-              handleIntakeNotesValue={props.handleIntakeNotesValue}
-              onIntakeNotesSavePressed={props.onIntakeNotesSavePressed}
+            <RenderIntakTab
+              speechToText={props.speechToText}
+              previousNotes={props.previousNotes}
+              activeTab={props.cActiveTab}
+              lottieRef={props.cLottieRef}
+              selectedButton={props.cSelectedButton}
+              speachTextData={props.cSpeachTextData}
+              transcriptText={props.cTranscriptText}
+              languageOptions={props.cLanguageOptions}
+              selectedLanguage={props.cSelectedLanguage}
+              intakeNotesValue={props.cIntakeNotesValue}
+              handleTabPress={props.onCTabPress}
+              onLanguageChange={props.onCLanguageChange}
+              onVoiceRecordPressed={props.onCVoiceRecordPressed}
+              onChnageTranscriptText={props.onCChangeTranscriptText}
+              handleIntakeNotesValue={props.handleCIntakeNotesValue}
+              onIntakeNotesSavePressed={props.onCIntakeNotesSavePressed}
+              onIntakeInsightPressed={() => {}}
             />
           )}
         </ScrollView>
