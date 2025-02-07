@@ -12,6 +12,7 @@ export type RootStackParamList = {
   OnBoarding: undefined;
   Login: undefined;
   VoiceToText: {
+    flow: string;
     userDetails: IGetPatientDetailsResponse | null;
   };
 

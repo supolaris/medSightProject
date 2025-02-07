@@ -312,3 +312,7 @@ export interface IGenerateIntakeNotesResponse {
   smartTranscript: string;
   soapNotes: string;
 }
+
+export interface IPostCarePoiletResponse {
+  response: string;
+}

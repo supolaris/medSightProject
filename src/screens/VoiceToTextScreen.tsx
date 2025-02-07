@@ -11,14 +11,17 @@ import VoiceToText from '../components/VoiceToText';
 import { AppMessages } from '../constants/AppMessages';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 import { deletePatientService } from '../utils/MyPatientServices';
-import { postIntakeNotesService } from '../utils/TranscriptServices';
+import {
+  postConsultantNotesService,
+  postIntakeNotesService,
+} from '../utils/TranscriptServices';
 import { getPreviousNotesService } from '../utils/VoiceToTextServices';
 
 const VoiceToTextScreen = ({
   route,
   navigation,
 }: MainStackScreenProps<'VoiceToText'>) => {
-  const { userDetails } = route.params;
+  const { flow, userDetails } = route.params;
   const lottieRef = useRef<LottieView>(null);
   const [speechToText, setSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -43,15 +46,12 @@ const VoiceToTextScreen = ({
   //
   const [activeTab, setActiveTab] = useState('Recording');
   const [transcriptText, setTranscriptText] = useState('');
-  const [selectedButton, setSelectedButton] = useState<
-    'NewIntake' | 'StartConsultation' | 'CoPilot'
-  >('NewIntake');
+  // 'NewIntake' | 'StartConsultation' | 'CoPilot'
+  const [selectedButton, setSelectedButton] = useState<string>(flow);
 
   /// c addition
   const [cActiveTab, setCActiveTab] = useState('Recording');
-  const [cSelectedButton, setCSelectedButton] = useState<
-    'NewIntake' | 'StartConsultation' | 'CoPilot'
-  >('NewIntake');
+  const [cSelectedButton, setCSelectedButton] = useState<string>(flow);
   const [cSpeachTextData, setCSpeachTextData] = useState<string[]>([]);
   const [cTranscriptText, setCTranscriptText] = useState('');
   const [cSelectedLanguage, setCSelectedLanguage] = useState('en-US');
@@ -104,6 +104,7 @@ const VoiceToTextScreen = ({
   };
 
   const onCIntakeNotesSavePressed = async () => {
+    console.log('hello world');
     // try {
     //   setIsLoading(true);
     //   const isTokenValid = await checkTokenValidity();
@@ -351,6 +352,31 @@ const VoiceToTextScreen = ({
     }
   };
 
+  const onCIntakeInsightPressed = async () => {
+    try {
+      setIsLoading(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        console.log(' hello world');
+        const data = {
+          rawRecordingData: speechToText,
+        };
+        const response = await postConsultantNotesService(data);
+        if (response) {
+          setCTranscriptText(response.smartTranscript);
+          setCIntakeNotesValue(response.soapNotes);
+        }
+      } else {
+        console.log('add login popup');
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in getting intakes notes', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <VoiceToText
       onAlertPopupCancelPressed={onAlertPopupCancelPressed}
@@ -401,6 +427,7 @@ const VoiceToTextScreen = ({
       onCChangeTranscriptText={onCChangeTranscriptText}
       handleCIntakeNotesValue={handleCIntakeNotesValue}
       onCIntakeNotesSavePressed={onCIntakeNotesSavePressed}
+      onCIntakeInsightPressed={onCIntakeInsightPressed}
     />
   );
 };

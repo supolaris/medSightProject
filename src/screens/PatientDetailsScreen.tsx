@@ -61,12 +61,16 @@ const PatientDetailScreen = ({
 
   const handleNewIntake = () => {
     navigation.navigate('VoiceToText', {
+      flow: 'NewIntake',
       userDetails: userDetails ? userDetails : null,
     });
   };
 
   const handleStartConsultation = () => {
-    console.log('Start Consultation pressed');
+    navigation.navigate('VoiceToText', {
+      flow: 'StartConsultation',
+      userDetails: userDetails ? userDetails : null,
+    });
   };
 
   const handleCoPilot = () => {

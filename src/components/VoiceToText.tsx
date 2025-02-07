@@ -76,6 +76,7 @@ interface IProps {
   onCLanguageChange: (value: string) => void;
   onCChangeTranscriptText: (val: string) => void;
   handleCIntakeNotesValue: (value: string) => void;
+  onCIntakeInsightPressed: () => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -332,7 +333,7 @@ const VoiceToText = (props: IProps) => {
               onChnageTranscriptText={props.onCChangeTranscriptText}
               handleIntakeNotesValue={props.handleCIntakeNotesValue}
               onIntakeNotesSavePressed={props.onCIntakeNotesSavePressed}
-              onIntakeInsightPressed={() => {}}
+              onIntakeInsightPressed={props.onCIntakeInsightPressed}
             />
           )}
         </ScrollView>

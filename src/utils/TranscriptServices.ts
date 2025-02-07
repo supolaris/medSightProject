@@ -23,7 +23,8 @@ export const postConsultantNotesService = async (data: {
   rawRecordingData: string;
 }) => {
   let completeEndPoint = `${ApiNames.generateConsultantNotes}`;
-  let response = await postRequest(completeEndPoint, data);
+  let { data: response }: { data: IGenerateIntakeNotesResponse } =
+    await postRequest(completeEndPoint, data);
   return response;
 };
 

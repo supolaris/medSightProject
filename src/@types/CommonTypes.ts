@@ -101,3 +101,8 @@ export interface IUserDetails {
   officeLocation: string | null;
   businessPhones: string[];
 }
+
+export interface ICarePoiletData {
+  patientID: string;
+  userQuery: string;
+}
