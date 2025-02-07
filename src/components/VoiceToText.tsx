@@ -18,6 +18,7 @@ import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
 import RenderIntakTab from './common/renderComponents/RenderIntakTab';
 import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 import RenderConsultantTab from './common/renderComponents/RenderConsultantTab';
+import AlertPopup from './common/popups/AlertPopup';
 
 interface IProps {
   previousNotes: {
@@ -26,6 +27,7 @@ interface IProps {
     medications: any[];
   };
   isLoading: boolean;
+  isAlertPopupVisible: boolean;
   userImage: string;
   activeTab: string;
   isRecording: boolean;
@@ -43,6 +45,9 @@ interface IProps {
   onEditPressed: () => void;
   onMenuPressed: () => void;
   onDeletePressed: () => void;
+  onAlertPopupCancelPressed: () => void;
+  onAlertPopupConfirmPressed: () => void;
+  onDeleteButtonPressed: () => void;
   onVoiceRecordPressed: () => void;
   onMessagePopupConfirm: () => void;
   onHeaderSettingsPressed: () => void;
@@ -88,6 +93,14 @@ const VoiceToText = (props: IProps) => {
         messageText={AppMessages.sessionExpired}
         isMessagePopupVisible={props.isMessagePopupVisible}
         onMessagePopupConfirm={props.onMessagePopupConfirm}
+      />
+      <AlertPopup
+        confirmText="Yes"
+        cancelText="Cancel"
+        messageText={AppMessages.DeleteText}
+        isAlertPopupVisible={props.isAlertPopupVisible}
+        onAlertPopupCancel={props.onAlertPopupCancelPressed}
+        onAlertPopupConfirm={props.onAlertPopupConfirmPressed}
       />
       <ImageBackground
         resizeMode="stretch"
@@ -185,7 +198,7 @@ const VoiceToText = (props: IProps) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={props.onDeletePressed}>
+              <TouchableOpacity onPress={props.onDeleteButtonPressed}>
                 <View style={{ left: 10 }}>
                   <Image
                     source={require('../assets/images/deleteImage.png')}
@@ -302,7 +315,7 @@ const VoiceToText = (props: IProps) => {
               onIntakeInsightPressed={props.onIntakeInsightPressed}
             />
           ) : (
-            <RenderIntakTab
+            <RenderConsultantTab
               speechToText={props.speechToText}
               previousNotes={props.previousNotes}
               activeTab={props.cActiveTab}

@@ -18,6 +18,7 @@ import { IGetPatientDetailsResponse } from '../@types/ApiResponses';
 import LoadingPopup from './common/popups/LoadingPopup';
 import MessagePopup from './common/popups/MessagePopup';
 import { AppMessages } from '../constants/AppMessages';
+import AlertPopup from './common/popups/AlertPopup';
 
 interface IProps {
   isLoading: boolean;
@@ -26,6 +27,10 @@ interface IProps {
   patient: IMyPatientItems;
   activeTab: string;
   isMessagePopupVisible: boolean;
+  onAlertPopupConfirmPressed: () => void;
+  onAlertPopupCancelPressed: () => void;
+  onDeleteButtonPressed: () => void;
+  isAlertPopupVisible: boolean;
   onEditPress: () => void;
   onDeletePress: () => void;
   onMenuPressed: () => void;
@@ -46,6 +51,14 @@ const PatientDetails = (props: IProps) => {
         messageText={AppMessages.sessionExpired}
         isMessagePopupVisible={props.isMessagePopupVisible}
         onMessagePopupConfirm={props.onMessagePopupConfirm}
+      />
+      <AlertPopup
+        confirmText="Yes"
+        cancelText="Cancel"
+        messageText={AppMessages.DeleteText}
+        isAlertPopupVisible={props.isAlertPopupVisible}
+        onAlertPopupCancel={props.onAlertPopupCancelPressed}
+        onAlertPopupConfirm={props.onAlertPopupConfirmPressed}
       />
       <ImageBackground
         resizeMode="stretch"
@@ -87,7 +100,7 @@ const PatientDetails = (props: IProps) => {
                     </Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={props.onDeletePress}>
+                <TouchableOpacity onPress={props.onDeleteButtonPressed}>
                   <View style={{ left: 10 }}>
                     <Image
                       source={require('../assets/images/deleteImage.png')}

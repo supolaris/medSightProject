@@ -20,6 +20,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import CustomTouchable from '../touchables/CustomTouchable';
 import { AppMessages } from '../../../constants/AppMessages';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface IProps {
   speechToText: string;
@@ -158,16 +159,17 @@ const RenderIntakTab = (props: IProps) => {
             <CustomTouchable
               preset={{
                 isDisabled: props.speechToText ? false : true,
-                text: 'Intake Insight',
+                text: 'Generate Insight',
                 fontSize: normalizeFont(9.54),
                 fontWeight: 'medium',
                 textColor: AppColors.white,
                 variant: 'primary',
-                width: normalizeWidth(80),
+                width: normalizeWidth(90),
                 height: normalizeHeight(40),
               }}
               style={{
                 backgroundColor: '#12AAC2',
+                right: normalizeWidth(22),
               }}
               onPress={props.onIntakeInsightPressed}
             />
@@ -191,6 +193,7 @@ const RenderIntakTab = (props: IProps) => {
               <Text style={styles.recordingText}>Smart Transcript</Text>
             </View>
           </View>
+
           <TextInput
             style={styles.smartTranscriptInput}
             scrollEnabled
@@ -201,6 +204,7 @@ const RenderIntakTab = (props: IProps) => {
             value={props.transcriptText}
             onChangeText={props.onChnageTranscriptText}
           />
+
           <TouchableOpacity style={styles.saveButton}>
             <Text style={styles.saveButtonText}>SAVE</Text>
           </TouchableOpacity>

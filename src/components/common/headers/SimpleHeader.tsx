@@ -82,7 +82,7 @@ const SimpleHeader = (props: ISimpleHeaderProps) => {
       <AlertPopup
         messageText="Are you sure you want to logout"
         isAlertPopupVisible={isPopupVisible}
-        cancelText="Cancel"
+        cancelText="No"
         confirmText="YES"
         onAlertPopupClose={handleCancel}
         onAlertPopupCancel={handleCancel}

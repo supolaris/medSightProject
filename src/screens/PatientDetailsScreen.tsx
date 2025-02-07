@@ -21,6 +21,7 @@ const PatientDetailScreen = ({
   const { patient } = route.params;
   const [activeTab, setActiveTab] = useState<string>('PatientInsight');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAlertPopupVisible, setIsAlertPopupVisible] = useState(false);
   const [isMessagePopupVisible, setIsMessagePopupVisible] =
     useState<boolean>(false);
   const [userDetails, setUserDetails] =
@@ -80,29 +81,44 @@ const PatientDetailScreen = ({
     navigation.navigate('EditScreen');
   };
 
-  const onDeletePress = async () => {
+  const onDeleteButtonPressed = () => {
+    setIsAlertPopupVisible(true); // Show confirmation popup first
+  };
+
+  const onAlertPopupCancelPressed = () => {
+    setIsAlertPopupVisible(false); // Close the popup without deleting
+  };
+
+  const onAlertPopupConfirmPressed = async () => {
+    setIsAlertPopupVisible(false); // Close the popup
+    await deletePatient(); // Proceed with deletion
+  };
+
+  const deletePatient = async () => {
     try {
       setIsLoading(true);
       const isTokenValid = await checkTokenValidity();
-      if (isTokenValid) {
-        let patientId = mmkv.getString('patientId');
-        if (patientId) {
-          const response = await deletePatientService(patientId);
-          if (response.status === 204) {
-            mmkv.delete('patientId');
-            navigation.replace('Patients', {
-              flow: 'patientDeleted',
-            });
-          }
-        } else {
-          showToast(AppMessages.wentWrong);
-        }
-      } else {
+      if (!isTokenValid) {
         console.log('add login popup');
         setIsMessagePopupVisible(true);
+        return;
+      }
+
+      let patientId = mmkv.getString('patientId');
+      if (!patientId) {
+        showToast(AppMessages.wentWrong);
+        return;
+      }
+
+      const response = await deletePatientService(patientId);
+      if (response.status === 204) {
+        mmkv.delete('patientId');
+        navigation.replace('Patients', {
+          flow: 'patientDeleted',
+        });
       }
     } catch (error) {
-      console.log('error in deleting patient', error);
+      console.log('Error in deleting patient', error);
     } finally {
       setIsLoading(false);
     }
@@ -132,7 +148,11 @@ const PatientDetailScreen = ({
       isMessagePopupVisible={isMessagePopupVisible}
       onChangeTab={onChangeTab}
       onEditPress={onEditPress}
-      onDeletePress={onDeletePress}
+      // onDeletePress={onDeletePress}
+      onAlertPopupConfirmPressed={onAlertPopupConfirmPressed}
+      onAlertPopupCancelPressed={onAlertPopupCancelPressed}
+      onDeleteButtonPressed={onDeleteButtonPressed}
+      isAlertPopupVisible={isAlertPopupVisible}
       onMenuPressed={onMenuPressed}
       onCoPilotPress={handleCoPilot}
       onNewIntakePress={handleNewIntake}

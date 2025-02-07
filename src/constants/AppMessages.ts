@@ -4,7 +4,9 @@ export const AppMessages = {
   cameraPermissionNotGranted: 'Camera permission not granted, try again',
   saveText: 'Are you sure you want to save?',
   sessionExpired: 'Session expired, please login again',
+  DeleteText: 'Are you sure you want to Delete?',
   tempIntakeNotesMessage: `### Vitals and Examination Details:
+  
 No vitals or examination details were recorded in the transcript.
 ---
 ### Patient Information:

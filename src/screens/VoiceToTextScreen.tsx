@@ -24,6 +24,8 @@ const VoiceToTextScreen = ({
   const [isRecording, setIsRecording] = useState(false);
   const [userImage, setUserImage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAlertPopupVisible, setIsAlertPopupVisible] =
+    useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');
   const [speachTextData, setSpeachTextData] = useState<string[]>([]);
   const [intakeNotesValue, setIntakeNotesValue] = useState<string>('');
@@ -262,29 +264,44 @@ const VoiceToTextScreen = ({
   const onEditPressed = () => {
     navigation.navigate('EditScreen');
   };
-  const onDeletePressed = async () => {
+  const onDeleteButtonPressed = () => {
+    setIsAlertPopupVisible(true); // Show confirmation popup first
+  };
+
+  const onAlertPopupCancelPressed = () => {
+    setIsAlertPopupVisible(false); // Close the popup without deleting
+  };
+
+  const onAlertPopupConfirmPressed = async () => {
+    setIsAlertPopupVisible(false); // Close the popup
+    await deletePatient(); // Proceed with deletion
+  };
+
+  const deletePatient = async () => {
     try {
       setIsLoading(true);
       const isTokenValid = await checkTokenValidity();
-      if (isTokenValid) {
-        let patientId = mmkv.getString('patientId');
-        if (patientId) {
-          const response = await deletePatientService(patientId);
-          if (response.status === 204) {
-            mmkv.delete('patientId');
-            navigation.replace('Patients', {
-              flow: 'patientDeleted',
-            });
-          }
-        } else {
-          showToast(AppMessages.wentWrong);
-        }
-      } else {
+      if (!isTokenValid) {
         console.log('add login popup');
         setIsMessagePopupVisible(true);
+        return;
+      }
+
+      let patientId = mmkv.getString('patientId');
+      if (!patientId) {
+        showToast(AppMessages.wentWrong);
+        return;
+      }
+
+      const response = await deletePatientService(patientId);
+      if (response.status === 204) {
+        mmkv.delete('patientId');
+        navigation.replace('Patients', {
+          flow: 'patientDeleted',
+        });
       }
     } catch (error) {
-      console.log('error in deleting patient', error);
+      console.log('Error in deleting patient', error);
     } finally {
       setIsLoading(false);
     }
@@ -336,6 +353,9 @@ const VoiceToTextScreen = ({
 
   return (
     <VoiceToText
+      onAlertPopupCancelPressed={onAlertPopupCancelPressed}
+      onAlertPopupConfirmPressed={onAlertPopupConfirmPressed}
+      onDeleteButtonPressed={onDeleteButtonPressed}
       previousNotes={previousNotes}
       isLoading={isLoading}
       userImage={userImage}
@@ -355,7 +375,8 @@ const VoiceToTextScreen = ({
       onEditPressed={onEditPressed}
       onMenuPressed={onMenuPressed}
       handleTabPress={handleTabPress}
-      onDeletePressed={onDeletePressed}
+      // onDeletePressed={onDeletePressed}
+      isAlertPopupVisible={isAlertPopupVisible}
       handleButtonPress={handleButtonPress}
       onLanguageChange={setSelectedLanguage}
       onVoiceRecordPressed={onVoiceRecordPressed}

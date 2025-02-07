@@ -39,7 +39,7 @@ const SideMenu = (props: IProps) => {
       <AlertPopup
         messageText="Are you sure you want to logout"
         isAlertPopupVisible={props.isPopupVisible}
-        cancelText="Cancel"
+        cancelText="No"
         confirmText="YES"
         onAlertPopupClose={props.handleCancel}
         onAlertPopupCancel={props.handleCancel}
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   logoutButton: {
-    backgroundColor: '#0397A8',
+    backgroundColor: '#3781C3',
     paddingVertical: 15,
     alignItems: 'center',
     // borderTopLeftRadius: 20,
