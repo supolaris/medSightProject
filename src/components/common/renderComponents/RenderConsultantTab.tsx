@@ -33,6 +33,7 @@ interface IProps {
   transcriptText: string;
   selectedLanguage: string;
   intakeNotesValue: string;
+  cSpeachTextData: string[];
   speachTextData: string[];
   lottieRef: React.RefObject<LottieView>;
   languageOptions: { label: string; value: string }[];
@@ -60,7 +61,7 @@ const RenderConsultantTab = (props: IProps) => {
             icon: require('../../../assets/images/smartIcon.png'),
           },
           {
-            label: 'Intake Notes',
+            label: 'Soap Notes',
             icon: require('../../../assets/images/intakeIcon.png'),
           },
           {
@@ -112,7 +113,7 @@ const RenderConsultantTab = (props: IProps) => {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
-              {props.speachTextData || 'Start speaking...'}
+              {props.cSpeachTextData || 'Start speaking...'}
             </Text>
           </View>
           <View style={styles.lottieView}>
@@ -207,7 +208,7 @@ const RenderConsultantTab = (props: IProps) => {
         </View>
       )}
 
-      {props.activeTab === 'Intake Notes' && (
+      {props.activeTab === 'Soap Notes' && (
         <View>
           <View style={styles.recordingContainer}>
             <View style={styles.recordingHeader}>

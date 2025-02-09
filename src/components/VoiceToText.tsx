@@ -19,6 +19,7 @@ import RenderIntakTab from './common/renderComponents/RenderIntakTab';
 import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 import RenderConsultantTab from './common/renderComponents/RenderConsultantTab';
 import AlertPopup from './common/popups/AlertPopup';
+import RenderCoPilotTab from './common/renderComponents/RenderCoPilotTab';
 
 interface IProps {
   previousNotes: {
@@ -77,6 +78,12 @@ interface IProps {
   onCChangeTranscriptText: (val: string) => void;
   handleCIntakeNotesValue: (value: string) => void;
   onCIntakeInsightPressed: () => void;
+
+  chatMessages: void[];
+  onSendMessage: (message: string) => void;
+  onVoiceMessage: () => void;
+  assistantRef?: React.RefObject<any>;
+  handleSendMessage: (message: string) => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -315,6 +322,8 @@ const VoiceToText = (props: IProps) => {
               onIntakeNotesSavePressed={props.onIntakeNotesSavePressed}
               onIntakeInsightPressed={props.onIntakeInsightPressed}
             />
+          ) : props.selectedButton === 'CoPilot' ? (
+            <RenderCoPilotTab />
           ) : (
             <RenderConsultantTab
               speechToText={props.speechToText}

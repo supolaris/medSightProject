@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Text,
@@ -69,6 +69,15 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
   onImageSelectionPopupClose,
   onImageSelectionOptionPressed,
 }) => {
+  const givenNameRef = useRef<TextInput>(null);
+  const birthDateRef = useRef<TextInput>(null);
+  const contactRef = useRef<TextInput>(null);
+  const addressRef = useRef<TextInput>(null);
+  const cityRef = useRef<TextInput>(null);
+  const stateRef = useRef<TextInput>(null);
+  const postalRef = useRef<TextInput>(null);
+  const countryRef = useRef<TextInput>(null);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground
@@ -101,7 +110,10 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
           maximumDate={new Date()}
           open={isDatePickerVisible}
           onCancel={onCancelDatePicker}
-          onConfirm={(date: Date) => onConfirmDatePicker(date)}
+          onConfirm={(date: Date) => {
+            onConfirmDatePicker(date);
+            contactRef.current?.focus(); // Move focus to the contact field
+          }}
         />
         <ScrollView contentContainerStyle={styles.formContainer}>
           {/* Avatar Section */}
@@ -134,15 +146,20 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
               placeholder="Family Name"
               placeholderTextColor="#8A8A8A"
               //   value={form.familyName}
+              returnKeyType="next"
+              onSubmitEditing={() => givenNameRef.current?.focus()}
               onChangeText={(text) => setForm({ ...form, familyName: text })}
             />
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Given Name</Text>
             <TextInput
+              ref={givenNameRef}
               style={styles.inputField}
               placeholder="Given Name"
               placeholderTextColor="#8A8A8A"
+              returnKeyType="next"
+              onSubmitEditing={() => birthDateRef.current?.focus()}
               //   value={form.givenName}
               onChangeText={(text) => setForm({ ...form, givenName: text })}
             />
@@ -162,25 +179,45 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Contact (Phone/Email)</Text>
             <TextInput
+              ref={contactRef}
               style={styles.inputField}
               placeholder="Contact (Phone/Email)"
               placeholderTextColor="#8A8A8A"
-              //   value={form.contact}
               keyboardType="phone-pad"
+              returnKeyType="next"
+              onSubmitEditing={() => addressRef.current?.focus()}
               onChangeText={(text) => setForm({ ...form, contact: text })}
             />
           </View>
 
           {/* Other Fields */}
+
           {['Address', 'City', 'State', 'Postal', 'Country'].map(
             (placeholder, index) => (
               <View key={index} style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>{placeholder}</Text>
                 <TextInput
+                  ref={
+                    index === 0
+                      ? addressRef
+                      : index === 1
+                      ? cityRef
+                      : index === 2
+                      ? stateRef
+                      : index === 3
+                      ? postalRef
+                      : countryRef
+                  }
                   style={styles.inputField}
                   placeholder={placeholder}
                   placeholderTextColor="#8A8A8A"
-                  //   value={(form as any)[placeholder.toLowerCase()]}
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    if (index === 0) cityRef.current?.focus();
+                    else if (index === 1) stateRef.current?.focus();
+                    else if (index === 2) postalRef.current?.focus();
+                    else if (index === 3) countryRef.current?.focus();
+                  }}
                   onChangeText={(text) =>
                     setForm({ ...form, [placeholder.toLowerCase()]: text })
                   }
@@ -188,7 +225,6 @@ const AddNewPatient: React.FC<AddNewPatientProps> = ({
               </View>
             ),
           )}
-
           {/* Buttons */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>

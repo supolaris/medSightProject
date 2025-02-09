@@ -74,7 +74,10 @@ const PatientDetailScreen = ({
   };
 
   const handleCoPilot = () => {
-    console.log('Co-Pilot pressed');
+    navigation.navigate('VoiceToText', {
+      flow: 'CoPilot',
+      userDetails: userDetails ? userDetails : null,
+    });
   };
 
   const onChangeTab = (val: string) => {
