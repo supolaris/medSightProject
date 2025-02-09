@@ -46,7 +46,6 @@ interface IProps {
 }
 
 const RenderIntakTab = (props: IProps) => {
-  console.log('speachTextData', props.speachTextData);
   return (
     <View>
       {/* Tabs */}
@@ -205,7 +204,16 @@ const RenderIntakTab = (props: IProps) => {
             onChangeText={props.onChnageTranscriptText}
           />
 
-          <TouchableOpacity style={styles.saveButton}>
+          <TouchableOpacity
+            style={[
+              styles.saveButton,
+              {
+                backgroundColor:
+                  props.transcriptText?.length > 0 ? '#3781C3' : 'gray',
+              },
+            ]}
+            disabled={props.transcriptText?.length > 0 ? false : true}
+            onPress={props.onIntakeNotesSavePressed}>
             <Text style={styles.saveButtonText}>SAVE</Text>
           </TouchableOpacity>
         </View>

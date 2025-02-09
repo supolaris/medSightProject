@@ -6,7 +6,9 @@ import {
   userLogout,
 } from '../utils/CommonFunctions';
 import {
+  postConsultantDocumentService,
   postConsultantNotesService,
+  postIntakeDocumentService,
   postIntakeNotesService,
 } from '../utils/TranscriptServices';
 import LottieView from 'lottie-react-native';
@@ -156,28 +158,6 @@ const VoiceToTextScreen = ({
     setCIntakeNotesValue(value.trimStart());
   };
 
-  const onCIntakeNotesSavePressed = async () => {
-    console.log('hello world');
-    // try {
-    //   setIsLoading(true);
-    //   const isTokenValid = await checkTokenValidity();
-    //   if (isTokenValid) {
-    //     let data = { rawRecordingData: cIntakeNotesValue };
-    //     const response = await postIntakeNotesService(data);
-    //     if (response.smartTranscript || response.soapNotes) {
-    //       showToast('Notes saved successfully');
-    //       setCIntakeNotesValue('');
-    //     }
-    //   } else {
-    //     setIsMessagePopupVisible(true);
-    //   }
-    // } catch (error) {
-    //   console.log('error in posting intake notes', error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-  };
-
   /// c end
 
   const handleTabPress = (tab: any) => {
@@ -253,28 +233,62 @@ const VoiceToTextScreen = ({
   };
 
   const onIntakeNotesSavePressed = async () => {
-    // try {
-    //   setIsLoading(true);
-    //   const isTokenValid = await checkTokenValidity();
-    //   if (isTokenValid) {
-    //     let data = {
-    //       rawRecordingData: intakeNotesValue,
-    //     };
-    //     const response = await postIntakeNotesService(data);
-    //     if (response.smartTranscript || response.soapNotes) {
-    //       showToast('Notes saved successfully');
-    //       setTranscriptText(response.smartTranscript);
-    //       setIntakeNotesValue(response.soapNotes);
-    //     }
-    //   } else {
-    //     console.log('add login popup');
-    //     setIsMessagePopupVisible(true);
-    //   }
-    // } catch (error) {
-    //   console.log('error in posting intake notes', error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    try {
+      setIsLoading(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        let patientId = mmkv.getString('patientId') as string;
+        let data = {
+          encounterId: 'string',
+          encounterDateTime: '2025-02-09T19:20:17.305Z',
+          patientId: patientId,
+          rawRecordingData: speechToText,
+          smartTranscript: transcriptText,
+          soapNotes: intakeNotesValue,
+        };
+        const response = await postIntakeDocumentService(data);
+        if (response) {
+          showToast('Notes saved successfully');
+        } else {
+          showToast(AppMessages.wentWrong);
+        }
+      } else {
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in posting intake notes', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const onCIntakeNotesSavePressed = async () => {
+    try {
+      setIsLoading(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        let patientId = mmkv.getString('patientId') as string;
+        let data = {
+          encounterId: 'string',
+          encounterDateTime: '2025-02-09T19:20:17.305Z',
+          patientId: patientId,
+          rawRecordingData: cSpeechToText,
+          smartTranscript: cTranscriptText,
+          soapNotes: cIntakeNotesValue,
+        };
+        const response = await postConsultantDocumentService(data);
+        if (response) {
+          showToast('Notes saved successfully');
+        } else {
+          showToast(AppMessages.wentWrong);
+        }
+      } else {
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in posting intake notes', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleIntakeNotesValue = (value: string) => {
