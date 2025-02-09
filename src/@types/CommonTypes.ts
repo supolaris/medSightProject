@@ -106,3 +106,8 @@ export interface ICarePoiletData {
   patientID: string;
   userQuery: string;
 }
+
+export interface IMessagesData {
+  type: 'sent' | 'received';
+  value: string;
+}

@@ -16,6 +16,8 @@ import {
   postIntakeNotesService,
 } from '../utils/TranscriptServices';
 import { getPreviousNotesService } from '../utils/VoiceToTextServices';
+import { postCarePioletService } from '../utils/CarePilotService';
+import { IMessagesData } from '../@types/CommonTypes';
 
 const VoiceToTextScreen = ({
   route,
@@ -44,6 +46,11 @@ const VoiceToTextScreen = ({
   ];
 
   //
+  const [messagesData, setMessagesData] = useState<IMessagesData[]>([]);
+  const [messageInputVal, setMessageInputVal] = useState<string>('');
+  const [isMessageSending, setIsMessageSending] = useState<boolean>(false);
+
+  //
   const [activeTab, setActiveTab] = useState('Recording');
   const [transcriptText, setTranscriptText] = useState('');
   // 'NewIntake' | 'StartConsultation' | 'CoPilot'
@@ -57,6 +64,7 @@ const VoiceToTextScreen = ({
   const [cSelectedLanguage, setCSelectedLanguage] = useState('en-US');
   const [cIntakeNotesValue, setCIntakeNotesValue] = useState<string>('');
   const cLottieRef = useRef<LottieView>(null);
+
   const cLanguageOptions = [
     { label: 'English (US)', value: 'en-US' },
     { label: 'Hindi (India)', value: 'hi-IN' },
@@ -377,6 +385,48 @@ const VoiceToTextScreen = ({
     }
   };
 
+  //
+  const onChangeMessageVal = (val: string) => {
+    setMessageInputVal(val);
+  };
+
+  const onMessageSendPressed = async () => {
+    try {
+      setIsMessageSending(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        const patientId = mmkv.getString('patientId') as string;
+        let data = {
+          patientID: patientId,
+          userQuery: messageInputVal,
+        };
+        const response = await postCarePioletService(data);
+        if (response) {
+          setMessagesData((preVal) => [
+            ...preVal,
+            { type: 'sent', value: messageInputVal },
+            {
+              type: 'received',
+              value:
+                typeof response === 'object' ? response.response : response,
+            },
+          ]);
+          setMessageInputVal('');
+        } else {
+          showToast(AppMessages.wentWrong);
+          setIsMessageSending(false);
+        }
+      } else {
+        console.log('add login popup');
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in getting intakes notes', error);
+    } finally {
+      setIsMessageSending(false);
+    }
+  };
+
   return (
     <VoiceToText
       onAlertPopupCancelPressed={onAlertPopupCancelPressed}
@@ -428,6 +478,12 @@ const VoiceToTextScreen = ({
       handleCIntakeNotesValue={handleCIntakeNotesValue}
       onCIntakeNotesSavePressed={onCIntakeNotesSavePressed}
       onCIntakeInsightPressed={onCIntakeInsightPressed}
+      //
+      messagesData={messagesData}
+      messageInputVal={messageInputVal}
+      isMessageSending={isMessageSending}
+      onChangeMessageVal={onChangeMessageVal}
+      onMessageSendPressed={onMessageSendPressed}
     />
   );
 };

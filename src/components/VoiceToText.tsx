@@ -84,6 +84,13 @@ interface IProps {
   onVoiceMessage: () => void;
   assistantRef?: React.RefObject<any>;
   handleSendMessage: (message: string) => void;
+
+  //
+  messagesData: string[];
+  messageInputVal: string;
+  isMessageSending: boolean;
+  onChangeMessageVal: (val: string) => void;
+  onMessageSendPressed: () => void;
 }
 
 const VoiceToText = (props: IProps) => {
@@ -323,7 +330,13 @@ const VoiceToText = (props: IProps) => {
               onIntakeInsightPressed={props.onIntakeInsightPressed}
             />
           ) : props.selectedButton === 'CoPilot' ? (
-            <RenderCoPilotTab />
+            <RenderCoPilotTab
+              messagesData={props.messagesData}
+              messageInputVal={props.messageInputVal}
+              isMessageSending={props.isMessageSending}
+              onChangeMessageVal={props.onChangeMessageVal}
+              onMessageSendPressed={props.onMessageSendPressed}
+            />
           ) : (
             <RenderConsultantTab
               speechToText={props.speechToText}
