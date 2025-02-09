@@ -20,6 +20,7 @@ import { calculateAge, formatDateOfBirth } from '../utils/CommonFunctions';
 import RenderConsultantTab from './common/renderComponents/RenderConsultantTab';
 import AlertPopup from './common/popups/AlertPopup';
 import RenderCoPilotTab from './common/renderComponents/RenderCoPilotTab';
+import { IMessagesData } from '../@types/CommonTypes';
 
 interface IProps {
   previousNotes: {
@@ -32,7 +33,6 @@ interface IProps {
   userImage: string;
   activeTab: string;
   isRecording: boolean;
-  speechToText: string;
   transcriptText: string;
   selectedButton: string;
   selectedLanguage: string;
@@ -86,7 +86,7 @@ interface IProps {
   handleSendMessage: (message: string) => void;
 
   //
-  messagesData: string[];
+  messagesData: IMessagesData[];
   messageInputVal: string;
   isMessageSending: boolean;
   onChangeMessageVal: (val: string) => void;
@@ -311,7 +311,6 @@ const VoiceToText = (props: IProps) => {
 
           {props.selectedButton === 'NewIntake' ? (
             <RenderIntakTab
-              speechToText={props.speechToText}
               previousNotes={props.previousNotes}
               activeTab={props.activeTab}
               lottieRef={props.lottieRef}
@@ -339,7 +338,6 @@ const VoiceToText = (props: IProps) => {
             />
           ) : (
             <RenderConsultantTab
-              speechToText={props.speechToText}
               previousNotes={props.previousNotes}
               activeTab={props.cActiveTab}
               lottieRef={props.cLottieRef}

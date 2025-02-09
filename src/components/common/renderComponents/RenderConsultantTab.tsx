@@ -23,7 +23,6 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 interface IProps {
   activeTab: string;
-  speechToText: string;
   previousNotes: {
     summary: string;
     conditions: any[];
@@ -33,7 +32,6 @@ interface IProps {
   transcriptText: string;
   selectedLanguage: string;
   intakeNotesValue: string;
-  cSpeachTextData: string[];
   speachTextData: string[];
   lottieRef: React.RefObject<LottieView>;
   languageOptions: { label: string; value: string }[];
@@ -47,6 +45,7 @@ interface IProps {
 }
 
 const RenderConsultantTab = (props: IProps) => {
+  console.log('cSpeachTextData =>>>>', props.speachTextData);
   return (
     <View>
       {/* Tabs */}
@@ -113,7 +112,7 @@ const RenderConsultantTab = (props: IProps) => {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
-              {props.cSpeachTextData || 'Start speaking...'}
+              {props.speachTextData || 'Start speaking...'}
             </Text>
           </View>
           <View style={styles.lottieView}>
@@ -165,7 +164,7 @@ const RenderConsultantTab = (props: IProps) => {
                 width: normalizeWidth(80),
                 height: normalizeHeight(40),
                 fontSize: normalizeFont(9.54),
-                isDisabled: props.speechToText ? false : true,
+                isDisabled: props.speachTextData?.length > 0 ? false : true,
               }}
               style={{
                 backgroundColor: '#12AAC2',

@@ -5,19 +5,19 @@ import {
   showToast,
   userLogout,
 } from '../utils/CommonFunctions';
-import LottieView from 'lottie-react-native';
-import Voice from '@react-native-community/voice';
-import VoiceToText from '../components/VoiceToText';
-import { AppMessages } from '../constants/AppMessages';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { deletePatientService } from '../utils/MyPatientServices';
 import {
   postConsultantNotesService,
   postIntakeNotesService,
 } from '../utils/TranscriptServices';
-import { getPreviousNotesService } from '../utils/VoiceToTextServices';
-import { postCarePioletService } from '../utils/CarePilotService';
+import LottieView from 'lottie-react-native';
+import Voice from '@react-native-community/voice';
+import VoiceToText from '../components/VoiceToText';
 import { IMessagesData } from '../@types/CommonTypes';
+import { AppMessages } from '../constants/AppMessages';
+import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { deletePatientService } from '../utils/MyPatientServices';
+import { postCarePioletService } from '../utils/CarePilotService';
+import { getPreviousNotesService } from '../utils/VoiceToTextServices';
 
 const VoiceToTextScreen = ({
   route,
@@ -26,6 +26,7 @@ const VoiceToTextScreen = ({
   const { flow, userDetails } = route.params;
   const lottieRef = useRef<LottieView>(null);
   const [speechToText, setSpeechToText] = useState('');
+  const [cSpeechToText, setcSpeechToText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [userImage, setUserImage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -83,6 +84,50 @@ const VoiceToTextScreen = ({
     conditions: [],
     medications: [],
   });
+
+  useEffect(() => {
+    Voice.onSpeechResults = (event: any) => {
+      console.log('selectedButton', selectedButton);
+      if (selectedButton === 'NewIntake') {
+        console.log('if entered');
+        setSpeechToText((prev) => prev + ' ' + event.value[0]);
+        setSpeachTextData((prev) => {
+          const updatedData = [...prev, event.value[0]];
+          console.log('Updated speachTextData:', updatedData);
+          return updatedData;
+        });
+      } else {
+        console.log('else entered');
+        setcSpeechToText((prev) => prev + ' ' + event.value[0]);
+        setCSpeachTextData((prev) => {
+          const updatedData = [...prev, event.value[0]];
+          console.log('Updated speachTextData:', updatedData);
+          return updatedData;
+        });
+      }
+    };
+
+    Voice.onSpeechEnd = () => {
+      setIsRecording(false);
+    };
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, [selectedButton]);
+
+  useEffect(() => {
+    console.log('speachTextData', speachTextData);
+  }, [speachTextData]);
+
+  useEffect(() => {
+    const userName = mmkv.getString('userImage') as string;
+    setUserImage(userName);
+  }, []);
+
+  useEffect(() => {
+    getPreviousNotes();
+  }, []);
 
   const onCTabPress = (tab: any) => {
     setCActiveTab(tab);
@@ -147,40 +192,6 @@ const VoiceToTextScreen = ({
   ) => {
     setSelectedButton(button);
   };
-
-  useEffect(() => {
-    Voice.onSpeechResults = (event: any) => {
-      setSpeechToText((prev) => prev + ' ' + event.value[0]);
-      setSpeachTextData((prev) => {
-        const updatedData = [...prev, event.value[0]];
-        console.log('Updated speachTextData:', updatedData); // Log updated state
-        return updatedData;
-      });
-
-      console.log('speachTextData', speachTextData);
-    };
-
-    Voice.onSpeechEnd = () => {
-      setIsRecording(false);
-    };
-
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log('speachTextData', speachTextData);
-  }, [speachTextData]);
-
-  useEffect(() => {
-    const userName = mmkv.getString('userImage') as string;
-    setUserImage(userName);
-  }, []);
-
-  useEffect(() => {
-    getPreviousNotes();
-  }, []);
 
   const getPreviousNotes = async () => {
     try {
@@ -367,7 +378,7 @@ const VoiceToTextScreen = ({
       if (isTokenValid) {
         console.log(' hello world');
         const data = {
-          rawRecordingData: speechToText,
+          rawRecordingData: cSpeechToText,
         };
         const response = await postConsultantNotesService(data);
         if (response) {
@@ -439,7 +450,6 @@ const VoiceToTextScreen = ({
       activeTab={activeTab}
       userDetails={userDetails}
       isRecording={isRecording}
-      speechToText={speechToText}
       transcriptText={transcriptText}
       selectedButton={selectedButton}
       speachTextData={speachTextData}

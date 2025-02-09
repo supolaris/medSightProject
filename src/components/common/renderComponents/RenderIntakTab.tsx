@@ -23,7 +23,6 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { ScrollView } from 'react-native-gesture-handler';
 
 interface IProps {
-  speechToText: string;
   previousNotes: {
     summary: string;
     conditions: any[];
@@ -47,6 +46,7 @@ interface IProps {
 }
 
 const RenderIntakTab = (props: IProps) => {
+  console.log('speachTextData', props.speachTextData);
   return (
     <View>
       {/* Tabs */}
@@ -158,7 +158,7 @@ const RenderIntakTab = (props: IProps) => {
 
             <CustomTouchable
               preset={{
-                isDisabled: props.speechToText ? false : true,
+                isDisabled: props.speachTextData?.length > 0 ? false : true,
                 text: 'Generate Insight',
                 fontSize: normalizeFont(9.54),
                 fontWeight: 'medium',
