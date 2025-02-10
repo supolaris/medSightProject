@@ -13,9 +13,9 @@ const EditScreen = ({
   route,
   navigation,
 }: MainStackScreenProps<'EditScreen'>) => {
-  const [givenName, setGivenName] = useState('Roberts John');
-  const [familyName, setFamilyName] = useState('Roberts John');
-  const [birthDate, setBirthDate] = useState('11/12/1980');
+  const [givenName, setGivenName] = useState('');
+  const [familyName, setFamilyName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
 
   const handleback = () => {
     navigation.navigate('Patients');

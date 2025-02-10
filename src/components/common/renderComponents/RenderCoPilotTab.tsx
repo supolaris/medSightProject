@@ -73,7 +73,7 @@ const RenderCoPilotTab = (props: IProps) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Co-Pilot</Text>
-        <View style={styles.iconContainer}>
+        {/* <View style={styles.iconContainer}>
           <Icon
             name="volume-up"
             size={18}
@@ -92,7 +92,7 @@ const RenderCoPilotTab = (props: IProps) => {
             color="black"
             style={styles.headerIcon}
           />
-        </View>
+        </View> */}
       </View>
 
       {/* Chat Bubble */}
@@ -124,9 +124,9 @@ const RenderCoPilotTab = (props: IProps) => {
           value={props.messageInputVal}
           onChangeText={props.onChangeMessageVal}
         />
-        <TouchableOpacity style={styles.iconButton}>
+        {/* <TouchableOpacity style={styles.iconButton}>
           <Icon name="microphone" size={18} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{
             ...styles.sendButton,
@@ -240,8 +240,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   sendButton: {
-    height: normalizeHeight(42),
-    width: normalizeWidth(45),
+    height: normalizeHeight(45),
+    width: normalizeWidth(85),
     borderRadius: 5,
     marginLeft: 5,
     justifyContent: 'center',

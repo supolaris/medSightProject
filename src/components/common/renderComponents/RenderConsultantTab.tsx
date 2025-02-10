@@ -160,13 +160,14 @@ const RenderConsultantTab = (props: IProps) => {
                 fontWeight: 'medium',
                 text: 'Generate Insight',
                 textColor: AppColors.white,
-                width: normalizeWidth(80),
+                width: normalizeWidth(90),
                 height: normalizeHeight(40),
                 fontSize: normalizeFont(9.54),
                 isDisabled: props.speachTextData?.length > 0 ? false : true,
               }}
               style={{
                 backgroundColor: '#12AAC2',
+                right: normalizeWidth(22),
               }}
               onPress={props.onIntakeInsightPressed}
             />
