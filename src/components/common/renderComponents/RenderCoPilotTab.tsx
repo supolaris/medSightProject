@@ -18,6 +18,7 @@ import {
 import { AppColors } from '../../../constants/AppColors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { IMessagesData } from '../../../@types/CommonTypes';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface IProps {
   messagesData: IMessagesData[];
@@ -45,7 +46,7 @@ const RenderCoPilotTab = (props: IProps) => {
         }}>
         {index % 2 !== 0 && (
           <Image
-            source={require('../../../assets/images/copilotImage.png')}
+            source={require('../../../assets/images/avatarIcon.png')}
             style={styles.renderAvatar}
           />
         )}
@@ -72,6 +73,10 @@ const RenderCoPilotTab = (props: IProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <Image
+          source={require('../../../assets/images/coPilotAi.png')}
+          style={{ width: normalizeWidth(20), height: normalizeWidth(20) }}
+        />
         <Text style={styles.title}>Co-Pilot</Text>
         {/* <View style={styles.iconContainer}>
           <Icon
@@ -96,31 +101,34 @@ const RenderCoPilotTab = (props: IProps) => {
       </View>
 
       {/* Chat Bubble */}
-      <View style={styles.messageContainer}>
-        {props.messagesData?.length > 0 ? (
-          <View style={styles.messagesFlatlistView}>
-            <FlatList data={props.messagesData} renderItem={renderMessages} />
-          </View>
-        ) : (
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <Image
-              source={require('../../../assets/images/copilotImage.png')}
-              style={styles.avatar}
-            />
-            <View style={styles.botMessage}>
-              <Text style={styles.messageText}>
-                Hi! This is MedSight. You can chat with me about this patient.
-              </Text>
+      <ScrollView>
+        <View style={styles.messageContainer}>
+          {props.messagesData?.length > 0 ? (
+            <View style={styles.messagesFlatlistView}>
+              <FlatList data={props.messagesData} renderItem={renderMessages} />
             </View>
-          </View>
-        )}
-      </View>
+          ) : (
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <Image
+                source={require('../../../assets/images/avatarIcon.png')}
+                style={styles.avatar}
+              />
+              <View style={styles.botMessage}>
+                <Text style={styles.messageText}>
+                  Hi! This is MedSight. You can chat with me about this patient.
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+      </ScrollView>
 
       {/* Input Section */}
+      <Text style={styles.line}></Text>
       <View style={styles.inputSection}>
         <TextInput
           style={styles.input}
-          placeholder="Type a message..."
+          placeholder="Ask me anything..."
           value={props.messageInputVal}
           onChangeText={props.onChangeMessageVal}
         />
@@ -131,7 +139,7 @@ const RenderCoPilotTab = (props: IProps) => {
           style={{
             ...styles.sendButton,
             backgroundColor: props.messageInputVal
-              ? '#2E7D32'
+              ? '#3781C3'
               : AppColors.inactiveColor,
           }}
           onPress={props.onMessageSendPressed}
@@ -145,7 +153,10 @@ const RenderCoPilotTab = (props: IProps) => {
               color={AppColors.white}
             />
           ) : (
-            <Text style={styles.sendButtonText}>Send</Text>
+            <Image
+              source={require('../../../assets/images/sendIcon.png')}
+              style={styles.sendButtonImage}
+            />
           )}
         </TouchableOpacity>
       </View>
@@ -169,7 +180,7 @@ const styles = StyleSheet.create({
   //
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
@@ -177,16 +188,18 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F9F9F9',
-    padding: 10,
+    backgroundColor: '#3781C3',
+    height: normalizeHeight(60),
     borderBottomWidth: 1,
     borderColor: '#ddd',
+    padding: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: normalizeFont(16),
     fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginLeft: 5,
   },
   iconContainer: {
     flexDirection: 'row',
@@ -220,14 +233,12 @@ const styles = StyleSheet.create({
   inputSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
     padding: 10,
-    position: 'absolute',
-    bottom: 30,
   },
   input: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F7FBFF',
     borderRadius: 5,
     padding: 10,
     borderWidth: 1,
@@ -241,16 +252,24 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     height: normalizeHeight(45),
-    width: normalizeWidth(85),
-    borderRadius: 5,
+    width: normalizeWidth(45),
+    borderRadius: 8,
     marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#3781C3',
   },
-  sendButtonText: {
-    fontSize: normalizeFont(13),
-    color: '#fff',
-    fontWeight: 'bold',
+  sendButtonImage: {
+    width: normalizeWidth(20),
+    height: normalizeWidth(20),
+  },
+  line: {
+    width: normalizeWidth(370),
+    alignSelf: 'center',
+    height: 2,
+    backgroundColor: '#D9D9D9',
+    marginTop: normalizeHeight(18),
   },
 });
 

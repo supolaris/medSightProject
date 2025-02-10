@@ -126,8 +126,9 @@ const VoiceToText = (props: IProps) => {
           onMenuPressed={props.onMenuPressed}
           // onHeaderSettingsPressed={props.onHeaderSettingsPressed}
         />
-        <ScrollView contentContainerStyle={styles.container}>
-          {/* Patient Info */}
+        {/* <ScrollView contentContainerStyle={styles.container}> */}
+        {/* Patient Info */}
+        <View style={styles.container}>
           <View style={styles.patientInfo}>
             <Image
               source={require('../assets/images/dummyUser.png')}
@@ -356,7 +357,8 @@ const VoiceToText = (props: IProps) => {
               onIntakeInsightPressed={props.onCIntakeInsightPressed}
             />
           )}
-        </ScrollView>
+          {/* </ScrollView> */}
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
