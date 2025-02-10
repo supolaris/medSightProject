@@ -5,6 +5,7 @@ export const AppMessages = {
   saveText: 'Are you sure you want to save?',
   sessionExpired: 'Session expired, please login again',
   DeleteText: 'Are you sure you want to Delete?',
+  exitApp: 'You want to exit the app?',
   tempIntakeNotesMessage: `### Vitals and Examination Details:
   
 No vitals or examination details were recorded in the transcript.

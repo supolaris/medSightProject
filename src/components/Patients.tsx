@@ -17,6 +17,7 @@ import RenderNoDataView from './common/renderComponents/RenderNoDataView';
 import RenderPatientListCard from './common/renderComponents/RenderPatientListCard';
 import MessagePopup from './common/popups/MessagePopup';
 import { AppMessages } from '../constants/AppMessages';
+import AlertPopup from './common/popups/AlertPopup';
 
 interface IProps {
   userProfileData: {
@@ -26,6 +27,7 @@ interface IProps {
   };
   isLoading: boolean;
   searchVal: string;
+  isExitPopupVisible: boolean;
   isMessagePopupVisible: boolean;
   myPatientsData: IMyPatientItems[];
   onMenuPressed: () => void;
@@ -33,6 +35,8 @@ interface IProps {
   onPatientAddPressed: () => void;
   onMessagePopupConfirm: () => void;
   onHeaderSettingsPressed: () => void;
+  onExitPopupCancelPressed: () => void;
+  onExitPopupConfirmPressed: () => void;
   onHandleSearch: (val: string) => void;
   onPatientPressed: (item: any) => void;
 }
@@ -64,6 +68,14 @@ const Patients = (props: IProps) => {
           messageText={AppMessages.sessionExpired}
           isMessagePopupVisible={props.isMessagePopupVisible}
           onMessagePopupConfirm={props.onMessagePopupConfirm}
+        />
+        <AlertPopup
+          confirmText="Yes"
+          cancelText="Cancel"
+          messageText={AppMessages.exitApp}
+          isAlertPopupVisible={props.isExitPopupVisible}
+          onAlertPopupCancel={props.onExitPopupCancelPressed}
+          onAlertPopupConfirm={props.onExitPopupConfirmPressed}
         />
         <View style={styles.header}>
           <Text style={styles.welcomeText}>

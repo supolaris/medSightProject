@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   getMyPatientsService,
   getSearchPatientsService,
@@ -15,6 +15,8 @@ import { AppMessages } from '../constants/AppMessages';
 import { IMyPatientItems } from '../@types/CommonTypes';
 import { getUserProfileService } from '../utils/UserServices';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
+import { useFocusEffect } from '@react-navigation/native';
+import { BackHandler } from 'react-native';
 
 let patientsStoredData: IMyPatientItems[] = [];
 const PatientsScreen = ({
@@ -26,15 +28,30 @@ const PatientsScreen = ({
   const userContext = UserContext();
   const [searchVal, setSearchVal] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
+  const [isExitPopupVisible, setIsExitPopupVisible] = useState<boolean>(false);
   const [isMessagePopupVisible, setIsMessagePopupVisible] =
     useState<boolean>(false);
-  const [myPatientsData, setMyPatientsData] = useState<IMyPatientItems[]>([]);
 
   useEffect(() => {
     Promise.all([getPatients(), getUserProfile()]).finally(() => {
       setIsLoading(false);
     });
   }, [flow]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+      return () => backHandler.remove();
+    }, []),
+  );
+  const handleBackButtonClick = () => {
+    setIsExitPopupVisible(true);
+    return true;
+  };
 
   const getPatients = async () => {
     try {
@@ -137,6 +154,14 @@ const PatientsScreen = ({
     navigation.replace('Splash');
   };
 
+  const onExitPopupConfirmPressed = () => {
+    setIsExitPopupVisible(false);
+    BackHandler.exitApp();
+  };
+  const onExitPopupCancelPressed = () => {
+    setIsExitPopupVisible(false);
+  };
+
   return (
     <Patients
       isLoading={isLoading}
@@ -144,6 +169,9 @@ const PatientsScreen = ({
       myPatientsData={myPatientsData}
       isMessagePopupVisible={isMessagePopupVisible}
       userProfileData={userContext.userProfileData}
+      isExitPopupVisible={isExitPopupVisible}
+      onExitPopupCancelPressed={onExitPopupCancelPressed}
+      onExitPopupConfirmPressed={onExitPopupConfirmPressed}
       onMenuPressed={onMenuPressed}
       onHandleSearch={onHandleSearch}
       onSearchPressed={onSearchPressed}
