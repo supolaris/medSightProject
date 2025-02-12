@@ -24,7 +24,7 @@ const RenderPatientInsightTab = (props: IProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.insightContainer}>
+      {/* <View style={styles.insightContainer}>
         <Text style={styles.insightText}>
           The patient, {props.patientName}, has had multiple general examination
           encounters with Dr. Austin18 Test18 from May to June 2024.
@@ -38,15 +38,15 @@ const RenderPatientInsightTab = (props: IProps) => {
           monitoring of symptoms with appropriate follow-ups and instructions
           for hydration and rest.
         </Text>
-      </View>
+      </View> */}
       <View style={styles.medicalHistoryContainer}>
-        <View style={styles.medicalHistoryContainer1}>
+        {/* <View style={styles.medicalHistoryContainer1}>
           <Text style={styles.medicalHistoryTitle}>Medical History</Text>
           <Text style={styles.medicationText}>Conditions: </Text>
           <Text style={styles.medicationText}>
             Potential Malaria Viral Pharyngitis Indigestion
           </Text>
-        </View>
+        </View> */}
         {props.patientInsightDocumentData?.length > 0 && (
           <View style={styles.medicalHistoryContainer2}>
             {/* <Text style={styles.medicalHistorySubTitle}>Medications:</Text> */}

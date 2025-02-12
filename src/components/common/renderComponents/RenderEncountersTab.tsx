@@ -32,13 +32,15 @@ const RenderEncountersTab = (props: IProps) => {
   return (
     <View>
       <View style={styles.encounterContainer}>
-        <Text style={styles.encounterDate}>SEPTEMBER 16, 2024 (01:53)</Text>
-        <View style={styles.encounterCard}>
-          <FlatList
-            data={props.encounterData}
-            renderItem={renderEncounterItem}
-          />
-          {/* <Text style={styles.encounterSectionTitle}>Medications</Text>
+        {/* <Text style={styles.encounterDate}>SEPTEMBER 16, 2024 (01:53)</Text> */}
+
+        {props.encounterData?.length > 0 && (
+          <View style={styles.encounterCard}>
+            <FlatList
+              data={props.encounterData}
+              renderItem={renderEncounterItem}
+            />
+            {/* <Text style={styles.encounterSectionTitle}>Medications</Text>
           <Text style={styles.encounterSectionText}>Medication: 1</Text>
           <Text style={styles.encounterSectionText}>Name: Pepto-Bismol</Text>
           <Text style={styles.encounterSectionText}>Dosage: Not specified</Text>
@@ -46,8 +48,10 @@ const RenderEncountersTab = (props: IProps) => {
             Frequency: Four times a day
           </Text>
           <Text style={styles.encounterSectionText}>Duration: Five days</Text> */}
-        </View>
-        <View style={styles.encounterCard}>
+          </View>
+        )}
+
+        {/* <View style={styles.encounterCard}>
           <Text style={styles.encounterSectionTitle}>Subjective</Text>
           <Text style={styles.encounterSectionText}>
             Chief Complaint: Stomach pain since last night.
@@ -60,7 +64,7 @@ const RenderEncountersTab = (props: IProps) => {
           <Text style={styles.encounterSectionText}>
             Relevant Personal or Family Medical History: None mentioned.
           </Text>
-        </View>
+        </View> */}
       </View>
     </View>
   );
