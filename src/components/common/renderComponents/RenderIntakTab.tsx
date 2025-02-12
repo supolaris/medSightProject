@@ -289,7 +289,7 @@ const RenderIntakTab = (props: IProps) => {
           ) : (
             <View
               style={{
-                flex: 1,
+                // flex: 1,
                 alignItems: 'center',
               }}>
               <Text style={styles.noteText}>{AppMessages.noDataAvailable}</Text>
