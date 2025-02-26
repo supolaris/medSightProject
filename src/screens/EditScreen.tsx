@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     bottom: 10,
     borderWidth: 1,
-    borderColor: '#06A2B4',
+    borderColor: '#12AAC2',
     resizeMode: 'cover',
   },
   profileImage: {

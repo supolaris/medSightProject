@@ -4,19 +4,9 @@ import {
   getSearchPatientsService,
 } from '../utils/MyPatientServices';
 import {
-  checkTokenValidity,
-  mmkv,
-  showToast,
-  userLogout,
-} from '../utils/CommonFunctions';
-import Patients from '../components/Patients';
-import { UserContext } from '../context/Context';
-import { AppMessages } from '../constants/AppMessages';
-import { IMyPatientItems } from '../@types/CommonTypes';
-import { getUserProfileService } from '../utils/UserServices';
-import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { useFocusEffect } from '@react-navigation/native';
-import { BackHandler } from 'react-native';
+  getUserDetailsService,
+  getUserMicrosoftImage,
+} from '../utils/OnBoardingServices';
 
 let patientsStoredData: IMyPatientItems[] = [];
 const PatientsScreen = ({
@@ -140,26 +130,8 @@ const PatientsScreen = ({
   };
 
   const onHeaderSettingsPressed = async () => {
-    const result = userLogout();
-    if (result) {
-      navigation.replace('Splash');
-    } else {
-      showToast(AppMessages.wentWrong);
-    }
-  };
-
-  const onMessagePopupConfirm = () => {
-    mmkv.clearAll();
-    setIsMessagePopupVisible(false);
-    navigation.replace('Splash');
-  };
-
-  const onExitPopupConfirmPressed = () => {
-    setIsExitPopupVisible(false);
-    BackHandler.exitApp();
-  };
-  const onExitPopupCancelPressed = () => {
-    setIsExitPopupVisible(false);
+    // console.log('hello world');
+    // navigation.navigate('Splash');
   };
 
   return (

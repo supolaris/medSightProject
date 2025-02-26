@@ -1,20 +1,11 @@
+import React from 'react';
 import SideMenu from '../components/SideMenu';
 import { UserContext } from '../context/Context';
 import React, { useEffect, useState } from 'react';
 import { getUserProfileService } from '../utils/UserServices';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { checkTokenValidity, mmkv, showToast } from '../utils/CommonFunctions';
 
 const SideMenuScreen = ({ navigation }: MainStackScreenProps<'SideMenu'>) => {
-  const userContext = UserContext();
-  const [isPopupVisible, setPopupVisible] = useState(false);
-  const [isMessagePopupVisible, setIsMessagePopupVisible] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    Promise.all([, getUserProfile()]).finally(() => {});
-  });
-
   const onPressClose = () => {
     navigation.goBack();
   };
@@ -78,11 +69,6 @@ const SideMenuScreen = ({ navigation }: MainStackScreenProps<'SideMenu'>) => {
 
   return (
     <SideMenu
-      isPopupVisible={isPopupVisible}
-      userProfileData={userContext.userProfileData}
-      isMessagePopupVisible={isMessagePopupVisible}
-      handleLogout={handleLogout}
-      handleCancel={handleCancel}
       onPressClose={onPressClose}
       handleConfirm={handleConfirm}
       onLegalPressed={onLegalPressed}
