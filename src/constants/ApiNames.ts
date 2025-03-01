@@ -16,4 +16,5 @@ export const ApiNames = {
   getMecialHistory: '/api/Patient/GetMedicalHistorySummary/',
   //carePoilet
   postCarePoilet: '/api/CarePilot/BasicChatQuery',
+  getPatientDocuments: '/api/Patient/',
 };

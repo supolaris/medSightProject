@@ -111,3 +111,12 @@ export interface IMessagesData {
   type: 'sent' | 'received';
   value: string;
 }
+
+export interface IPatientDocumentsData {
+  IntakeSoapNote: string;
+  IntakeSmartTranscript: string;
+  IntakeRecording: string;
+  ConsultationSoapNote: string;
+  ConsultationSmartTranscript: string;
+  ConsultationRecording: string;
+}

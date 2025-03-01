@@ -14,10 +14,13 @@ import {
 import LottieView from 'lottie-react-native';
 import Voice from '@react-native-community/voice';
 import VoiceToText from '../components/VoiceToText';
-import { IMessagesData } from '../@types/CommonTypes';
+import { IMessagesData, IPatientDocumentsData } from '../@types/CommonTypes';
 import { AppMessages } from '../constants/AppMessages';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
-import { deletePatientService } from '../utils/MyPatientServices';
+import {
+  deletePatientService,
+  getPatientDocumentsService,
+} from '../utils/MyPatientServices';
 import { postCarePioletService } from '../utils/CarePilotService';
 import { getPreviousNotesService } from '../utils/VoiceToTextServices';
 
@@ -87,6 +90,20 @@ const VoiceToTextScreen = ({
     medications: [],
   });
 
+  const [patientDocuments, setPatientDocuments] =
+    useState<IPatientDocumentsData>({
+      IntakeSoapNote: '',
+      IntakeSmartTranscript: '',
+      IntakeRecording: '',
+      ConsultationSoapNote: '',
+      ConsultationSmartTranscript: '',
+      ConsultationRecording: '',
+    });
+
+  useEffect(() => {
+    getPatientDocuments();
+  }, []);
+
   useEffect(() => {
     Voice.onSpeechResults = (event: any) => {
       console.log('selectedButton', selectedButton);
@@ -130,6 +147,43 @@ const VoiceToTextScreen = ({
   useEffect(() => {
     getPreviousNotes();
   }, []);
+
+  const getPatientDocuments = async () => {
+    try {
+      setIsLoading(true);
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        const patientId = mmkv.getString('patientId') as string;
+        const response = await getPatientDocumentsService(patientId);
+
+        if (response) {
+          const updatedDocuments = response.reduce(
+            (acc: any, doc: any) => {
+              if (acc.hasOwnProperty(doc.documentType)) {
+                acc[doc.documentType] = doc.textContent;
+              }
+              return acc;
+            },
+            { ...patientDocuments },
+          );
+          setPatientDocuments(updatedDocuments);
+          setTranscriptText(patientDocuments?.IntakeSmartTranscript);
+          setIntakeNotesValue(patientDocuments?.IntakeSoapNote);
+          setCTranscriptText(patientDocuments?.ConsultationSmartTranscript);
+          setCIntakeNotesValue(patientDocuments.ConsultationSoapNote);
+        } else {
+          showToast(AppMessages.wentWrong);
+        }
+      } else {
+        console.log('add login popup');
+        setIsMessagePopupVisible(true);
+      }
+    } catch (error) {
+      console.log('error in getting patient details', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onCTabPress = (tab: any) => {
     setCActiveTab(tab);

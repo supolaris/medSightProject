@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     backgroundColor: '#E5E5E5',
-    width: 120,
+    maxWidth: 220,
     height: 32,
     flexDirection: 'row',
     alignItems: 'center',
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: '#4A4A4A',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
   },
 });

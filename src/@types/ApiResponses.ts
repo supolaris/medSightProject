@@ -316,3 +316,10 @@ export interface IGenerateIntakeNotesResponse {
 export interface IPostCarePoiletResponse {
   response: string;
 }
+
+export interface IGetPatientDocumentsResponse {
+  id: string;
+  timestamp: string;
+  textContent: string;
+  documentType: string;
+}

@@ -43,3 +43,9 @@ export const deletePatientService = async (patientId: string) => {
   let response = await deleteRequest(completeEndPoint);
   return response;
 };
+
+export const getPatientDocumentsService = async (patientId: string) => {
+  let completeEndPoint = `${ApiNames.getPatientDocuments}${patientId}/documents`;
+  let { data: response }: { data: any } = await getRequest(completeEndPoint);
+  return response;
+};
