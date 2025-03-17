@@ -1,7 +1,7 @@
 import React from 'react';
 import SideMenu from '../components/SideMenu';
 import { UserContext } from '../context/Context';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUserProfileService } from '../utils/UserServices';
 import { MainStackScreenProps } from '../@types/NavigationTypes';
 
