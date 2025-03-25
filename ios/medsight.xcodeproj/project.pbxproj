@@ -8,13 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* medsightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* medsightTests.m */; };
+		0A3E4C1755E84A7896F511CC /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04BD7BC30431479EA1B4F7DF /* Roboto-Regular.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-medsight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-medsight.a */; };
 		0DEE1FFE2D86CE5D00E8CA51 /* LaunchScreen.storyboard.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0DEE1FFD2D86CE5D00E8CA51 /* LaunchScreen.storyboard.xml */; };
-		10D3F177F7F24AB2BF2A90C9 /* Helvetica Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B799613346214BC19A54DCC9 /* Helvetica Black.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		46173B0A3C764F3A97BC9A75 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 948BF37AAD0C4194A99F2560 /* Montserrat-Bold.ttf */; };
+		5AF12ED39D5A465DB633638D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57909B4BCF1D4516AD59FDEC /* Montserrat-Regular.ttf */; };
+		70B0AE33297A44A48DC65B45 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E022736D3D4F4EF2AAC9E488 /* Montserrat-SemiBold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-medsight-medsightTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-medsight-medsightTests.a */; };
+		77FE7ACD795640038338FDDC /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C81FF052147F4D8EB37C1D4F /* Roboto-Bold.ttf */; };
+		7ED6D0A822DE4155B36D1912 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B16C558C01048BEADC59F68 /* Montserrat-Medium.ttf */; };
+		BE8D885B30AD41D596EA9370 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E88454288D9541E480E3ABA4 /* Roboto-Medium.ttf */; };
+		CCE96C4F1DC747BCA1BAF46F /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3502F691FAC4292935726EA /* Roboto-Italic.ttf */; };
+		FA9CA5B45B6549FE89C723A0 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE117D627331459D9568EF14 /* Roboto-Thin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +39,7 @@
 		00E356EE1AD99517003FC87E /* medsightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = medsightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* medsightTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = medsightTests.m; sourceTree = "<group>"; };
+		04BD7BC30431479EA1B4F7DF /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		0DEE1FFD2D86CE5D00E8CA51 /* LaunchScreen.storyboard.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LaunchScreen.storyboard.xml; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* medsight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = medsight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = medsight/AppDelegate.h; sourceTree = "<group>"; };
@@ -39,13 +48,20 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = medsight/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = medsight/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-medsight-medsightTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medsight-medsightTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B16C558C01048BEADC59F68 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../src/assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-medsight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medsight.debug.xcconfig"; path = "Target Support Files/Pods-medsight/Pods-medsight.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-medsight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medsight.release.xcconfig"; path = "Target Support Files/Pods-medsight/Pods-medsight.release.xcconfig"; sourceTree = "<group>"; };
+		57909B4BCF1D4516AD59FDEC /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../src/assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-medsight-medsightTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medsight-medsightTests.debug.xcconfig"; path = "Target Support Files/Pods-medsight-medsightTests/Pods-medsight-medsightTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-medsight.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medsight.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-medsight-medsightTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medsight-medsightTests.release.xcconfig"; path = "Target Support Files/Pods-medsight-medsightTests/Pods-medsight-medsightTests.release.xcconfig"; sourceTree = "<group>"; };
-		B799613346214BC19A54DCC9 /* Helvetica Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Helvetica Black.ttf"; path = "../assets/fonts/Helvetica Black.ttf"; sourceTree = "<group>"; };
+		948BF37AAD0C4194A99F2560 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		C81FF052147F4D8EB37C1D4F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../src/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		DE117D627331459D9568EF14 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../src/assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		E022736D3D4F4EF2AAC9E488 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		E88454288D9541E480E3ABA4 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../src/assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F3502F691FAC4292935726EA /* Roboto-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Italic.ttf"; path = "../src/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +127,15 @@
 		679E1A9E85B141DA8A6AB502 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B799613346214BC19A54DCC9 /* Helvetica Black.ttf */,
+				948BF37AAD0C4194A99F2560 /* Montserrat-Bold.ttf */,
+				1B16C558C01048BEADC59F68 /* Montserrat-Medium.ttf */,
+				57909B4BCF1D4516AD59FDEC /* Montserrat-Regular.ttf */,
+				E022736D3D4F4EF2AAC9E488 /* Montserrat-SemiBold.ttf */,
+				C81FF052147F4D8EB37C1D4F /* Roboto-Bold.ttf */,
+				F3502F691FAC4292935726EA /* Roboto-Italic.ttf */,
+				E88454288D9541E480E3ABA4 /* Roboto-Medium.ttf */,
+				04BD7BC30431479EA1B4F7DF /* Roboto-Regular.ttf */,
+				DE117D627331459D9568EF14 /* Roboto-Thin.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -254,7 +278,15 @@
 			files = (
 				0DEE1FFE2D86CE5D00E8CA51 /* LaunchScreen.storyboard.xml in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				10D3F177F7F24AB2BF2A90C9 /* Helvetica Black.ttf in Resources */,
+				46173B0A3C764F3A97BC9A75 /* Montserrat-Bold.ttf in Resources */,
+				7ED6D0A822DE4155B36D1912 /* Montserrat-Medium.ttf in Resources */,
+				5AF12ED39D5A465DB633638D /* Montserrat-Regular.ttf in Resources */,
+				70B0AE33297A44A48DC65B45 /* Montserrat-SemiBold.ttf in Resources */,
+				77FE7ACD795640038338FDDC /* Roboto-Bold.ttf in Resources */,
+				CCE96C4F1DC747BCA1BAF46F /* Roboto-Italic.ttf in Resources */,
+				BE8D885B30AD41D596EA9370 /* Roboto-Medium.ttf in Resources */,
+				0A3E4C1755E84A7896F511CC /* Roboto-Regular.ttf in Resources */,
+				FA9CA5B45B6549FE89C723A0 /* Roboto-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,9 +508,12 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-medsight.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 3QW4X9W69U;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = YHKMFP923K;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = medsight/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "medsight: Live Captions";
@@ -487,14 +522,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.medsightai.android01.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medsightai.android01.newapp;
 				PRODUCT_NAME = medsight;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -506,9 +542,12 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-medsight.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 3QW4X9W69U;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = YHKMFP923K;
 				INFOPLIST_FILE = medsight/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "medsight: Live Captions";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -516,14 +555,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.medsightai.android01.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medsightai.android01.newapp;
 				PRODUCT_NAME = medsight;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

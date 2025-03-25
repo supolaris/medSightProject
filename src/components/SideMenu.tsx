@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import { UserContext } from '../context/Context';
 import AlertPopup from './common/popups/AlertPopup';
@@ -35,94 +36,99 @@ interface IProps {
 const SideMenu = (props: IProps) => {
   const userContext = UserContext();
   return (
-    <View style={styles.container}>
-      <AlertPopup
-        messageText="Are you sure you want to logout"
-        isAlertPopupVisible={props.isPopupVisible}
-        cancelText="No"
-        confirmText="YES"
-        onAlertPopupClose={props.handleCancel}
-        onAlertPopupCancel={props.handleCancel}
-        onAlertPopupConfirm={props.handleConfirm}
-      />
-      <MessagePopup
-        buttonText="ok"
-        messageText={AppMessages.sessionExpired}
-        isMessagePopupVisible={props.isMessagePopupVisible}
-        onMessagePopupConfirm={props.onMessagePopupConfirm}
-      />
-      <View style={styles.profileContainer}>
-        <Image
-          style={styles.profileImage}
-          source={
-            userContext.userProfileData?.photo
-              ? {
-                  uri: `data:image/jpeg;base64,${userContext.userProfileData?.photo}`,
-                }
-              : require('../assets/images/dummyUser.png')
-          }
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}>
+      <View style={styles.container}>
+        <AlertPopup
+          messageText="Are you sure you want to logout"
+          isAlertPopupVisible={props.isPopupVisible}
+          cancelText="No"
+          confirmText="YES"
+          onAlertPopupClose={props.handleCancel}
+          onAlertPopupCancel={props.handleCancel}
+          onAlertPopupConfirm={props.handleConfirm}
         />
-        <Text style={styles.profileName}>
-          {props.userProfileData?.displayName}
-        </Text>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={props.onPressClose}>
-          <Text style={styles.closeText}>X</Text>
-        </TouchableOpacity>
-      </View>
+        <MessagePopup
+          buttonText="ok"
+          messageText={AppMessages.sessionExpired}
+          isMessagePopupVisible={props.isMessagePopupVisible}
+          onMessagePopupConfirm={props.onMessagePopupConfirm}
+        />
+        <View style={styles.profileContainer}>
+          <Image
+            style={styles.profileImage}
+            source={
+              userContext.userProfileData?.photo
+                ? {
+                    uri: `data:image/jpeg;base64,${userContext.userProfileData?.photo}`,
+                  }
+                : require('../assets/images/dummyUser.png')
+            }
+          />
+          <Text style={styles.profileName}>
+            {props.userProfileData?.displayName}
+          </Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={props.onPressClose}>
+            <Text style={styles.closeText}>X</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* <FlatList
+        {/* <FlatList
         data={options}
         renderItem={renderOption}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.optionsList}
       /> */}
 
-      <View
-        style={{
-          flex: 1,
-          paddingHorizontal: 15,
-          marginTop: 50,
-        }}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 15,
+            marginTop: 50,
+          }}>
+          <TouchableOpacity
+            style={styles.optionContainer}
+            onPress={props.onLegalPressed}>
+            <Image
+              source={require('../assets/images/legalImage.png')}
+              style={styles.optionIcon}
+            />
+            <Text style={styles.optionText}>Legal</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.optionContainer}
+            onPress={props.onConfigurationPressed}>
+            <Image
+              source={require('../assets/images/configImage.png')}
+              style={styles.optionIcon}
+            />
+            <Text style={styles.optionText}>Configuration</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.optionContainer}
+            onPress={props.onShareAppPressed}>
+            <Image
+              source={require('../assets/images/shareImage.png')}
+              style={styles.optionIcon}
+            />
+            <Text style={styles.optionText}>Share app</Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
-          style={styles.optionContainer}
-          onPress={props.onLegalPressed}>
+          onPress={props.handleLogout}
+          style={styles.logoutButton}>
           <Image
-            source={require('../assets/images/legalImage.png')}
-            style={styles.optionIcon}
+            source={require('../assets/images/logoutImage.png')}
+            style={styles.logoutImage}
           />
-          <Text style={styles.optionText}>Legal</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.optionContainer}
-          onPress={props.onConfigurationPressed}>
-          <Image
-            source={require('../assets/images/configImage.png')}
-            style={styles.optionIcon}
-          />
-          <Text style={styles.optionText}>Configuration</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.optionContainer}
-          onPress={props.onShareAppPressed}>
-          <Image
-            source={require('../assets/images/shareImage.png')}
-            style={styles.optionIcon}
-          />
-          <Text style={styles.optionText}>Share app</Text>
+          <Text style={styles.logoutText}>LOGOUT</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={props.handleLogout}
-        style={styles.logoutButton}>
-        <Image
-          source={require('../assets/images/logoutImage.png')}
-          style={styles.logoutImage}
-        />
-        <Text style={styles.logoutText}>LOGOUT</Text>
-      </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

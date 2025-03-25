@@ -12,8 +12,8 @@ const SideMenuScreen = ({ navigation }: MainStackScreenProps<'SideMenu'>) => {
     useState<boolean>(false);
 
   useEffect(() => {
-    Promise.all([, getUserProfile()]).finally(() => {});
-  });
+    getUserProfile();
+  }, []);
 
   const onPressClose = () => {
     navigation.goBack();

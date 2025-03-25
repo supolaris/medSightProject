@@ -74,6 +74,7 @@ const PatientsScreen = ({
 
   const getUserProfile = async () => {
     try {
+      console.log('first');
       const isTokenValid = await checkTokenValidity();
       if (isTokenValid) {
         const response = await getUserProfileService();

@@ -7,7 +7,7 @@ LogBox.ignoreAllLogs();
 const App = () => {
   return (
     <>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <StatusBar backgroundColor="#F8F9FA" barStyle="dark-content" />
       <UserProvider>
         <Routes />
       </UserProvider>
