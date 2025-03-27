@@ -51,7 +51,7 @@ const OnBoardingScreen = ({
       let authResponse = await authorize({
         ...config,
         connectionTimeoutSeconds: 5,
-        iosPrefersEphemeralSession: true,
+        // iosPrefersEphemeralSession: true,
       });
       if (authResponse?.accessToken) {
         global.token = authResponse.accessToken;

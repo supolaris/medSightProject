@@ -1,11 +1,15 @@
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
-#import <RNAppAuthAuthorizationFlowManager.h> 
+#import <RNAppAuthAuthorizationFlowManager.h>
+#import <React/RCTLinkingManager.h>
 
-@interface AppDelegate () <RNAppAuthAuthorizationFlowManager> 
+@interface AppDelegate () 
+
 @end
 
 @implementation AppDelegate
+
+@synthesize authorizationFlowManagerDelegate = _authorizationFlowManagerDelegate;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -29,11 +33,19 @@
 #endif
 }
 
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
-  if (self.authorizationFlowManagerDelegate) {
-    return [self.authorizationFlowManagerDelegate resumeExternalUserAgentFlowWithURL:url];
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString *, id> *)options
+{
+  if ([self.authorizationFlowManagerDelegate resumeExternalUserAgentFlowWithURL:url]) {
+    return YES;
   }
-  return [super application:app openURL:url options:options];
+  return [RCTLinkingManager application:app openURL:url options:options];
+}
+
+// ✅ Setter method to avoid "unrecognized selector" error
+- (void)setAuthorizationFlowManagerDelegate:(id<RNAppAuthAuthorizationFlowManagerDelegate>)authorizationFlowManagerDelegate {
+  _authorizationFlowManagerDelegate = authorizationFlowManagerDelegate;
 }
 
 @end
