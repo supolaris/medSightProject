@@ -42,14 +42,51 @@ const VoiceToTextScreen = ({
   const [intakeNotesValue, setIntakeNotesValue] = useState<string>('');
   const [isMessagePopupVisible, setIsMessagePopupVisible] =
     useState<boolean>(false);
+  // const languageOptions = [
+  //   { label: 'English (US)', value: 'en-US' },
+  //   { label: 'Hindi (India)', value: 'hi-IN' },
+  //   { label: 'French (France)', value: 'fr-FR' },
+  //   { label: 'Spanish (Spain)', value: 'es-ES' },
+  //   { label: 'German (Germany)', value: 'de-DE' },
+  //   { label: 'Chinese (Simplified)', value: 'zh-CN' },
+  // ];
+
+
   const languageOptions = [
-    { label: 'English (US)', value: 'en-US' },
-    { label: 'Hindi (India)', value: 'hi-IN' },
-    { label: 'French (France)', value: 'fr-FR' },
-    { label: 'Spanish (Spain)', value: 'es-ES' },
-    { label: 'German (Germany)', value: 'de-DE' },
+    { label: 'English', value: 'en-US' },
+    { label: 'Spanish', value: 'es-ES' },
+    { label: 'French', value: 'fr-FR' },
+    { label: 'Italian', value: 'it-IT' },
+    { label: 'German', value: 'de-DE' },
+    { label: 'Dutch', value: 'nl-NL' },
+    { label: 'Polish', value: 'pl-PL' },
+    { label: 'Portuguese', value: 'pt-PT' },
+    { label: 'Swedish', value: 'sv-SE' },
+    { label: 'Danish (Denmark)', value: 'da-DK' },
+    { label: 'Norwegian', value: 'no-NO' },
+    { label: 'Finnish', value: 'fi-FI' },
+    { label: 'Russian', value: 'ru-RU' },
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
+    { label: 'Japanese', value: 'ja-JP' },
+    { label: 'Korean', value: 'ko-KR' },
+    { label: 'Thai', value: 'th-TH' },
+    { label: 'Malay', value: 'ms-MY' },
+    { label: 'Indonesian', value: 'id-ID' },
+    { label: 'Hindi', value: 'hi-IN' },
+    { label: 'Bengali', value: 'bn-BD' },
+    { label: 'Gujarati', value: 'gu-IN' },
+    { label: 'Marathi', value: 'mr-IN' },
+    { label: 'Telugu', value: 'te-IN' },
+    { label: 'Kannada', value: 'kn-IN' },
+    { label: 'Arabic', value: 'ar' },
+    { label: 'Turkish', value: 'tr-TR' },
+    { label: 'Urdu', value: 'ur' },
+    { label: 'Persian', value: 'fa-IR' },
   ];
+  
+  
+
+  
 
   //
   const [messagesData, setMessagesData] = useState<IMessagesData[]>([]);
@@ -71,13 +108,46 @@ const VoiceToTextScreen = ({
   const [cIntakeNotesValue, setCIntakeNotesValue] = useState<string>('');
   const cLottieRef = useRef<LottieView>(null);
 
+  // const cLanguageOptions = [
+  //   { label: 'English (US)', value: 'en-US' },
+  //   { label: 'Hindi (India)', value: 'hi-IN' },
+  //   { label: 'French (France)', value: 'fr-FR' },
+  //   { label: 'Spanish (Spain)', value: 'es-ES' },
+  //   { label: 'German (Germany)', value: 'de-DE' },
+  //   { label: 'Chinese (Simplified)', value: 'zh-CN' },
+  // ];
+
+
   const cLanguageOptions = [
-    { label: 'English (US)', value: 'en-US' },
-    { label: 'Hindi (India)', value: 'hi-IN' },
-    { label: 'French (France)', value: 'fr-FR' },
-    { label: 'Spanish (Spain)', value: 'es-ES' },
-    { label: 'German (Germany)', value: 'de-DE' },
+    { label: 'English', value: 'en-US' },
+    { label: 'Spanish', value: 'es-ES' },
+    { label: 'French', value: 'fr-FR' },
+    { label: 'Italian', value: 'it-IT' },
+    { label: 'German', value: 'de-DE' },
+    { label: 'Dutch', value: 'nl-NL' },
+    { label: 'Polish', value: 'pl-PL' },
+    { label: 'Portuguese', value: 'pt-PT' },
+    { label: 'Swedish', value: 'sv-SE' },
+    { label: 'Danish (Denmark)', value: 'da-DK' },
+    { label: 'Norwegian', value: 'no-NO' },
+    { label: 'Finnish', value: 'fi-FI' },
+    { label: 'Russian', value: 'ru-RU' },
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
+    { label: 'Japanese', value: 'ja-JP' },
+    { label: 'Korean', value: 'ko-KR' },
+    { label: 'Thai', value: 'th-TH' },
+    { label: 'Malay', value: 'ms-MY' },
+    { label: 'Indonesian', value: 'id-ID' },
+    { label: 'Hindi', value: 'hi-IN' },
+    { label: 'Bengali', value: 'bn-BD' },
+    { label: 'Gujarati', value: 'gu-IN' },
+    { label: 'Marathi', value: 'mr-IN' },
+    { label: 'Telugu', value: 'te-IN' },
+    { label: 'Kannada', value: 'kn-IN' },
+    { label: 'Arabic', value: 'ar' },
+    { label: 'Turkish', value: 'tr-TR' },
+    { label: 'Urdu', value: 'ur' },
+    { label: 'Persian', value: 'fa-IR' },
   ];
 
   const [previousNotes, setPreviousNotes] = useState<{
@@ -109,20 +179,27 @@ const VoiceToTextScreen = ({
       console.log('selectedButton', selectedButton);
       if (selectedButton === 'NewIntake') {
         console.log('if entered');
-        setSpeechToText((prev) => prev + ' ' + event.value[0]);
-        setSpeachTextData((prev) => {
-          const updatedData = [...prev, event.value[0]];
-          console.log('Updated speachTextData:', updatedData);
-          return updatedData;
-        });
+
+        console.log('event.value[0]', event.value[0]);
+
+        setSpeechToText([event.value[0]]);
+        setSpeachTextData([event.value[0]]);
+        // setSpeechToText((prev) => prev + ' ' + event.value[0]);
+        // setSpeachTextData((prev) => {
+        //   const updatedData = [...prev, event.value[0]];
+        //   console.log('Updated speachTextData:', updatedData);
+        //   return updatedData;
+        // });
       } else {
         console.log('else entered');
-        setcSpeechToText((prev) => prev + ' ' + event.value[0]);
-        setCSpeachTextData((prev) => {
-          const updatedData = [...prev, event.value[0]];
-          console.log('Updated speachTextData:', updatedData);
-          return updatedData;
-        });
+        setcSpeechToText(event.value[0]);
+        setCSpeachTextData(event.value[0]);
+        // setcSpeechToText((prev) => prev + ' ' + event.value[0]);
+        // setCSpeachTextData((prev) => {
+        //   const updatedData = [...prev, event.value[0]];
+        //   console.log('Updated speachTextData:', updatedData);
+        //   return updatedData;
+        // });
       }
     };
 
@@ -137,7 +214,8 @@ const VoiceToTextScreen = ({
 
   useEffect(() => {
     console.log('speachTextData', speachTextData);
-  }, [speachTextData]);
+    console.log("selectedLanguage", selectedLanguage)
+  }, [speachTextData, selectedLanguage]);
 
   useEffect(() => {
     const userName = mmkv.getString('userImage') as string;
@@ -420,10 +498,14 @@ const VoiceToTextScreen = ({
       const isTokenValid = await checkTokenValidity();
       if (isTokenValid) {
         console.log(' hello world');
+        console.log(' hello world', speechToText[0]);
         const data = {
-          rawRecordingData: speechToText,
+          rawRecordingData: speechToText[0],
         };
+
+        console.log('first =>>>>>>>>>>>>', data);
         const response = await postIntakeNotesService(data);
+        console.log('response generate insight', response);
         if (response) {
           setTranscriptText(response.smartTranscript);
           setIntakeNotesValue(response.soapNotes);

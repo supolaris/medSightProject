@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
-  ScrollView,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { AppMessages } from '../constants/AppMessages';
@@ -457,7 +456,7 @@ const styles = StyleSheet.create({
   },
   actionButtonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     width: '100%',
     alignSelf: 'center',
     marginVertical: 15,
@@ -467,15 +466,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
     elevation: 3,
-    width: 107,
+    // width: 107,
     height: 46,
     flexDirection: 'row',
+    alignItems: 'center',
+    width: '30%',
   },
   actionIcon: {
     width: 23,
     height: 23,
     marginBottom: 5,
     tintColor: '#000000',
+    resizeMode:'cover'
   },
   actionText: {
     fontSize: 7.4,
@@ -484,7 +486,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     marginLeft: 3,
-    width: '65%',
+    width: '90%',
   },
   selectedButton: {
     backgroundColor: '#3781C3',
