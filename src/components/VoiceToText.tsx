@@ -249,6 +249,7 @@ const VoiceToText = (props: IProps) => {
                 ]}
               />
               <Text
+              numberOfLines={1}
                 style={[
                   styles.actionText,
                   props.selectedButton === 'NewIntake' && styles.selectedText,
@@ -274,6 +275,7 @@ const VoiceToText = (props: IProps) => {
                 ]}
               />
               <Text
+              numberOfLines={1}
                 style={[
                   styles.actionText,
                   props.selectedButton === 'StartConsultation' &&
@@ -298,6 +300,7 @@ const VoiceToText = (props: IProps) => {
                 ]}
               />
               <Text
+              numberOfLines={1}
                 style={[
                   styles.actionText,
                   props.selectedButton === 'CoPilot' && styles.selectedText,
@@ -455,6 +458,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   actionButtonsContainer: {
+    
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
@@ -466,16 +470,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
     elevation: 3,
-    // width: 107,
     height: 46,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '30%',
+    width: '32%',
   },
   actionIcon: {
-    width: 23,
-    height: 23,
-    marginBottom: 5,
+    width: 20,
+    height: 20,
     tintColor: '#000000',
     resizeMode:'cover'
   },
@@ -483,9 +485,9 @@ const styles = StyleSheet.create({
     fontSize: 7.4,
     fontWeight: 'bold',
     color: '#000',
-    textAlign: 'center',
+    textAlign: 'left',
     alignSelf: 'center',
-    marginLeft: 3,
+    marginLeft: 4,
     width: '90%',
   },
   selectedButton: {

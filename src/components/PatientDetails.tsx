@@ -191,7 +191,9 @@ const PatientDetails = (props: IProps) => {
                 source={require('../assets/images/PatientDetails/intakeIMage.png')}
                 style={styles.actionIcon}
               />
-              <Text style={styles.actionText}>NEW INTAKE</Text>
+              <Text 
+              numberOfLines={1}
+              style={styles.actionText}>NEW INTAKE</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -201,7 +203,9 @@ const PatientDetails = (props: IProps) => {
                 source={require('../assets/images/PatientDetails/consultationImage.png')}
                 style={styles.actionIcon}
               />
-              <Text style={styles.actionText}>START CONSULTATION</Text>
+              <Text 
+              numberOfLines={1}
+              style={styles.actionText}>START CONSULTATION</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -211,7 +215,9 @@ const PatientDetails = (props: IProps) => {
                 source={require('../assets/images/PatientDetails/coPilotImage.png')}
                 style={styles.actionIcon}
               />
-              <Text style={styles.actionText}>CO-PILOT</Text>
+              <Text 
+              numberOfLines={1}
+              style={styles.actionText}>CO-PILOT</Text>
             </TouchableOpacity>
           </View>
           {/* Tabs */}
@@ -333,24 +339,48 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
     elevation: 3,
-    width: 111,
     height: 46,
     flexDirection: 'row',
+    alignItems: 'center',
+    width: '32%',
   },
   actionIcon: {
-    width: 23,
-    height: 23,
-    marginBottom: 5,
+    width: 20,
+    height: 20,
+    resizeMode:'cover'
   },
   actionText: {
     fontSize: 7.4,
     fontWeight: 'bold',
     color: '#000',
-    textAlign: 'center',
+    textAlign: 'left',
     alignSelf: 'center',
-    marginLeft: 3,
-    width: '65%',
+    marginLeft: 4,
+    width: '90%',
   },
+  // actionButton: {
+  //   padding: 10,
+  //   borderRadius: 8,
+  //   backgroundColor: '#FFFFFF',
+  //   elevation: 3,
+  //   width: 111,
+  //   height: 46,
+  //   flexDirection: 'row',
+  // },
+  // actionIcon: {
+  //   width: 23,
+  //   height: 23,
+  //   marginBottom: 5,
+  // },
+  // actionText: {
+  //   fontSize: 7.4,
+  //   fontWeight: 'bold',
+  //   color: '#000',
+  //   textAlign: 'center',
+  //   alignSelf: 'center',
+  //   marginLeft: 3,
+  //   width: '65%',
+  // },
 
   viewInsightText: {
     color: '#fff',
